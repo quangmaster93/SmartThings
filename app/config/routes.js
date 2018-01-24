@@ -1,66 +1,192 @@
 //@flow
 import React from 'react';
 import { StackNavigator, DrawerNavigator, TabNavigator } from 'react-navigation';
-import screenSlideMenu from '../screens/screenSlideMenu';
-import screenLogin from '../screens/screenLogin';
-import screenDashboardHome from '../screens/screenDashboardHome';
-import screenActionDetail from '../screens/screenActionDetail';
+import ScreenSlideMenu from '../screens/ScreenSlideMenu';
+import ScreenMyAccount from '../screens/ScreenMyAccount';
+import ScreenLogin from '../screens/ScreenLogin';
+import ScreenSupport from '../screens/ScreenSupport';
+import ScreenDashboardHome from '../screens/ScreenDashboardHome';
+import ScreenActionDetail from '../screens/ScreenActionDetail';
+import ScreenThings from '../screens/ScreenThings';
+import ScreenRooms from '../screens/ScreenRooms';
+import ScreenRoutines from '../screens/ScreenRoutines';
+import ScreenSmartApps from '../screens/ScreenSmartApps';
+import ScreenVoice from '../screens/ScreenVoice';
 
+//DashboardStack
+export const DashboardStack = StackNavigator({
+    ScreenDashboardHome: {
+        screen: ScreenDashboardHome,
+    },
+    ScreenActionDetail: {
+        screen: ScreenActionDetail
+    }
+});
 
-//Slide Menu
-export const SlideMenu = DrawerNavigator(
+//MyhomeTab
+export const MyhomeTab = TabNavigator(
     {
-        RootTab: {
-            screen: RootTab
+        ScreenThings: {
+            screen: ScreenThings,
+            navigationOptions: {
+                tabBarLabel: 'Things',
+              }
         },
-        screenLogin:{
-            screen: screenLogin
+        ScreenRooms: {
+            screen: ScreenRooms,
+            navigationOptions: {
+                tabBarLabel: 'Rooms',
+              }
         }
-    }, 
+    },
     {
-        contentComponent: props => <screenSlideMenu {...props}></screenSlideMenu>
+        tabBarPosition: 'top',
+        // scrollEnabled :true
     }
 );
+
+//MyhomeStack
+export const MyhomeStack = StackNavigator({
+    MyhomeTab: {
+        screen: MyhomeTab,
+        navigationOptions: {
+            headerTitle: 'My home',
+          }
+    }
+});
+
+//AutomationTab
+export const AutomationTab = TabNavigator(
+    {
+        ScreenRoutines: {
+            screen: ScreenRoutines,
+            navigationOptions: {
+                tabBarLabel: 'Routines',
+              }
+        },
+        ScreenSmartApps: {
+            screen: ScreenSmartApps,
+            navigationOptions: {
+                tabBarLabel: 'SmartApps',
+              }
+        }
+    },
+    {
+        tabBarPosition: 'top',
+        // scrollEnabled :true
+    }
+);
+
+//AutomationStack
+export const AutomationStack = StackNavigator({
+    AutomationTab: {
+        screen: AutomationTab,
+        navigationOptions: {
+            headerTitle: 'Automation',
+          }
+    }
+});
+
+//VoiceStack
+export const VoiceStack = StackNavigator({
+    ScreenVoice: {
+        screen: ScreenVoice,
+        navigationOptions: {
+            headerTitle: 'Voice',
+          }
+    }
+});
 
 //Tab
 export const RootTab = TabNavigator(
     {
         DashboardStack: {
             screen: DashboardStack,
-            title :"Dashboard"
+            navigationOptions: {
+                tabBarLabel: 'Dashboard',
+              }
         },
         MyhomeStack: {
             screen: MyhomeStack,
-            title :"My home"
+            navigationOptions: {
+                tabBarLabel: 'My home',
+              }
         },
         AutomationStack: {
             screen: AutomationStack,
-            title :"Automation"
+            navigationOptions: {
+                tabBarLabel: 'Automation',
+              }
         },
-        MarketplaceStack: {
-            screen: MarketplaceStack,
-            title :"Marketplace"
+        VoiceStack: {
+            screen: VoiceStack,
+            navigationOptions: {
+                tabBarLabel: 'Voice',
+              }
         }
     },
     {
         tabBarPosition: 'bottom',
-        scrollEnabled :true
+        // scrollEnabled :true
     }
 );
 
-//DashboardStack
-export const DashboardStack = StackNavigator({
-    screenDashboardHome: {
-        screen: screenDashboardHome,
-    },
-    screenActionDetail: {
-        screen: screenActionDetail
+
+
+//MyAccountStack
+export const MyAccountStack = StackNavigator({
+    ScreenMyAccount: {
+        screen: ScreenMyAccount,
+        navigationOptions: {
+            headerTitle: 'My Account',
+          }
     }
 });
 
-//MyhomeStack
-export const DetailStack = StackNavigator({
-    DetailScreen: {
-        screen: DetailScreen,
+//SupportStack
+export const SupportStack = StackNavigator({
+    ScreenSupport: {
+        screen: ScreenSupport,
+        navigationOptions: {
+            headerTitle: 'Support',
+          }
     }
 });
+
+//Slide Menu
+export const RootApp = DrawerNavigator(
+    {
+        RootTab: {
+            screen: RootTab
+        },
+        MyAccountStack:{
+            screen: MyAccountStack
+        },
+        SupportStack:{
+            screen: SupportStack
+        },
+    }, 
+    {
+        contentComponent: props => <ScreenSlideMenu {...props}></ScreenSlideMenu>
+    }
+);
+
+
+//AuthenticationStack
+export const AuthenticationStack=(isLogged:any)=>{
+  return StackNavigator(
+    {
+        ScreenLogin: {
+        screen: ScreenLogin,
+      },
+      RootApp: {
+        screen: RootApp,
+      }
+    },
+    {
+      headerMode: "none",
+      initialRouteName: isLogged ? "RootApp" : "ScreenLogin"
+    }
+  );
+}
+

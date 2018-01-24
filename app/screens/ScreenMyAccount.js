@@ -4,14 +4,11 @@ import {
     Text
 } from 'react-native';
 
-export default class ScreenActionDetail extends Component {
-    static navigationOptions = {
-        title: 'Action',
-      }
+export default class ScreenMyAccount extends Component {
     render() {
         return (
             <View>
-                <Text>screenActionDetail</Text>
+                <Text>ScreenMyAccount</Text>
             </View>
         );
     }
