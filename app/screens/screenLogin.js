@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Network from '../api/Network';
 
-export default class ScreenLogin extends Component<{}> {
+export default class ScreenLogin extends Component<any,any> {
     constructor(props:any) {
         super(props)
     }
@@ -63,6 +63,8 @@ export default class ScreenLogin extends Component<{}> {
         }
     }
     render() {
+        console.log("Login");
+        console.log(this.props);
         return (
             <View>
                 <Text>screenLogin</Text>

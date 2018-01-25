@@ -5,6 +5,9 @@ import {
 } from 'react-native';
 
 export default class ScreenThings extends Component {
+    componentDidMount() {
+        console.log("ScreenThings");
+      }
     render() {
         return (
             <View>

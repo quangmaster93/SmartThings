@@ -37,6 +37,8 @@ export default class App extends Component<{}, any> {
     }
   }
   render() {
+    console.log("App");
+    console.log(this.props);
     const Layout = AuthenticationStack(this.state.isLogged);
     return <Layout />;
   }

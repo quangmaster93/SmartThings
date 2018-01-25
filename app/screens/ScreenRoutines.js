@@ -5,6 +5,9 @@ import {
 } from 'react-native';
 
 export default class ScreenRoutines extends Component {
+    componentDidMount() {
+        console.log("ScreenRoutines");
+      }
     render() {
         return (
             <View>

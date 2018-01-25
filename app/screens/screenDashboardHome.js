@@ -8,9 +8,18 @@ export default class ScreenDashboardHome extends Component {
     static navigationOptions = {
         title: 'Home',
       }
+      componentDidMount() {
+      }
     render() {
         return (
             <View>
+                <Text>screenDashboardHome</Text>
+                <Text>screenDashboardHome</Text>
+                <Text>screenDashboardHome</Text>
+                <Text>screenDashboardHome</Text>
+                <Text>screenDashboardHome</Text>
+                <Text>screenDashboardHome</Text>
+                <Text>screenDashboardHome</Text>
                 <Text>screenDashboardHome</Text>
             </View>
         );

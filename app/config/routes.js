@@ -30,18 +30,21 @@ export const MyhomeTab = TabNavigator(
             screen: ScreenThings,
             navigationOptions: {
                 tabBarLabel: 'Things',
-              }
+            }
         },
         ScreenRooms: {
             screen: ScreenRooms,
             navigationOptions: {
                 tabBarLabel: 'Rooms',
-              }
+            }
         }
     },
     {
         tabBarPosition: 'top',
-        // scrollEnabled :true
+        scrollEnabled: true,
+        swipeEnabled: true,
+        initialRouteName: 'ScreenThings',
+        lazyLoad: true,
     }
 );
 
@@ -51,7 +54,7 @@ export const MyhomeStack = StackNavigator({
         screen: MyhomeTab,
         navigationOptions: {
             headerTitle: 'My home',
-          }
+        }
     }
 });
 
@@ -62,18 +65,21 @@ export const AutomationTab = TabNavigator(
             screen: ScreenRoutines,
             navigationOptions: {
                 tabBarLabel: 'Routines',
-              }
+            }
         },
         ScreenSmartApps: {
             screen: ScreenSmartApps,
             navigationOptions: {
                 tabBarLabel: 'SmartApps',
-              }
+            }
         }
     },
     {
         tabBarPosition: 'top',
-        // scrollEnabled :true
+        scrollEnabled: true,
+        swipeEnabled: true,
+        initialRouteName: 'ScreenRoutines',
+        lazyLoad: true,
     }
 );
 
@@ -83,7 +89,7 @@ export const AutomationStack = StackNavigator({
         screen: AutomationTab,
         navigationOptions: {
             headerTitle: 'Automation',
-          }
+        }
     }
 });
 
@@ -93,7 +99,7 @@ export const VoiceStack = StackNavigator({
         screen: ScreenVoice,
         navigationOptions: {
             headerTitle: 'Voice',
-          }
+        }
     }
 });
 
@@ -104,30 +110,34 @@ export const RootTab = TabNavigator(
             screen: DashboardStack,
             navigationOptions: {
                 tabBarLabel: 'Dashboard',
-              }
+            }
         },
         MyhomeStack: {
             screen: MyhomeStack,
             navigationOptions: {
                 tabBarLabel: 'My home',
-              }
+            }
         },
         AutomationStack: {
             screen: AutomationStack,
             navigationOptions: {
                 tabBarLabel: 'Automation',
-              }
+            }
         },
         VoiceStack: {
             screen: VoiceStack,
             navigationOptions: {
                 tabBarLabel: 'Voice',
-              }
+            }
         }
     },
     {
         tabBarPosition: 'bottom',
-        // scrollEnabled :true
+        scrollEnabled: true,
+        swipeEnabled: false,
+        lazyLoad: true,
+        animationEnabled: false,
+        initialRouteName: 'DashboardStack'
     }
 );
 
@@ -139,7 +149,7 @@ export const MyAccountStack = StackNavigator({
         screen: ScreenMyAccount,
         navigationOptions: {
             headerTitle: 'My Account',
-          }
+        }
     }
 });
 
@@ -149,7 +159,7 @@ export const SupportStack = StackNavigator({
         screen: ScreenSupport,
         navigationOptions: {
             headerTitle: 'Support',
-          }
+        }
     }
 });
 
@@ -159,13 +169,13 @@ export const RootApp = DrawerNavigator(
         RootTab: {
             screen: RootTab
         },
-        MyAccountStack:{
+        MyAccountStack: {
             screen: MyAccountStack
         },
-        SupportStack:{
+        SupportStack: {
             screen: SupportStack
         },
-    }, 
+    },
     {
         contentComponent: props => <ScreenSlideMenu {...props}></ScreenSlideMenu>
     }
@@ -173,20 +183,20 @@ export const RootApp = DrawerNavigator(
 
 
 //AuthenticationStack
-export const AuthenticationStack=(isLogged:any)=>{
-  return StackNavigator(
-    {
-        ScreenLogin: {
-        screen: ScreenLogin,
-      },
-      RootApp: {
-        screen: RootApp,
-      }
-    },
-    {
-      headerMode: "none",
-      initialRouteName: isLogged ? "RootApp" : "ScreenLogin"
-    }
-  );
+export const AuthenticationStack = (isLogged: any) => {
+    return StackNavigator(
+        {
+            ScreenLogin: {
+                screen: ScreenLogin,
+            },
+            RootApp: {
+                screen: RootApp,
+            }
+        },
+        {
+            headerMode: "none",
+            initialRouteName: isLogged ? "RootApp" : "ScreenLogin"
+        }
+    );
 }
 

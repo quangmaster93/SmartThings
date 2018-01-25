@@ -5,6 +5,9 @@ import {
 } from 'react-native';
 
 export default class ScreenRooms extends Component {
+    componentDidMount() {
+        console.log("ScreenRooms");
+      }
     render() {
         return (
             <View>
