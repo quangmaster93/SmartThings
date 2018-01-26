@@ -1,16 +1,18 @@
 // @flow
-import { AppEvent } from "./AppEvent"
+import type { AppEvent } from "./AppEvent"
 
-export class AppState {
+export interface AppState {
     event: AppEvent;
     token: string;
     someValue: string;
+    focusedRoute:string;
 }
 
 let defaultState: AppState = {
     event: "INITIALIZE",
     token: "TOKEN",
-    someValue: ""
+    someValue: "",
+    focusedRoute:""
 }
 
 export {

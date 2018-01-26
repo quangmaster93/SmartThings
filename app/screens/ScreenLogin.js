@@ -8,6 +8,8 @@ import {
     AsyncStorage
 } from 'react-native';
 import Network from '../api/Network';
+import { AppStorage } from '../redux/AppStorage';
+
 
 export default class ScreenLogin extends Component<any,any> {
     constructor(props:any) {
@@ -43,6 +45,7 @@ export default class ScreenLogin extends Component<any,any> {
                     that.SaveToken(access_token);
                     console.log(access_token);
                     Network.token = access_token;
+                    AppStorage.postEvent("SAVE_TOKEN", access_token);
                     that.props.navigation.navigate('RootApp')
                 })
                 .catch(error => {
