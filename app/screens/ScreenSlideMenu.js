@@ -7,8 +7,6 @@ import {
 
 export default class ScreenSlideMenu extends Component {
     render() {
-        console.log("ScreenSlideMenu");
-        console.log(this.props);
         return (
             <View>
                 <Text>screenSlideMenu</Text>

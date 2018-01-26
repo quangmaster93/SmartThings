@@ -6,7 +6,6 @@ import {
 
 export default class ScreenThings extends Component {
     componentDidMount() {
-        console.log("ScreenThings");
       }
     render() {
         return (

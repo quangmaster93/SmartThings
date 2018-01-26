@@ -6,7 +6,6 @@ import {
 
 export default class ScreenRoutines extends Component {
     componentDidMount() {
-        console.log("ScreenRoutines");
       }
     render() {
         return (

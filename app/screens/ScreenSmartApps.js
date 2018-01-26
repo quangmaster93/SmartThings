@@ -7,7 +7,6 @@ import {
 
 export default class ScreenSmartApps extends Component {
     componentDidMount() {
-        console.log("ScreenSmartApps");
       }
     render() {
         return (

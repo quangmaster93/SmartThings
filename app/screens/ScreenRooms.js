@@ -6,7 +6,6 @@ import {
 
 export default class ScreenRooms extends Component {
     componentDidMount() {
-        console.log("ScreenRooms");
       }
     render() {
         return (
