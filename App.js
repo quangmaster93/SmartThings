@@ -10,12 +10,15 @@ import {
 } from 'react-native';
 import Network from './app/api/Network';
 import { AuthenticationStack } from './app/config/routes';
+import { AppStorage } from './app/redux/AppStorage';
 export default class App extends Component<{}, any> {
   constructor(props: any) {
     super(props);
     this.state = {
       isLogged: false
     };
+
+    AppStorage.postEvent("SOME_EVENT", "Ahihi");
   };
 
   componentDidMount() {
