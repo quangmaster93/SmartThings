@@ -5,14 +5,18 @@ import {
     View,
     Text,
     Linking,
-    AsyncStorage
+    AsyncStorage,
+    StyleSheet,
+    ImageBackground,
+    Image,
+    TouchableOpacity
 } from 'react-native';
 import Network from '../api/Network';
 import { AppStorage } from '../redux/AppStorage';
 
 
-export default class ScreenLogin extends Component<any,any> {
-    constructor(props:any) {
+export default class ScreenLogin extends Component<any, any> {
+    constructor(props: any) {
         super(props)
     }
     LogIn = () => {
@@ -49,11 +53,11 @@ export default class ScreenLogin extends Component<any,any> {
                     that.props.navigation.navigate('RootApp')
                 })
                 .catch(error => {
-                    console.error("Loi: "+error);
+                    console.error("Loi: " + error);
                 });
         });
     }
-    SaveToken(access_token:any) {
+    SaveToken(access_token: any) {
         try {
             console.log("SaveToken");
             AsyncStorage.setItem('@token:key', access_token).then(() => {
@@ -65,14 +69,66 @@ export default class ScreenLogin extends Component<any,any> {
         }
     }
     render() {
-        console.log("Login");
-        console.log(this.props);
         return (
-            <View>
-                <Text>screenLogin</Text>
-                <Button onPress={ ()=>{this.LogIn() }} title="Login"/>
+            <View style={styles.container}>
+                <ImageBackground style={styles.bg} source={require('../image/bg1.png')}>
+                    <View style={styles.logoContainer}>
+                        <Image style={styles.logo} source={require('../image/logo.png')}>
+                        </Image>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity onPress={() => { this.LogIn() }} style={styles.loginButton}>
+                            <Text style={styles.loginText}>
+                                LOGIN
+                            </Text>
+                        </TouchableOpacity>
+                        {/* <View style={styles.loginButton}>
+                            <Button onPress={() => { this.LogIn() }} title="Login" />
+                        </View> */}
+                    </View>
+
+                </ImageBackground>
             </View>
         );
     }
 }
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'column',
 
+    },
+    bg: {
+        flex: 1,
+        flexDirection: 'column'
+    },
+    logoContainer: {
+        flex: 0.13,
+        flexDirection: 'column',
+        paddingTop: 12
+    },
+    logo: {
+        flex: 1,
+        resizeMode: "contain",
+
+    },
+    buttonContainer: {
+        flex: 0.8,
+        flexDirection: 'row',
+        // backgroundColor: 'red',
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    loginButton: {
+        flex: 0.75,
+        height: 45,
+        backgroundColor: '#a939b2',
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius:25
+    },
+    loginText:{
+        color:"#ffffff",
+        fontSize:17
+    }
+})
