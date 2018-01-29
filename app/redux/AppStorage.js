@@ -1,7 +1,7 @@
 // @flow
 import { createStore, Action } from "redux";
 import { AppState, defaultState } from "./AppState";
-import type { AppEvent } from "./AppEvent";
+import { AppEvent } from "./AppEvent";
 
 export class AppStorage {
     static appReducer(state: AppState = defaultState, action: Action): AppState {
@@ -18,6 +18,10 @@ export class AppStorage {
             case "SET_FOCUSED_SCREEN":
                 return {
                     ...state, focusedRoute: action.payload
+                }
+            case "SAVE_USER_INFO":
+                return {
+                    ...state, userInfo: action.payload
                 }
         }
 
