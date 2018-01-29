@@ -12,7 +12,11 @@ import ScreenRooms from '../screens/ScreenRooms';
 import ScreenRoutines from '../screens/ScreenRoutines';
 import ScreenSmartApps from '../screens/ScreenSmartApps';
 import ScreenVoice from '../screens/ScreenVoice';
-
+import {
+    Image,
+    StyleSheet,
+    Text
+} from 'react-native';
 //DashboardStack
 export const DashboardStack = StackNavigator({
     ScreenDashboardHome: {
@@ -98,7 +102,7 @@ export const VoiceStack = StackNavigator({
     ScreenVoice: {
         screen: ScreenVoice,
         navigationOptions: {
-            headerTitle: 'Voice',
+            headerTitle: 'Speech',
         }
     }
 });
@@ -109,25 +113,51 @@ export const RootTab = TabNavigator(
         DashboardStack: {
             screen: DashboardStack,
             navigationOptions: {
-                tabBarLabel: 'Dashboard',
+                tabBarLabel:(focused, tintColor)=> <Text style={[{color:focused?"#235fab":'#7a7b7c'}]}>D{"ashboard".toLowerCase()}</Text>,
+                tabBarIcon: () => (
+                    <Image
+                        source={require('../image/db.png')}
+                        style={styles.icon}
+                    />
+                )
             }
         },
         MyhomeStack: {
             screen: MyhomeStack,
             navigationOptions: {
-                tabBarLabel: 'My home',
+                tabBarLabel:(focused, tintColor)=> <Text style={[{color:focused?"#235fab":'#7a7b7c'}]}>M{"y home".toLowerCase()}</Text>,
+                tabBarIcon: () => (
+                    <Image
+                        source={require('../image/db.png')}
+                        style={styles.icon}
+                    />
+                )
             }
         },
         AutomationStack: {
             screen: AutomationStack,
             navigationOptions: {
                 tabBarLabel: 'Automation',
+                tabBarLabel:(focused, tintColor)=> <Text style={[{color:focused?"#235fab":'#7a7b7c'}]}>A{"utomation".toLowerCase()}</Text>,
+                tabBarIcon: () => (
+                    <Image
+                        source={require('../image/db.png')}
+                        style={styles.icon}
+                    />
+                )
             }
         },
         VoiceStack: {
             screen: VoiceStack,
             navigationOptions: {
-                tabBarLabel: 'Voice',
+                tabBarLabel: 'Speech',
+                tabBarLabel:(focused, tintColor)=> <Text style={[{color:focused?"#235fab":'#7a7b7c'}]}>S{"peech".toLowerCase()}</Text>,
+                tabBarIcon: () => (
+                    <Image
+                        source={require('../image/db.png')}
+                        style={styles.icon}
+                    />
+                )
             }
         }
     },
@@ -137,7 +167,18 @@ export const RootTab = TabNavigator(
         swipeEnabled: false,
         lazyLoad: true,
         animationEnabled: false,
-        initialRouteName: 'DashboardStack'
+        initialRouteName: 'DashboardStack',
+        tabBarOptions: {
+            // activeTintColor: '#235fab',
+            // inactiveTintColor: '#7a7b7c',
+            labelStyle: {
+                // fontSize: 10,
+                // textTransform: "capitalize"
+            },
+            style: {
+                backgroundColor: 'blue',
+            },
+        }
     }
 );
 
@@ -200,3 +241,12 @@ export const AuthenticationStack = (isLogged: any) => {
     );
 }
 
+const styles = StyleSheet.create({
+    icon: {
+        width: 26,
+        height: 26,
+    },
+    // tabLabel: {
+    //     textTransform: "capitalize",
+    // }
+});
