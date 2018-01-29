@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Network from './app/api/Network';
 import { AuthenticationStack } from './app/config/routes';
+import { AppStorage } from './app/redux/AppStorage';
 export default class App extends Component<{}, any> {
   constructor(props: any) {
     super(props);
@@ -25,9 +26,10 @@ export default class App extends Component<{}, any> {
     try {
       AsyncStorage.getItem('@token:key').then((access_token) => {
         if (access_token !== null) {
-          console.log("token got: "+ access_token);
+          console.log("token got: " + access_token);
           Network.token = access_token;
-          this.setState({ isLogged: true});
+          AppStorage.postEvent("SAVE_TOKEN", access_token);
+          this.setState({ isLogged: true });
         } else {
 
         }
@@ -36,11 +38,13 @@ export default class App extends Component<{}, any> {
       console.log("cannot get token");
     }
   }
+  onNavigationStateChange = (prevState:any, currentState:any, action:any) => {
+    console.log(action);
+    AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
+  };
   render() {
-    console.log("App");
-    console.log(this.props);
     const Layout = AuthenticationStack(this.state.isLogged);
-    return <Layout />;
+    return <Layout onNavigationStateChange={(prevState, currentState, action) => { this.onNavigationStateChange(prevState, currentState, action) }} />;
   }
 }
 
