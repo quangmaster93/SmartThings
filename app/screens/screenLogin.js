@@ -14,7 +14,6 @@ export default class ScreenLogin extends Component<any,any> {
         super(props)
     }
     LogIn = () => {
-        console.log("onlogin");
         let that = this;
         let challenge = "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM"
         let client_id = "0c2cefcfe2f245f58e053c31fa2241cb";
@@ -63,8 +62,6 @@ export default class ScreenLogin extends Component<any,any> {
         }
     }
     render() {
-        console.log("Login");
-        console.log(this.props);
         return (
             <View>
                 <Text>screenLogin</Text>

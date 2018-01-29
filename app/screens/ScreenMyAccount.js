@@ -16,8 +16,6 @@ export default class ScreenMyAccount extends Component {
         
     }
     render() {
-        console.log("ScreenMyAccount")
-        console.log(this.props);
         return (
             <View>
                 <Text>ScreenMyAccount</Text>
