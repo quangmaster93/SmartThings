@@ -5,9 +5,9 @@ import {
 } from 'react-native';
 
 export default class ScreenDashboardHome extends Component {
-    static navigationOptions = {
-        title: 'Home',
-      }
+    // static navigationOptions = {
+    //     title: 'TCQ',
+    //   }
       componentDidMount() {
       }
     render() {
