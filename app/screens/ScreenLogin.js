@@ -113,11 +113,12 @@ const styles = StyleSheet.create({
 
     },
     buttonContainer: {
-        flex: 0.8,
+        flex: 0.9,
         flexDirection: 'row',
         // backgroundColor: 'red',
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        paddingTop:30
     },
     loginButton: {
         flex: 0.75,
