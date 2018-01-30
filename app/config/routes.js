@@ -16,36 +16,44 @@ import {
     Image,
     StyleSheet,
     Text,
-    Button
+    Button,
+    TouchableHighlight
 } from 'react-native';
 //DashboardStack
 export const DashboardStack = StackNavigator({
     ScreenDashboardHome: {
         screen: ScreenDashboardHome,
-        navigationOptions :({navigation})=>({
+        navigationOptions: ({ navigation }) => ({
             title: 'TCQ',
+            headerTitle: <Text style={styles.headerTitle}>TCQ</Text>,
             headerStyle: {
                 backgroundColor: '#1153a5',
-              },
-            headerLeft :<Button title="Menu" onPress={()=>{navigation.navigate('DrawerToggle')}}>
-            </Button>
-          })
+            },
+            headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                <Image
+                    source={require('../image/hamburger.png')}
+                    style={[styles.menuIcon]}
+                />
+            </TouchableHighlight>
+
+        })
     },
     ScreenActionDetail: {
         screen: ScreenActionDetail,
-        navigationOptions : ({navigation})=>({
+        navigationOptions: ({ navigation }) => ({
             title: 'Action',
+            headerTitle: <Text style={styles.headerTitle}>Action</Text>,
             headerStyle: {
                 backgroundColor: '#1153a5',
-              },
-          })
+            },
+        })
     }
 },
-{
-    navigationOptions:{
+    {
+        navigationOptions: {
 
+        }
     }
-}
 );
 
 //MyhomeTab
@@ -81,8 +89,8 @@ export const MyhomeTab = TabNavigator(
             showIcon: false,
             tabStyle: {
             },
-            indicatorStyle:{
-                backgroundColor:"#1153a5"
+            indicatorStyle: {
+                backgroundColor: "#1153a5"
             }
         }
     }
@@ -92,12 +100,12 @@ export const MyhomeTab = TabNavigator(
 export const MyhomeStack = StackNavigator({
     MyhomeTab: {
         screen: MyhomeTab,
-        navigationOptions: {
-            headerTitle: 'My home',
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: <Text style={styles.headerTitle}>My home</Text>,
             headerStyle: {
                 backgroundColor: '#1153a5',
-              },
-        }
+            },
+        })
     }
 });
 
@@ -134,8 +142,8 @@ export const AutomationTab = TabNavigator(
             showIcon: false,
             tabStyle: {
             },
-            indicatorStyle:{
-                backgroundColor:"#1153a5"
+            indicatorStyle: {
+                backgroundColor: "#1153a5"
             }
         }
     }
@@ -145,12 +153,12 @@ export const AutomationTab = TabNavigator(
 export const AutomationStack = StackNavigator({
     AutomationTab: {
         screen: AutomationTab,
-        navigationOptions: {
-            headerTitle: 'Automation',
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: <Text style={styles.headerTitle}>Automation</Text>,
             headerStyle: {
                 backgroundColor: '#1153a5',
-              },
-        }
+            },
+        })
     }
 });
 
@@ -158,12 +166,12 @@ export const AutomationStack = StackNavigator({
 export const VoiceStack = StackNavigator({
     ScreenVoice: {
         screen: ScreenVoice,
-        navigationOptions: {
-            headerTitle: 'Speech',
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: <Text style={styles.headerTitle}>Speech</Text>,
             headerStyle: {
                 backgroundColor: '#1153a5',
-              },
-        }
+            },
+        })
     }
 });
 
@@ -273,12 +281,12 @@ export const RootTab = TabNavigator(
 export const MyAccountStack = StackNavigator({
     ScreenMyAccount: {
         screen: ScreenMyAccount,
-        navigationOptions: {
-            headerTitle: 'My Account',
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: <Text style={styles.headerTitle}>My Account</Text>,
             headerStyle: {
                 backgroundColor: '#1153a5',
-              },
-        }
+            },
+        })
     }
 });
 
@@ -286,9 +294,9 @@ export const MyAccountStack = StackNavigator({
 export const SupportStack = StackNavigator({
     ScreenSupport: {
         screen: ScreenSupport,
-        navigationOptions: {
-            headerTitle: 'Support',
-        }
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: <Text style={styles.headerTitle}>Support</Text>
+        })
     }
 });
 
@@ -346,6 +354,15 @@ const styles = StyleSheet.create({
         marginTop: 3,
         fontSize: 16
         // fontWeight:"bold"
+    },
+    headerTitle: {
+        color: "#ffffff",
+        fontSize: 20,
+        marginLeft: 12
+    },
+    menuIcon: {
+        width: 50,
+        height: 50,
     }
     // tabLabel: {
     //     textTransform: "capitalize",
