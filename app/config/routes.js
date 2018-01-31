@@ -31,7 +31,7 @@ export const DashboardStack = StackNavigator({
             },
             headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
                 <Image
-                    source={require('../image/hamburger.png')}
+                    source={require('../image/menu.png')}
                     style={[styles.menuIcon]}
                 />
             </TouchableHighlight>
@@ -105,6 +105,12 @@ export const MyhomeStack = StackNavigator({
             headerStyle: {
                 backgroundColor: '#1153a5',
             },
+            headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                <Image
+                    source={require('../image/menu.png')}
+                    style={[styles.menuIcon]}
+                />
+            </TouchableHighlight>
         })
     }
 });
@@ -158,6 +164,12 @@ export const AutomationStack = StackNavigator({
             headerStyle: {
                 backgroundColor: '#1153a5',
             },
+            headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                <Image
+                    source={require('../image/menu.png')}
+                    style={[styles.menuIcon]}
+                />
+            </TouchableHighlight>
         })
     }
 });
@@ -171,6 +183,12 @@ export const VoiceStack = StackNavigator({
             headerStyle: {
                 backgroundColor: '#1153a5',
             },
+            headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                <Image
+                    source={require('../image/menu.png')}
+                    style={[styles.menuIcon]}
+                />
+            </TouchableHighlight>
         })
     }
 });
@@ -353,18 +371,16 @@ const styles = StyleSheet.create({
     labelTop: {
         marginTop: 3,
         fontSize: 16
-        // fontWeight:"bold"
     },
     headerTitle: {
         color: "#ffffff",
         fontSize: 20,
-        marginLeft: 12
+        marginLeft: 12,
+        marginTop:6
     },
     menuIcon: {
-        width: 50,
-        height: 50,
+        width: 32,
+        height: 22,
+        marginLeft:10
     }
-    // tabLabel: {
-    //     textTransform: "capitalize",
-    // }
 });
