@@ -5,9 +5,9 @@ import {
 } from 'react-native';
 
 export default class ScreenActionDetail extends Component {
-    static navigationOptions = {
-        title: 'Action',
-      }
+    // static navigationOptions = {
+    //     title: 'Action',
+    //   }
     render() {
         return (
             <View>

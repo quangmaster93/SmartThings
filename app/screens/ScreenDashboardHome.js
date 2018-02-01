@@ -6,9 +6,9 @@ import {
 import UsersApi from '../api/UsersApi';
 
 export default class ScreenDashboardHome extends Component {
-    static navigationOptions = {
-        title: 'Home',
-      }
+    // static navigationOptions = {
+    //     title: 'TCQ',
+    //   }
       componentDidMount() {
           UsersApi.getUserProfile();
       }

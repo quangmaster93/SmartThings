@@ -12,16 +12,56 @@ import ScreenRooms from '../screens/ScreenRooms';
 import ScreenRoutines from '../screens/ScreenRoutines';
 import ScreenSmartApps from '../screens/ScreenSmartApps';
 import ScreenVoice from '../screens/ScreenVoice';
-
+import {
+    Image,
+    StyleSheet,
+    Text,
+    Button,
+    TouchableHighlight
+} from 'react-native';
+import { AppStorage } from '../redux/AppStorage';
 //DashboardStack
 export const DashboardStack = StackNavigator({
     ScreenDashboardHome: {
         screen: ScreenDashboardHome,
+        navigationOptions: ({ navigation }) => ({
+            title: 'TCQ',
+            headerTitle: <Text style={styles.headerTitle}>TCQ</Text>,
+            headerStyle: {
+                backgroundColor: '#1153a5',
+            },
+            headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                <Image
+                    source={require('../image/menu.png')}
+                    style={[styles.menuIcon]}
+                />
+            </TouchableHighlight>,
+            headerRight: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                <Image
+                    source={require('../image/3dot-ve.png')}
+                    style={[styles.headerRightIcon]}
+                />
+            </TouchableHighlight>
+
+        })
     },
     ScreenActionDetail: {
-        screen: ScreenActionDetail
+        screen: ScreenActionDetail,
+        navigationOptions: ({ navigation }) => ({
+            title: 'Action',
+            headerTitle: <Text style={styles.headerTitle}>Action</Text>,
+            headerStyle: {
+                backgroundColor: '#1153a5',
+            },
+        })
     }
-});
+},
+    {
+        navigationOptions: {
+
+        }
+    }
+);
 
 //MyhomeTab
 export const MyhomeTab = TabNavigator(
@@ -29,13 +69,13 @@ export const MyhomeTab = TabNavigator(
         ScreenThings: {
             screen: ScreenThings,
             navigationOptions: {
-                tabBarLabel: 'Things',
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? "#215eab" : '#655f61' }, styles.labelTop]}>Things</Text>
             }
         },
         ScreenRooms: {
             screen: ScreenRooms,
             navigationOptions: {
-                tabBarLabel: 'Rooms',
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? "#215eab" : '#655f61' }, styles.labelTop]}>Rooms</Text>
             }
         }
     },
@@ -45,16 +85,48 @@ export const MyhomeTab = TabNavigator(
         swipeEnabled: true,
         initialRouteName: 'ScreenThings',
         lazyLoad: true,
+        tabBarOptions: {
+            labelStyle: {
+            },
+            style: {
+                backgroundColor: '#f5f8ff',
+                height: 43,
+
+            },
+            showIcon: false,
+            tabStyle: {
+            },
+            indicatorStyle: {
+                backgroundColor: "#1153a5"
+            }
+        }
     }
 );
 
 //MyhomeStack
 export const MyhomeStack = StackNavigator({
     MyhomeTab: {
-        screen: MyhomeTab,
-        navigationOptions: {
-            headerTitle: 'My home',
-        }
+        screen:({navigation})=> <MyhomeTab screenProps={navigation} onNavigationStateChange={(prevState:any, currentState:any, action:any) => {
+            AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
+          }}/>,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: <Text style={styles.headerTitle}>My home</Text>,
+            headerStyle: {
+                backgroundColor: '#1153a5',
+            },
+            headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                <Image
+                    source={require('../image/menu.png')}
+                    style={[styles.menuIcon]}
+                />
+            </TouchableHighlight>,
+            headerRight: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                    <Image
+                        source={navigation.state.params?(navigation.state.params.screen=="ScreenThings"?require('../image/add.png'):require('../image/setting.png')):require('../image/add.png')}
+                        style={[styles.headerRightIcon]}
+                    />
+                </TouchableHighlight>
+        })
     }
 });
 
@@ -64,13 +136,13 @@ export const AutomationTab = TabNavigator(
         ScreenRoutines: {
             screen: ScreenRoutines,
             navigationOptions: {
-                tabBarLabel: 'Routines',
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? "#215eab" : '#655f61' }, styles.labelTop]}>Routines</Text>
             }
         },
         ScreenSmartApps: {
             screen: ScreenSmartApps,
             navigationOptions: {
-                tabBarLabel: 'SmartApps',
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? "#215eab" : '#655f61' }, styles.labelTop]}>SmartApps</Text>
             }
         }
     },
@@ -80,6 +152,21 @@ export const AutomationTab = TabNavigator(
         swipeEnabled: true,
         initialRouteName: 'ScreenRoutines',
         lazyLoad: true,
+        tabBarOptions: {
+            labelStyle: {
+            },
+            style: {
+                backgroundColor: '#f5f8ff',
+                height: 43,
+
+            },
+            showIcon: false,
+            tabStyle: {
+            },
+            indicatorStyle: {
+                backgroundColor: "#1153a5"
+            }
+        }
     }
 );
 
@@ -87,9 +174,18 @@ export const AutomationTab = TabNavigator(
 export const AutomationStack = StackNavigator({
     AutomationTab: {
         screen: AutomationTab,
-        navigationOptions: {
-            headerTitle: 'Automation',
-        }
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: <Text style={styles.headerTitle}>Automation</Text>,
+            headerStyle: {
+                backgroundColor: '#1153a5',
+            },
+            headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                <Image
+                    source={require('../image/menu.png')}
+                    style={[styles.menuIcon]}
+                />
+            </TouchableHighlight>
+        })
     }
 });
 
@@ -97,9 +193,18 @@ export const AutomationStack = StackNavigator({
 export const VoiceStack = StackNavigator({
     ScreenVoice: {
         screen: ScreenVoice,
-        navigationOptions: {
-            headerTitle: 'Voice',
-        }
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: <Text style={styles.headerTitle}>Speech</Text>,
+            headerStyle: {
+                backgroundColor: '#1153a5',
+            },
+            headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                <Image
+                    source={require('../image/menu.png')}
+                    style={[styles.menuIcon]}
+                />
+            </TouchableHighlight>
+        })
     }
 });
 
@@ -109,25 +214,69 @@ export const RootTab = TabNavigator(
         DashboardStack: {
             screen: DashboardStack,
             navigationOptions: {
-                tabBarLabel: 'Dashboard',
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? "#235fab" : '#7a7b7c' }, styles.label]}>Dashboard</Text>,
+                tabBarIcon: ({ focused, tintColor }) => (
+                    focused ? <Image
+                        source={require('../image/db.png')}
+                        style={[styles.icon, { tintColor: tintColor }]}
+                    />
+                        :
+                        <Image
+                            source={require('../image/db-active.png')}
+                            style={[styles.icon, { tintColor: tintColor }]}
+                        />
+                )
             }
         },
         MyhomeStack: {
             screen: MyhomeStack,
             navigationOptions: {
-                tabBarLabel: 'My home',
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? "#235fab" : '#7a7b7c' }, styles.label]}>My home</Text>,
+                tabBarIcon: ({ focused, tintColor }) => (
+                    focused ? <Image
+                        source={require('../image/myhome.png')}
+                        style={[styles.icon, { tintColor: tintColor }]}
+                    />
+                        :
+                        <Image
+                            source={require('../image/myhome-active.png')}
+                            style={[styles.icon, { tintColor: tintColor }]}
+                        />
+                )
             }
         },
         AutomationStack: {
             screen: AutomationStack,
             navigationOptions: {
-                tabBarLabel: 'Automation',
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? "#235fab" : '#7a7b7c' }, styles.label]}>Automation</Text>,
+                tabBarIcon: ({ focused, tintColor }) => (
+                    focused ? <Image
+                        source={require('../image/automation.png')}
+                        style={[styles.icon, { tintColor: tintColor }]}
+                    />
+                        :
+                        <Image
+                            source={require('../image/automation-active.png')}
+                            style={[styles.icon, { tintColor: tintColor }]}
+                        />
+                )
             }
         },
         VoiceStack: {
             screen: VoiceStack,
             navigationOptions: {
-                tabBarLabel: 'Voice',
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? "#235fab" : '#7a7b7c' }, styles.label]}>Speech</Text>,
+                tabBarIcon: ({ focused, tintColor }) => (
+                    focused ? <Image
+                        source={require('../image/speech.png')}
+                        style={[styles.iconSpeech, { tintColor: tintColor }]}
+                    />
+                        :
+                        <Image
+                            source={require('../image/speech-active.png')}
+                            style={[styles.iconSpeech, { tintColor: tintColor }]}
+                        />
+                )
             }
         }
     },
@@ -137,7 +286,25 @@ export const RootTab = TabNavigator(
         swipeEnabled: false,
         lazyLoad: true,
         animationEnabled: false,
-        initialRouteName: 'DashboardStack'
+        initialRouteName: 'DashboardStack',
+        tabBarOptions: {
+            activeTintColor: '#235fab',
+            inactiveTintColor: '#7a7b7c',
+            labelStyle: {
+                // marginTop:10
+                // fontSize: 9,
+                // textTransform: "capitalize"
+            },
+            style: {
+                backgroundColor: '#f6f8ff',
+                height: 43,
+
+            },
+            showIcon: true,
+            tabStyle: {
+                paddingTop: 4
+            }
+        }
     }
 );
 
@@ -147,9 +314,12 @@ export const RootTab = TabNavigator(
 export const MyAccountStack = StackNavigator({
     ScreenMyAccount: {
         screen: ScreenMyAccount,
-        navigationOptions: {
-            headerTitle: 'My Account',
-        }
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: <Text style={styles.headerTitle}>My Account</Text>,
+            headerStyle: {
+                backgroundColor: '#1153a5',
+            },
+        })
     }
 });
 
@@ -157,9 +327,9 @@ export const MyAccountStack = StackNavigator({
 export const SupportStack = StackNavigator({
     ScreenSupport: {
         screen: ScreenSupport,
-        navigationOptions: {
-            headerTitle: 'Support',
-        }
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: <Text style={styles.headerTitle}>Support</Text>
+        })
     }
 });
 
@@ -200,3 +370,37 @@ export const AuthenticationStack = (isLogged: any) => {
     );
 }
 
+const styles = StyleSheet.create({
+    icon: {
+        width: 23,
+        height: 19,
+    },
+    iconSpeech: {
+        width: 11,
+        height: 22,
+    },
+    label: {
+        marginTop: -3,
+        fontSize: 10
+    },
+    labelTop: {
+        marginTop: 3,
+        fontSize: 16
+    },
+    headerTitle: {
+        color: "#ffffff",
+        fontSize: 20,
+        marginLeft: 12,
+        marginTop: 6
+    },
+    menuIcon: {
+        width: 32,
+        height: 22,
+        marginLeft: 10
+    },
+    headerRightIcon: {
+        width: 30,
+        height: 30,
+        marginRight: 30
+    }
+});

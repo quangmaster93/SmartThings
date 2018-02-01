@@ -42,6 +42,10 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
         this.unsubscribe = AppStorage.subscribe((state) => {
             switch (state.event) {
                 case "SET_FOCUSED_SCREEN":
+                    if (AppStorage.getState().focusedRoute == "ScreenThings") {
+                        this.props.screenProps.setParams({ screen: "ScreenThings" })
+                    }
+
                     if (this.state.isFocused == false && AppStorage.getState().focusedRoute == "MyhomeStack") {
                         this.setState({ isFocused: true });
                         console.log("rerendered");
@@ -67,26 +71,26 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
         ws.onmessage = (e) => {
             // a message was received
             let responseDate = JSON.parse(e.data);
-            
+
             let targetDeviceId = responseDate.sdid;
             let data = responseDate.data;
-            if(targetDeviceId && data) {
+            if (targetDeviceId && data) {
                 let update = false;
 
-                let newState = {...this.state};
+                let newState = { ...this.state };
                 let targetDevice = this.state.devicesStatus.find((item) => {
                     return item.did == targetDeviceId;
                 })
 
-                if(targetDevice != null) {
-                    for(fieldName in data) {
+                if (targetDevice != null) {
+                    for (fieldName in data) {
                         let newValue = data[`${fieldName}`];
                         targetDevice.data.snapshot[`${fieldName}`].value = newValue;
                     }
                     this.forceUpdate();
                 }
             }
-            
+
         };
 
     }
@@ -107,7 +111,6 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
             }
         })
         return <View>
-            {/* {this.state.isFocused && <Text>screenThings</Text>} */}
             <FlatList data={flatListData}
                 renderItem={({ item }) => <DeviceListItem device={item} />}
                 keyExtractor={(item) => item.info.id}>
@@ -152,7 +155,7 @@ class DeviceListItem extends Component<DeviceListItemProps, any> {
 
         switch (dtid) {
             case "dt88a5b9bda4704cb5b101967067fd5897":
-                if(status.snapshot != null && status.snapshot != {}){
+                if (status.snapshot != null && status.snapshot != {}) {
                     return <Switch style={styles.switch} value={status.snapshot["switch"].value === "on"} onValueChange={(value) => { }} />
                 }
                 break;
