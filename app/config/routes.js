@@ -19,6 +19,7 @@ import {
     Button,
     TouchableHighlight
 } from 'react-native';
+import { AppStorage } from '../redux/AppStorage';
 //DashboardStack
 export const DashboardStack = StackNavigator({
     ScreenDashboardHome: {
@@ -33,6 +34,12 @@ export const DashboardStack = StackNavigator({
                 <Image
                     source={require('../image/menu.png')}
                     style={[styles.menuIcon]}
+                />
+            </TouchableHighlight>,
+            headerRight: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                <Image
+                    source={require('../image/3dot-ve.png')}
+                    style={[styles.headerRightIcon]}
                 />
             </TouchableHighlight>
 
@@ -99,7 +106,9 @@ export const MyhomeTab = TabNavigator(
 //MyhomeStack
 export const MyhomeStack = StackNavigator({
     MyhomeTab: {
-        screen: MyhomeTab,
+        screen:({navigation})=> <MyhomeTab screenProps={navigation} onNavigationStateChange={(prevState:any, currentState:any, action:any) => {
+            AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
+          }}/>,
         navigationOptions: ({ navigation }) => ({
             headerTitle: <Text style={styles.headerTitle}>My home</Text>,
             headerStyle: {
@@ -110,7 +119,13 @@ export const MyhomeStack = StackNavigator({
                     source={require('../image/menu.png')}
                     style={[styles.menuIcon]}
                 />
-            </TouchableHighlight>
+            </TouchableHighlight>,
+            headerRight: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                    <Image
+                        source={navigation.state.params?(navigation.state.params.screen=="ScreenThings"?require('../image/add.png'):require('../image/setting.png')):require('../image/add.png')}
+                        style={[styles.headerRightIcon]}
+                    />
+                </TouchableHighlight>
         })
     }
 });
@@ -376,11 +391,16 @@ const styles = StyleSheet.create({
         color: "#ffffff",
         fontSize: 20,
         marginLeft: 12,
-        marginTop:6
+        marginTop: 6
     },
     menuIcon: {
         width: 32,
         height: 22,
-        marginLeft:10
+        marginLeft: 10
+    },
+    headerRightIcon: {
+        width: 30,
+        height: 30,
+        marginRight: 30
     }
 });

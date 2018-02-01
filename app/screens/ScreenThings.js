@@ -33,6 +33,9 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
         this.unsubscribe = AppStorage.subscribe((state) => {
             switch (state.event) {
                 case "SET_FOCUSED_SCREEN":
+                if(AppStorage.getState().focusedRoute == "ScreenThings"){
+                    this.props.screenProps.setParams({ screen: "ScreenThings" })
+                }
                     if (this.state.isFocused == false && AppStorage.getState().focusedRoute == "MyhomeStack") {
                         this.setState({ isFocused: true });
                         console.log("rerendered");
@@ -48,11 +51,12 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
     }
     render() {
         return <View>
-            {/* {this.state.isFocused && <Text>screenThings</Text>} */}
-            <FlatList data={this.state.devices}
-                renderItem={({ item }) => <DeviceListItem info={item} />}
-                keyExtractor={(item) => item.id}>
-            </FlatList>
+            {this.state.isFocused &&
+                <FlatList data={this.state.devices}
+                    renderItem={({ item }) => <DeviceListItem info={item} />}
+                    keyExtractor={(item) => item.id}>
+                </FlatList>
+            }
         </View>
     }
 }
