@@ -70,7 +70,7 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
     tracking = (devicesId: string) => {
         let self = this;
         let ws = Socket.LiveByDevices(devicesId);
-        ws.onmessage = (e) => {
+        ws.onmessage = (e:any) => {
             // a message was received
             let responseDate = JSON.parse(e.data);
 
@@ -85,7 +85,7 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
                 })
 
                 if (targetDevice != null) {
-                    for (fieldName in data) {
+                    for (var fieldName:string in data) {
                         let newValue = data[`${fieldName}`];
                         targetDevice.data.snapshot[`${fieldName}`].value = newValue;
                     }
@@ -113,10 +113,11 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
             }
         })
         return <View>
+            {this.state.isFocused&&
             <FlatList data={flatListData}
                 renderItem={({ item }) => <DeviceListItem device={item} />}
                 keyExtractor={(item) => item.info.id}>
-            </FlatList>
+            </FlatList>}
         </View>
     }
 }
