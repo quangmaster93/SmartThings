@@ -18,6 +18,8 @@ import UsersApi from '../api/UsersApi';
 import DevicesApi from '../api/DevicesApi';
 import { DeviceStatus, DeviceStatusWithId } from '../models/DeviceStatus';
 import Socket from '../api/Socket';
+import Network from '../api/Network';
+import MessagesApi from '../api/MessagesApi';
 
 interface ScreenThingsState {
     isFocused: boolean;
@@ -146,6 +148,19 @@ class DeviceListItem extends Component<DeviceListItemProps, any> {
         }
     }
 
+    switch(value, status: DeviceStatus, info: Device) {
+        console.log("SWITCHSWITCHSWITCHSWITCHSWITCH")
+        switch(info.dtid) {
+            case "dt88a5b9bda4704cb5b101967067fd5897": {
+                if(value == true) {
+                    MessagesApi.sendAction(info.id, "off", {})
+                } else {
+                    MessagesApi.sendAction(info.id, "on", {})
+                }
+            }
+        }
+    }
+
     renderFunction = (device: any) => {
         let info: Device = device.info;
         let status: DeviceStatus = device.status;
@@ -156,7 +171,7 @@ class DeviceListItem extends Component<DeviceListItemProps, any> {
         switch (dtid) {
             case "dt88a5b9bda4704cb5b101967067fd5897":
                 if (status.snapshot != null && status.snapshot != {}) {
-                    return <Switch style={styles.switch} value={status.snapshot["switch"].value === "on"} onValueChange={(value) => { }} />
+                    return <Switch style={styles.switch} value={status.snapshot["switch"].value === "on"} onValueChange={(value) => { this.switch(value, status, info)}} />
                 }
                 break;
             default:
