@@ -153,9 +153,9 @@ class DeviceListItem extends Component<DeviceListItemProps, any> {
         switch(info.dtid) {
             case "dt88a5b9bda4704cb5b101967067fd5897": {
                 if(value == true) {
-                    MessagesApi.sendAction(info.id, "off", {})
-                } else {
                     MessagesApi.sendAction(info.id, "on", {})
+                } else {
+                    MessagesApi.sendAction(info.id, "off", {})
                 }
             }
         }
