@@ -2,6 +2,7 @@ import Network from "./Network";
 import { User } from "../models/User";
 import { AppStorage } from "../redux/AppStorage";
 import { Device } from "../models/Device";
+import { DeviceStatus } from "../models/DeviceStatus";
 
 export default class UsersApi {
     static getUserProfile(callBack?: Function) {

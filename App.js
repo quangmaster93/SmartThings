@@ -39,8 +39,9 @@ export default class App extends Component<{}, any> {
     }
   }
   onNavigationStateChange = (prevState:any, currentState:any, action:any) => {
-    console.log(action);
-    AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
+    if(action.type=="Navigation/NAVIGATE"){
+      AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
+    }
   };
   render() {
     const Layout = AuthenticationStack(this.state.isLogged);

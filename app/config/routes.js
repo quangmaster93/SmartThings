@@ -21,6 +21,7 @@ import {
     Button,
     TouchableHighlight
 } from 'react-native';
+import { AppStorage } from '../redux/AppStorage';
 //DashboardStack
 export const DashboardStack = StackNavigator({
     ScreenDashboardHome: {
@@ -33,8 +34,14 @@ export const DashboardStack = StackNavigator({
             },
             headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
                 <Image
-                    source={require('../image/hamburger.png')}
+                    source={require('../image/menu.png')}
                     style={[styles.menuIcon]}
+                />
+            </TouchableHighlight>,
+            headerRight: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                <Image
+                    source={require('../image/3dot-ve.png')}
+                    style={[styles.headerRightIcon]}
                 />
             </TouchableHighlight>
 
@@ -131,12 +138,26 @@ export const ActionDetailTab = TabNavigator(
 //MyhomeStack
 export const MyhomeStack = StackNavigator({
     MyhomeTab: {
-        screen: MyhomeTab,
+        screen:({navigation})=> <MyhomeTab screenProps={navigation} onNavigationStateChange={(prevState:any, currentState:any, action:any) => {
+            AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
+          }}/>,
         navigationOptions: ({ navigation }) => ({
             headerTitle: <Text style={styles.headerTitle}>My home</Text>,
             headerStyle: {
                 backgroundColor: stackBackgroundColor,
             },
+            headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                <Image
+                    source={require('../image/menu.png')}
+                    style={[styles.menuIcon]}
+                />
+            </TouchableHighlight>,
+            headerRight: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                    <Image
+                        source={navigation.state.params?(navigation.state.params.screen=="ScreenThings"?require('../image/add.png'):require('../image/setting.png')):require('../image/add.png')}
+                        style={[styles.headerRightIcon]}
+                    />
+                </TouchableHighlight>
         })
     },
     ActionDetailTab: ActionDetailTab
@@ -192,6 +213,12 @@ export const AutomationStack = StackNavigator({
             headerStyle: {
                 backgroundColor: stackBackgroundColor,
             },
+            headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                <Image
+                    source={require('../image/menu.png')}
+                    style={[styles.menuIcon]}
+                />
+            </TouchableHighlight>
         })
     }
 });
@@ -205,6 +232,12 @@ export const VoiceStack = StackNavigator({
             headerStyle: {
                 backgroundColor: stackBackgroundColor,
             },
+            headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                <Image
+                    source={require('../image/menu.png')}
+                    style={[styles.menuIcon]}
+                />
+            </TouchableHighlight>
         })
     }
 });
@@ -398,18 +431,21 @@ const styles = StyleSheet.create({
     labelTop: {
         marginTop: 3,
         fontSize: 16
-        // fontWeight:"bold"
     },
     headerTitle: {
         color: "#ffffff",
         fontSize: 20,
-        marginLeft: 12
+        marginLeft: 12,
+        marginTop: 6
     },
     menuIcon: {
-        width: 50,
-        height: 50,
+        width: 32,
+        height: 22,
+        marginLeft: 10
+    },
+    headerRightIcon: {
+        width: 30,
+        height: 30,
+        marginRight: 30
     }
-    // tabLabel: {
-    //     textTransform: "capitalize",
-    // }
 });
