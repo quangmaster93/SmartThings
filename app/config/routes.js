@@ -98,16 +98,16 @@ export const MyhomeTab = TabNavigator(
 //ActionDetailTab
 export const ActionDetailTab = TabNavigator(
     {
-        screenRightNow: {
+        ScreenRightNow: {
             screen: ScreenRightNow,
             navigationOptions: {
-                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Routines</Text>
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Right Now</Text>
             }
         },
-        screenRecently: {
+        ScreenRecently: {
             screen: ScreenRecently,
             navigationOptions: {
-                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>SmartApps</Text>
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Recently</Text>
             }
         }
     },
@@ -115,7 +115,7 @@ export const ActionDetailTab = TabNavigator(
         tabBarPosition: 'top',
         scrollEnabled: true,
         swipeEnabled: true,
-        initialRouteName: 'ScreenRoutines',
+        initialRouteName: 'ScreenRightNow',
         lazyLoad: true,
         tabBarOptions: {
             labelStyle: {
