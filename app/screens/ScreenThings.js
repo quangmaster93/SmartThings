@@ -7,7 +7,9 @@ import {
     StyleSheet,
     Image,
     Switch,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    TouchableHighlight,
+    TouchableOpacity
 } from 'react-native';
 import { Unsubscribe } from 'redux';
 import { AppStorage } from '../redux/AppStorage';
@@ -115,7 +117,7 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
         return <View>
             {this.state.isFocused&&
             <FlatList data={flatListData}
-                renderItem={({ item }) => <DeviceListItem device={item} />}
+                renderItem={({ item }) => <DeviceListItem {...this.props} device={item} />}
                 keyExtractor={(item) => item.info.id}>
             </FlatList>}
         </View>
@@ -124,6 +126,8 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
 
 interface DeviceListItemProps {
     device: any;
+    navigation:any;
+    screenProps:any;
 }
 
 class DeviceListItem extends Component<DeviceListItemProps, any> {
@@ -184,15 +188,16 @@ class DeviceListItem extends Component<DeviceListItemProps, any> {
     render() {
         let styles = deviceListItemStyles;
         return <View style={styles.container}>
+        <TouchableOpacity onPress={()=>{this.props.screenProps.navigate('ActionDetailTab')}}>
             <View style={styles.containerChild}>
-                <View>
-                    {this.renderIcon(this.props.device)}
-                </View>
-
-                <View>
-                    <Text style={styles.title}>{this.props.device.info.name}</Text>
-                </View>
+                    <View>
+                        {this.renderIcon(this.props.device)}
+                    </View>
+                    <View>
+                        <Text style={styles.title}>{this.props.device.info.name}</Text>
+                    </View>
             </View>
+        </TouchableOpacity>
             <View >
                 {this.renderFunction(this.props.device)}
                 {/* <Switch style={styles.switch} value={this.state.switch} onValueChange={(value) => { this.setState({ switch: !this.state.switch }) }} /> */}

@@ -19,7 +19,7 @@ import {
     StyleSheet,
     Text,
     Button,
-    TouchableHighlight
+    TouchableOpacity
 } from 'react-native';
 import { AppStorage } from '../redux/AppStorage';
 //DashboardStack
@@ -32,18 +32,18 @@ export const DashboardStack = StackNavigator({
             headerStyle: {
                 backgroundColor: stackBackgroundColor,
             },
-            headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+            headerLeft: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
                 <Image
                     source={require('../image/menu.png')}
                     style={[styles.menuIcon]}
                 />
-            </TouchableHighlight>,
-            headerRight: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+            </TouchableOpacity>,
+            headerRight: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
                 <Image
                     source={require('../image/3dot-ve.png')}
                     style={[styles.headerRightIcon]}
                 />
-            </TouchableHighlight>
+            </TouchableOpacity>
 
         })
     }
@@ -146,18 +146,18 @@ export const MyhomeStack = StackNavigator({
             headerStyle: {
                 backgroundColor: stackBackgroundColor,
             },
-            headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+            headerLeft: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
                 <Image
                     source={require('../image/menu.png')}
                     style={[styles.menuIcon]}
                 />
-            </TouchableHighlight>,
-            headerRight: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+            </TouchableOpacity>,
+            headerRight: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
                     <Image
                         source={navigation.state.params?(navigation.state.params.screen=="ScreenThings"?require('../image/add.png'):require('../image/setting.png')):require('../image/add.png')}
                         style={[styles.headerRightIcon]}
                     />
-                </TouchableHighlight>
+                </TouchableOpacity>
         })
     },
     ActionDetailTab: {
@@ -169,18 +169,18 @@ export const MyhomeStack = StackNavigator({
             headerStyle: {
                 backgroundColor: stackBackgroundColor,
             },
-            // headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+            // headerLeft: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
             //     <Image
             //         source={require('../image/menu.png')}
             //         style={[styles.menuIcon]}
             //     />
-            // </TouchableHighlight>,
-            headerRight: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+            // </TouchableOpacity>,
+            headerRight: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
                     <Image
                         source={navigation.state.params?(navigation.state.params.screen=="ScreenThings"?require('../image/add.png'):require('../image/setting.png')):require('../image/add.png')}
                         style={[styles.headerRightIcon]}
                     />
-                </TouchableHighlight>
+                </TouchableOpacity>
         })
     }
 });
@@ -235,12 +235,12 @@ export const AutomationStack = StackNavigator({
             headerStyle: {
                 backgroundColor: stackBackgroundColor,
             },
-            headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+            headerLeft: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
                 <Image
                     source={require('../image/menu.png')}
                     style={[styles.menuIcon]}
                 />
-            </TouchableHighlight>
+            </TouchableOpacity>
         })
     }
 });
@@ -254,12 +254,12 @@ export const VoiceStack = StackNavigator({
             headerStyle: {
                 backgroundColor: stackBackgroundColor,
             },
-            headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+            headerLeft: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
                 <Image
                     source={require('../image/menu.png')}
                     style={[styles.menuIcon]}
                 />
-            </TouchableHighlight>
+            </TouchableOpacity>
         })
     }
 });
