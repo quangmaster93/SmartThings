@@ -46,8 +46,8 @@ export const DashboardStack = StackNavigator({
             </TouchableHighlight>
 
         })
-    },
-    ScreenActionDetail: screenActionDetail
+    }
+    // ScreenActionDetail: screenActionDetail
 },
     {
         navigationOptions: {
@@ -96,7 +96,7 @@ export const MyhomeTab = TabNavigator(
 );
 
 //ActionDetailTab
-export const ActionDetailTab = TabNavigator(
+const ActionDetailTab = TabNavigator(
     {
         ScreenRightNow: {
             screen: ScreenRightNow,
@@ -160,7 +160,29 @@ export const MyhomeStack = StackNavigator({
                 </TouchableHighlight>
         })
     },
-    ActionDetailTab: ActionDetailTab
+    ActionDetailTab: {
+        screen:({navigation})=> <ActionDetailTab screenProps={navigation} onNavigationStateChange={(prevState:any, currentState:any, action:any) => {
+            AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
+          }}/>,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: <Text style={styles.headerTitle}>Action</Text>,
+            headerStyle: {
+                backgroundColor: stackBackgroundColor,
+            },
+            // headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+            //     <Image
+            //         source={require('../image/menu.png')}
+            //         style={[styles.menuIcon]}
+            //     />
+            // </TouchableHighlight>,
+            headerRight: <TouchableHighlight onPress={() => { navigation.navigate('DrawerToggle') }}>
+                    <Image
+                        source={navigation.state.params?(navigation.state.params.screen=="ScreenThings"?require('../image/add.png'):require('../image/setting.png')):require('../image/add.png')}
+                        style={[styles.headerRightIcon]}
+                    />
+                </TouchableHighlight>
+        })
+    }
 });
 
 
