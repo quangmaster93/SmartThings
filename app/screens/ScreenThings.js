@@ -188,7 +188,7 @@ class DeviceListItem extends Component<DeviceListItemProps, any> {
     render() {
         let styles = deviceListItemStyles;
         return <View style={styles.container}>
-        <TouchableOpacity onPress={()=>{this.props.screenProps.navigate('ActionDetailTab')}}>
+        <TouchableOpacity onPress={()=>{this.props.screenProps.navigate('ActionDetailTab',this.props.device)}}>
             <View style={styles.containerChild}>
                     <View>
                         {this.renderIcon(this.props.device)}

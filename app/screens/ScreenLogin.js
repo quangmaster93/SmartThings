@@ -22,7 +22,7 @@ export default class ScreenLogin extends Component<any, any> {
     LogIn = () => {
         let that = this;
         let challenge = "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM"
-        let client_id = "0c2cefcfe2f245f58e053c31fa2241cb";
+        let client_id = "ddee769b17974c6c95fbccdab9863e20";
         let redirect_uri = "cloud.artik.example.hellocloud://oauth2callback";
         let state = "abcdefgh";
         let url = `https://accounts.artik.cloud/authorize?prompt=login&client_id=${client_id}&response_type=code&code_challenge=${challenge}&code_challenge_method=S256&redirect_uri=${redirect_uri}&state=${state}`
@@ -35,7 +35,7 @@ export default class ScreenLogin extends Component<any, any> {
                 redirect_uri: "cloud.artik.example.hellocloud://oauth2callback",
                 state: "abcdefgh",
                 code_verifier: "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk",
-                client_id: "0c2cefcfe2f245f58e053c31fa2241cb"
+                client_id: "ddee769b17974c6c95fbccdab9863e20"
             };
             let urlGetToken = `https://accounts.artik.cloud/token?grant_type=${dkm.grant_type}&code=${dkm.code}&redirect_uri=${dkm.redirect_uri}&state=${dkm.state}&code_verifier=${dkm.code_verifier}&client_id=${dkm.client_id}`;
             fetch(urlGetToken, {

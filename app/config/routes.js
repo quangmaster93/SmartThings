@@ -138,9 +138,9 @@ const ActionDetailTab = TabNavigator(
 //MyhomeStack
 export const MyhomeStack = StackNavigator({
     MyhomeTab: {
-        screen:({navigation})=> <MyhomeTab screenProps={navigation} onNavigationStateChange={(prevState:any, currentState:any, action:any) => {
+        screen: ({ navigation }) => <MyhomeTab screenProps={navigation} onNavigationStateChange={(prevState: any, currentState: any, action: any) => {
             AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
-          }}/>,
+        }} />,
         navigationOptions: ({ navigation }) => ({
             headerTitle: <Text style={styles.headerTitle}>My home</Text>,
             headerStyle: {
@@ -153,36 +153,14 @@ export const MyhomeStack = StackNavigator({
                 />
             </TouchableOpacity>,
             headerRight: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
-                    <Image
-                        source={navigation.state.params?(navigation.state.params.screen=="ScreenThings"?require('../image/add.png'):require('../image/setting.png')):require('../image/add.png')}
-                        style={[styles.headerRightIcon]}
-                    />
-                </TouchableOpacity>
-        })
-    },
-    ActionDetailTab: {
-        screen:({navigation})=> <ActionDetailTab screenProps={navigation} onNavigationStateChange={(prevState:any, currentState:any, action:any) => {
-            AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
-          }}/>,
-        navigationOptions: ({ navigation }) => ({
-            headerTitle: <Text style={styles.headerTitle}>Action</Text>,
-            headerStyle: {
-                backgroundColor: stackBackgroundColor,
-            },
-            // headerLeft: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
-            //     <Image
-            //         source={require('../image/menu.png')}
-            //         style={[styles.menuIcon]}
-            //     />
-            // </TouchableOpacity>,
-            headerRight: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
-                    <Image
-                        source={navigation.state.params?(navigation.state.params.screen=="ScreenThings"?require('../image/add.png'):require('../image/setting.png')):require('../image/add.png')}
-                        style={[styles.headerRightIcon]}
-                    />
-                </TouchableOpacity>
+                <Image
+                    source={navigation.state.params ? (navigation.state.params.screen == "ScreenThings" ? require('../image/add.png') : require('../image/setting.png')) : require('../image/add.png')}
+                    style={[styles.headerRightIcon]}
+                />
+            </TouchableOpacity>
         })
     }
+
 });
 
 
@@ -389,11 +367,42 @@ export const SupportStack = StackNavigator({
     }
 });
 
+//RootStack
+export const RootStack = StackNavigator({
+    RootTab: {
+        screen: RootTab,
+        navigationOptions: ({ navigation }) => ({
+            header: null
+        })
+    },
+    ActionDetailTab: {
+        screen: ({ navigation }) => <ActionDetailTab screenProps={navigation} onNavigationStateChange={(prevState: any, currentState: any, action: any) => {
+            AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
+        }} />,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: <Text style={styles.headerTitle}>{navigation.state.params.info.name}</Text>,
+            headerStyle: {
+                backgroundColor: stackBackgroundColor,
+            },
+            headerRight: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
+                <Image
+                    source={navigation.state.params ? (navigation.state.params.screen == "ScreenThings" ? require('../image/add.png') : require('../image/setting.png')) : require('../image/add.png')}
+                    style={[styles.headerRightIcon]}
+                />
+            </TouchableOpacity>
+        })
+    },
+},
+    {
+        // headerMode: 'none'
+        // headerTransitionPreset:'uikit'
+    });
+
 //Slide Menu
 export const RootApp = DrawerNavigator(
     {
-        RootTab: {
-            screen: RootTab
+        RootStack: {
+            screen: RootStack
         },
         MyAccountStack: {
             screen: MyAccountStack
@@ -425,7 +434,7 @@ export const AuthenticationStack = (isLogged: any) => {
         }
     );
 }
-var screenActionDetail={
+var screenActionDetail = {
     screen: ScreenActionDetail,
     navigationOptions: ({ navigation }) => ({
         title: 'Action',
@@ -435,8 +444,8 @@ var screenActionDetail={
         },
     })
 }
-var stackBackgroundColor='#00be82';
-var focusedUnderTabColor='#00be82';
+var stackBackgroundColor = '#00be82';
+var focusedUnderTabColor = '#00be82';
 const styles = StyleSheet.create({
     icon: {
         width: 23,
