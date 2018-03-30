@@ -19,7 +19,7 @@ import Network from '../api/Network';
 import MessagesApi from '../api/MessagesApi';
 import { globalStyles } from '../config/globalStyles';
 interface ScreenRightNowState {
-    isOn: false
+
 }
 export default class ScreenRightNow extends Component<any, ScreenRightNowState> {
     info: Device;
@@ -27,7 +27,7 @@ export default class ScreenRightNow extends Component<any, ScreenRightNowState> 
     constructor(props: any) {
         super(props);
         this.state = {
-            isOn: false
+
         };
         this.status = this.props.screenProps.state.params.status;
         this.info = this.props.screenProps.state.params.info;
@@ -45,7 +45,7 @@ export default class ScreenRightNow extends Component<any, ScreenRightNowState> 
             }
         })
     }
-    tracking = (devicesId: string) => {
+    tracking = (deviceId: string) => {
         let self = this;
         // let ws = Socket.LiveByDevices(devicesId);
         let ws = Socket.CommonWS;
@@ -53,14 +53,17 @@ export default class ScreenRightNow extends Component<any, ScreenRightNowState> 
             // a message was received
             let responseDate = JSON.parse(e.data);
             console.log(responseDate);
-            let data = responseDate.data;
-            if (data) {
-                for (var fieldName: string in data) {
-                    let newValue = data[`${fieldName}`];
-                    this.status.snapshot[`${fieldName}`].value = newValue;
+            if (responseDate.sdid == deviceId) {
+                let data = responseDate.data;
+                if (data) {
+                    for (var fieldName: string in data) {
+                        let newValue = data[`${fieldName}`];
+                        this.status.snapshot[`${fieldName}`].value = newValue;
+                    }
+                    this.forceUpdate();
                 }
-                this.forceUpdate();
             }
+
         };
     }
     renderComponent = () => {
@@ -78,7 +81,7 @@ export default class ScreenRightNow extends Component<any, ScreenRightNowState> 
 
     render() {
         return (
-            <View  style={[globalStyles.container, styles.container]}>
+            <View style={[globalStyles.container, styles.container]}>
                 {this.renderComponent()}
             </View>
         );
