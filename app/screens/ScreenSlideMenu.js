@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    Button
+    Button,
+    StyleSheet
 } from 'react-native';
-
+import { globalStyles } from '../config/globalStyles';
 export default class ScreenSlideMenu extends Component {
     render() {
         return (
-            <View>
+            <View style={[globalStyles.container, styles.container]}>
                 <Text>screenSlideMenu</Text>
                 <Button title="Home" onPress={() => { this.props.navigation.navigate('RootTab') }}></Button>
                 <Button title="My Account" onPress={ ()=>{this.props.navigation.navigate("MyAccountStack") }}></Button>
@@ -18,3 +19,8 @@ export default class ScreenSlideMenu extends Component {
     }
 }
 
+const styles = StyleSheet.create({
+    container: {
+    },
+}
+)

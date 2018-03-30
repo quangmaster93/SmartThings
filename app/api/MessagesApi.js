@@ -2,7 +2,7 @@ import Network from "./Network";
 
 export default class MessagesApi {
 
-    static sendAction(ddid: string, actionName: string, data: any, type: string = "action") {
+    static sendAction(ddid: string, actionName: string, data: any, type: string = "action",callBack?: Function) {
         let actionData = {
             actions: [{
                 name: actionName,
@@ -17,7 +17,9 @@ export default class MessagesApi {
         }
 
         Network.post('/actions', JSON.stringify(postData), (res) => {
-            console.log(res);
+            if(callBack){
+                callBack(res);
+            }
         })
     }
 }

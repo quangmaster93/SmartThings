@@ -3,13 +3,15 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    StyleSheet
 } from 'react-native';
 import { Unsubscribe } from 'redux';
 import { AppStorage } from '../redux/AppStorage';
 import type { AppEvent } from '../redux/AppEvent';
 import { AppState } from '../redux/AppState';
 import { NavigationActions } from 'react-navigation'
+import { globalStyles } from '../config/globalStyles';
 interface ScreenThingsState {
     isFocused: boolean;
 }
@@ -40,8 +42,13 @@ export default class ScreenRooms extends Component<any, ScreenThingsState> {
         this.unsubscribe();
     }
     render() {
-        return <View>
+        return <View style={[globalStyles.container, styles.container]}>
             {this.state.isFocused && <Text>screenRooms</Text>}
         </View>
     };
 }
+const styles = StyleSheet.create({
+    container: {
+    },
+}
+)

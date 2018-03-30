@@ -3,8 +3,10 @@ import {
     View,
     Text,
     Button,
-    AsyncStorage
+    AsyncStorage,
+    StyleSheet
 } from 'react-native';
+import { globalStyles } from '../config/globalStyles';
 
 export default class ScreenMyAccount extends Component {
     LogOut=()=> {
@@ -17,7 +19,7 @@ export default class ScreenMyAccount extends Component {
     }
     render() {
         return (
-            <View>
+            <View style={[globalStyles.container, styles.container]}>
                 <Text>ScreenMyAccount</Text>
                 <Button title="Log out" onPress={()=>{this.LogOut()}}></Button>
             </View>
@@ -25,3 +27,8 @@ export default class ScreenMyAccount extends Component {
     }
 }
 
+const styles = StyleSheet.create({
+    container: {
+    },
+}
+)

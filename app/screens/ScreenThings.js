@@ -22,6 +22,7 @@ import { DeviceStatus, DeviceStatusWithId } from '../models/DeviceStatus';
 import Socket from '../api/Socket';
 import Network from '../api/Network';
 import MessagesApi from '../api/MessagesApi';
+import { globalStyles } from '../config/globalStyles';
 
 interface ScreenThingsState {
     isFocused: boolean;
@@ -71,10 +72,11 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
 
     tracking = (devicesId: string) => {
         let self = this;
-        let ws = Socket.LiveByDevices(devicesId);
+        let ws = Socket.LiveByDevices(devicesId,true);
         ws.onmessage = (e:any) => {
             // a message was received
             let responseDate = JSON.parse(e.data);
+            console.log(responseDate);
 
             let targetDeviceId = responseDate.sdid;
             let data = responseDate.data;
@@ -105,15 +107,16 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
 
     render() {
         let flatListData = this.state.devices.map((device) => {
+            device.name=device.name.replace('SmartThings ','')
             let deviceStatus = this.state.devicesStatus.find((status) => {
                 return device.id == status.did
             })
 
             return {
-                info: device,
+                info:device,
                 status: deviceStatus.data
             }
-        })
+        });
         return <View>
             {this.state.isFocused&&
             <FlatList data={flatListData}

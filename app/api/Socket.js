@@ -9,13 +9,18 @@ export default class Socket {
      * @param {*} sdids array off source devices id to track
      * @param {*} uid user id
      */
-    static LiveByDevices(sdids: string, uid?: string) {
+    static LiveByDevices(sdids: string, overrideCommon?: boolean, uid?: string) {
         //let sdidsString = sdids.join(",");
         uid = uid || AppStorage.getState().userInfo.id;
         let url = `wss://api.artik.cloud/v1.1/live?sdids=${sdids}&uid=${uid}&Authorization=bearer+${Network.token}`;
         var ws = new WebSocket(url);
+        if(overrideCommon){
+            this.CommonWS = ws;
+        }
         return ws;
     }
+
+    static CommonWS: WebSocket;
 
     /**
      * Tracking devices data by device type

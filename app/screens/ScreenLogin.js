@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import Network from '../api/Network';
 import { AppStorage } from '../redux/AppStorage';
+import { globalStyles } from '../config/globalStyles';
 
 
 export default class ScreenLogin extends Component<any, any> {
