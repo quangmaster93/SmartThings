@@ -24,6 +24,7 @@ interface ScreenRightNowState {
 export default class ScreenRightNow extends Component<any, ScreenRightNowState> {
     info: Device;
     status: DeviceStatus;
+    ws:any; 
     constructor(props: any) {
         super(props);
         this.state = {
@@ -39,20 +40,17 @@ export default class ScreenRightNow extends Component<any, ScreenRightNowState> 
         var changeTo = this.status.snapshot['switch'].value === 'on' ? 'off' : 'on'
         var that = this;
         MessagesApi.sendAction(this.info.id, changeTo, {}, "action", (res) => {
-            if (res.ok === true) {
-                that.status.snapshot['switch'].value = changeTo;
-                that.forceUpdate();
-            }
         })
+    }
+    componentWillUnmount() {
+        this.ws.close();
     }
     tracking = (deviceId: string) => {
         let self = this;
-        let ws = Socket.LiveByDevices(deviceId);
-        // let ws = Socket.CommonWS;
-        ws.onmessage = (e: any) => {
-            // a message was received
+        this.ws = Socket.LiveByDevices(deviceId);
+        this.ws.onmessage = (e: any) => {
             let responseDate = JSON.parse(e.data);
-            console.log(responseDate);
+            console.log("rightnow",responseDate);
             if (responseDate.sdid == deviceId) {
                 let data = responseDate.data;
                 if (data) {
@@ -68,7 +66,10 @@ export default class ScreenRightNow extends Component<any, ScreenRightNowState> 
     }
     renderComponent = () => {
         switch (this.info.dtid) {
+            //SmartThings IoTVN MicroSwitch
             case "dtc37b8af5e8064947b94fa5746531ccf7":
+            //SmartThings IoTVN VirtualSwitch
+            case "dtb86e88a8c3ee47089dfeb17b506a6919":
                 return <TouchableOpacity style={styles.button} onPress={() => { this.switch() }}>
                     <Image
                         source={this.status.snapshot["switch"].value === "on" ? require('../image/light-on.png') : require('../image/light-off.png')}

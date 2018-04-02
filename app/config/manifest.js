@@ -2,6 +2,7 @@
 //@flow
 export var manifests=
 {
+    //SmartThings IoTVN MicroSwitch
     "dtc37b8af5e8064947b94fa5746531ccf7": {
         "version": 1,
         "properties": {

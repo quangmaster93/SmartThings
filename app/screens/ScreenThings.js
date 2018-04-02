@@ -33,6 +33,7 @@ interface ScreenThingsState {
 export default class ScreenThings extends Component<any, ScreenThingsState> {
     unsubscribe: Unsubscribe;
     state: ScreenThingsState;
+    ws:any;
     constructor(props: any) {
         super(props);
         this.state = {
@@ -72,11 +73,11 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
 
     tracking = (devicesId: string) => {
         let self = this;
-        let ws = Socket.LiveByDevices(devicesId,true);
-        ws.onmessage = (e:any) => {
+        this.ws = Socket.LiveByDevices(devicesId,true);
+        this.ws.onmessage = (e:any) => {
             // a message was received
             let responseDate = JSON.parse(e.data);
-            console.log(responseDate);
+            console.log("things",responseDate);
 
             let targetDeviceId = responseDate.sdid;
             let data = responseDate.data;
@@ -103,6 +104,7 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
 
     componentWillUnmount() {
         this.unsubscribe();
+        this.ws.close();
     }
 
     render() {
@@ -117,7 +119,7 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
                 status: deviceStatus.data
             }
         });
-        return <View>
+        return <View style={globalStyles.container}>
             {this.state.isFocused&&
             <FlatList data={flatListData}
                 renderItem={({ item }) => <DeviceListItem {...this.props} device={item} />}
@@ -149,7 +151,8 @@ class DeviceListItem extends Component<DeviceListItemProps, any> {
         let styles = deviceListItemStyles;
 
         switch (dtid) {
-            case "dt88a5b9bda4704cb5b101967067fd5897":
+            //SmartThings IoTVN VirtualSwitch
+            case "dtb86e88a8c3ee47089dfeb17b506a6919":
             case "dtc37b8af5e8064947b94fa5746531ccf7":
                 return <Image style={styles.icon} source={require('../image/light.png')} />
             default:
@@ -160,7 +163,8 @@ class DeviceListItem extends Component<DeviceListItemProps, any> {
     switch(value, status: DeviceStatus, info: Device) {
         console.log("SWITCHSWITCHSWITCHSWITCHSWITCH")
         switch(info.dtid) {
-            case "dt88a5b9bda4704cb5b101967067fd5897": 
+            //SmartThings IoTVN VirtualSwitch
+            case "dtb86e88a8c3ee47089dfeb17b506a6919":
             case "dtc37b8af5e8064947b94fa5746531ccf7": 
             {
                 if(value == true) {
@@ -180,7 +184,8 @@ class DeviceListItem extends Component<DeviceListItemProps, any> {
         let styles = deviceListItemStyles;
 
         switch (dtid) {
-            case "dt88a5b9bda4704cb5b101967067fd5897":
+            //SmartThings IoTVN VirtualSwitch
+            case "dtb86e88a8c3ee47089dfeb17b506a6919":
             case "dtc37b8af5e8064947b94fa5746531ccf7":
                 if (status.snapshot != null && status.snapshot != {}) {
                     return <Switch style={styles.switch} value={status.snapshot["switch"].value === "on"} onValueChange={(value) => { this.switch(value, status, info)}} />
