@@ -47,8 +47,8 @@ export default class ScreenRightNow extends Component<any, ScreenRightNowState> 
     }
     tracking = (deviceId: string) => {
         let self = this;
-        // let ws = Socket.LiveByDevices(devicesId);
-        let ws = Socket.CommonWS;
+        let ws = Socket.LiveByDevices(deviceId);
+        // let ws = Socket.CommonWS;
         ws.onmessage = (e: any) => {
             // a message was received
             let responseDate = JSON.parse(e.data);
