@@ -14,6 +14,7 @@ import ScreenSmartApps from '../screens/ScreenSmartApps';
 import ScreenVoice from '../screens/ScreenVoice';
 import ScreenRecently from '../screens/ScreenRecently';
 import ScreenRightNow from '../screens/ScreenRightNow';
+import ScreenAddRoom from '../screens/ScreenAddRoom';
 import {
     Image,
     StyleSheet,
@@ -373,6 +374,31 @@ export const RootStack = StackNavigator({
         screen: RootTab,
         navigationOptions: ({ navigation }) => ({
             header: null
+        })
+    },
+    ScreenAddRoom:{
+        screen: ScreenAddRoom,
+        navigationOptions: ({ navigation }) => ({
+            navigationOptions: ({ navigation }) => ({
+                title: 'Add a Room',
+                headerTitle: <Text style={styles.headerTitle}>Add a Room</Text>,
+                headerStyle: {
+                    backgroundColor: stackBackgroundColor,
+                },
+                headerLeft: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
+                    <Image
+                        source={require('../image/menu.png')}
+                        style={[styles.menuIcon]}
+                    />
+                </TouchableOpacity>,
+                headerRight: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
+                    <Image
+                        source={require('../image/3dot-ve.png')}
+                        style={[styles.headerRightIcon]}
+                    />
+                </TouchableOpacity>
+    
+            })
         })
     },
     ActionDetailTab: {
