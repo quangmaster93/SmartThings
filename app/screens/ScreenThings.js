@@ -150,6 +150,7 @@ class DeviceListItem extends Component<DeviceListItemProps, any> {
 
         switch (dtid) {
             case "dt88a5b9bda4704cb5b101967067fd5897":
+            case "dtc37b8af5e8064947b94fa5746531ccf7":
                 return <Image style={styles.icon} source={require('../image/light.png')} />
             default:
                 return <Image style={styles.icon} source={require('../image/default-icon.png')} />
@@ -159,7 +160,9 @@ class DeviceListItem extends Component<DeviceListItemProps, any> {
     switch(value, status: DeviceStatus, info: Device) {
         console.log("SWITCHSWITCHSWITCHSWITCHSWITCH")
         switch(info.dtid) {
-            case "dt88a5b9bda4704cb5b101967067fd5897": {
+            case "dt88a5b9bda4704cb5b101967067fd5897": 
+            case "dtc37b8af5e8064947b94fa5746531ccf7": 
+            {
                 if(value == true) {
                     MessagesApi.sendAction(info.id, "on", {})
                 } else {
@@ -178,6 +181,7 @@ class DeviceListItem extends Component<DeviceListItemProps, any> {
 
         switch (dtid) {
             case "dt88a5b9bda4704cb5b101967067fd5897":
+            case "dtc37b8af5e8064947b94fa5746531ccf7":
                 if (status.snapshot != null && status.snapshot != {}) {
                     return <Switch style={styles.switch} value={status.snapshot["switch"].value === "on"} onValueChange={(value) => { this.switch(value, status, info)}} />
                 }
