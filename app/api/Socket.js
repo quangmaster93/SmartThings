@@ -14,7 +14,7 @@ export default class Socket {
         uid = uid || AppStorage.getState().userInfo.id;
         let url = `wss://api.artik.cloud/v1.1/live?sdids=${sdids}&uid=${uid}&Authorization=bearer+${Network.token}`;
         var ws = new WebSocket(url);
-        if(overrideCommon){
+        if (overrideCommon) {
             this.CommonWS = ws;
         }
         return ws;
@@ -41,5 +41,18 @@ export default class Socket {
         let url = `wss://api.artik.cloud/v1.1/live?uid=${uid}&Authorization=bearer+${Network.token}`;
         var ws = new WebSocket(url);
         return ws;
+    }
+
+    static OpenCommonWS(sdids: string) {
+        let ws = Socket.LiveByDevices(sdids);
+        ws.onmessage = (e: any) => {
+            // a message was received
+            let responseData = JSON.parse(e.data);
+            console.log("root", responseData);
+            if (responseData.type != "ping") {
+                AppStorage.postEvent("DEVICE_STATUS_CHANGE", responseData)
+            }
+
+        }
     }
 }

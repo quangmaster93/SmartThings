@@ -11,7 +11,10 @@ import {
 import Network from './app/api/Network';
 import { AuthenticationStack } from './app/config/routes';
 import { AppStorage } from './app/redux/AppStorage';
+import UsersApi from './app/api/UsersApi';
+import Socket from './app/api/Socket';
 export default class App extends Component<{}, any> {
+  unsubscribe: Unsubscribe;
   constructor(props: any) {
     super(props);
     this.state = {
@@ -21,7 +24,24 @@ export default class App extends Component<{}, any> {
 
   componentDidMount() {
     this.GetToken();
+
+    this.unsubscribe = AppStorage.subscribe((state) => {
+      switch (state.event) {
+        case "SAVE_TOKEN":
+          UsersApi.getUserProfile(data => {
+            UsersApi.getUserDevices((data: Array<Device>) => {
+              let devices = data.map((device) => {
+                return device.id;
+              });
+
+              let devicesId: string = devices.join(",");
+              Socket.OpenCommonWS(devicesId);
+            })
+          });
+      }
+    });
   }
+  
   GetToken() {
     try {
       AsyncStorage.getItem('@token:key').then((access_token) => {
@@ -38,14 +58,18 @@ export default class App extends Component<{}, any> {
       console.log("cannot get token");
     }
   }
-  onNavigationStateChange = (prevState:any, currentState:any, action:any) => {
-    if(action.type=="Navigation/NAVIGATE"){
+  onNavigationStateChange = (prevState: any, currentState: any, action: any) => {
+    if (action.type == "Navigation/NAVIGATE") {
       AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
     }
   };
   render() {
     const Layout = AuthenticationStack(this.state.isLogged);
     return <Layout onNavigationStateChange={(prevState, currentState, action) => { this.onNavigationStateChange(prevState, currentState, action) }} />;
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 }
 
