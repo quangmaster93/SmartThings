@@ -377,29 +377,7 @@ export const RootStack = StackNavigator({
         })
     },
     ScreenAddRoom:{
-        screen: ScreenAddRoom,
-        navigationOptions: ({ navigation }) => ({
-            navigationOptions: ({ navigation }) => ({
-                title: 'Add a Room',
-                headerTitle: <Text style={styles.headerTitle}>Add a Room</Text>,
-                headerStyle: {
-                    backgroundColor: stackBackgroundColor,
-                },
-                headerLeft: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
-                    <Image
-                        source={require('../image/menu.png')}
-                        style={[styles.menuIcon]}
-                    />
-                </TouchableOpacity>,
-                headerRight: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
-                    <Image
-                        source={require('../image/3dot-ve.png')}
-                        style={[styles.headerRightIcon]}
-                    />
-                </TouchableOpacity>
-    
-            })
-        })
+        screen: ScreenAddRoom
     },
     ActionDetailTab: {
         screen: ({ navigation }) => <ActionDetailTab screenProps={navigation} onNavigationStateChange={(prevState: any, currentState: any, action: any) => {

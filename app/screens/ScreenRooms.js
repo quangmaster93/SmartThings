@@ -45,7 +45,7 @@ export default class ScreenRooms extends Component<any, ScreenThingsState> {
     render() {
         return <View style={[globalStyles.container, styles.container]}>
             {this.state.isFocused &&
-                <TouchableOpacity style={styles.addthing} onPress={() => { }}>
+                <TouchableOpacity style={styles.addthing} onPress={() => { this.props.screenProps.navigate('ScreenAddRoom')}}>
                     <Image
                         source={require('../image/add-icon.png')}
                         style={styles.addIcon}
