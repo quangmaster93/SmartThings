@@ -9,6 +9,7 @@ export class AppState {
     someValue: string;
     focusedRoute:string;
     userInfo: User;
+    deviceStt: any
 }
 
 let defaultState: AppState = {
@@ -17,6 +18,7 @@ let defaultState: AppState = {
     someValue: "",
     focusedRoute:"",
     userInfo: null,
+    deviceStt: null
 }
 
 export {

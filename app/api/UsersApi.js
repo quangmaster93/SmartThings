@@ -6,7 +6,7 @@ import { DeviceStatus } from "../models/DeviceStatus";
 
 export default class UsersApi {
     static getUserProfile(callBack?: Function) {
-        Network.get('/users/self', (responseJson) => {
+        return Network.get('/users/self', (responseJson) => {
             console.log('/users/self');
             console.log(responseJson);
             let user: User = JSON.parse(responseJson._bodyInit).data;

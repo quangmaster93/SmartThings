@@ -23,6 +23,10 @@ export class AppStorage {
                 return {
                     ...state, userInfo: action.payload
                 }
+            case "DEVICE_STATUS_CHANGE":
+                return {
+                    ...state, deviceStt: action.payload
+                }
         }
 
         return { ...state };
