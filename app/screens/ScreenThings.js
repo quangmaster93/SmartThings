@@ -94,7 +94,6 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
 
     componentWillUnmount() {
         this.unsubscribe();
-        this.ws.close();
     }
 
     render() {

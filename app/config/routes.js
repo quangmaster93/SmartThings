@@ -15,6 +15,8 @@ import ScreenVoice from '../screens/ScreenVoice';
 import ScreenRecently from '../screens/ScreenRecently';
 import ScreenRightNow from '../screens/ScreenRightNow';
 import ScreenAddRoom from '../screens/ScreenAddRoom';
+import ScreenListDevicesToChoose from '../screens/ScreenListDevicesToChoose';
+
 import {
     Image,
     StyleSheet,
@@ -379,6 +381,9 @@ export const RootStack = StackNavigator({
     ScreenAddRoom:{
         screen: ScreenAddRoom
     },
+    ScreenListDevicesToChoose:{
+        screen: ScreenListDevicesToChoose
+    },
     ActionDetailTab: {
         screen: ({ navigation }) => <ActionDetailTab screenProps={navigation} onNavigationStateChange={(prevState: any, currentState: any, action: any) => {
             AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
@@ -396,6 +401,7 @@ export const RootStack = StackNavigator({
             </TouchableOpacity>
         })
     },
+
 },
     {
         // headerMode: 'none'

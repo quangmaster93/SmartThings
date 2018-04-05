@@ -13,6 +13,8 @@ import { AuthenticationStack } from './app/config/routes';
 import { AppStorage } from './app/redux/AppStorage';
 import UsersApi from './app/api/UsersApi';
 import Socket from './app/api/Socket';
+import {Device} from './app/models/Device';
+import { Unsubscribe } from 'redux';
 export default class App extends Component<{}, any> {
   unsubscribe: Unsubscribe;
   constructor(props: any) {
@@ -30,6 +32,7 @@ export default class App extends Component<{}, any> {
         case "SAVE_TOKEN":
           UsersApi.getUserProfile(data => {
             UsersApi.getUserDevices((data: Array<Device>) => {
+              AppStorage.postEvent("SAVE_USER_DEVICES", data);
               let devices = data.map((device) => {
                 return device.id;
               });

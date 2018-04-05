@@ -1,5 +1,6 @@
 import { AppEvent } from "./AppEvent";
 import { User } from "../models/User";
+// import { Device } from "../models/Device";
 
 // @flow
 
@@ -9,7 +10,8 @@ export class AppState {
     someValue: string;
     focusedRoute:string;
     userInfo: User;
-    deviceStt: any
+    deviceStt: any;
+    userDevices: Array<Device>
 }
 
 let defaultState: AppState = {
@@ -18,7 +20,8 @@ let defaultState: AppState = {
     someValue: "",
     focusedRoute:"",
     userInfo: null,
-    deviceStt: null
+    deviceStt: null, 
+    userDevices:null,
 }
 
 export {
