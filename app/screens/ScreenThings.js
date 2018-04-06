@@ -94,13 +94,12 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
 
     componentWillUnmount() {
         this.unsubscribe();
-        this.ws.close();
     }
 
     render() {
         let flatListData = this.state.devices.map((device) => {
             device.name = device.name.replace('SmartThings ', '')
-            let deviceStatus = this.state.devicesStatus.find((status) => {
+            let deviceStatus:DeviceStatusWithId = this.state.devicesStatus.find((status:DeviceStatusWithId) => {
                 return device.id == status.did
             })
 

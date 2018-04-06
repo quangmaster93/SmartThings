@@ -13,6 +13,8 @@ import { AuthenticationStack } from './app/config/routes';
 import { AppStorage } from './app/redux/AppStorage';
 import UsersApi from './app/api/UsersApi';
 import Socket from './app/api/Socket';
+import { Device } from './app/models/Device';
+import { Unsubscribe } from 'redux';
 export default class App extends Component<{}, any> {
   unsubscribe: Unsubscribe;
   constructor(props: any) {
