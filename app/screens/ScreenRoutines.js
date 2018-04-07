@@ -12,9 +12,49 @@ import {
 import { globalStyles } from '../config/globalStyles';
 import { Routine } from '../models/Routine';
 import MessagesApi from '../api/MessagesApi';
+import { Scene } from '../models/Scene';
+import UsersApi from '../api/UsersApi';
+import { AppStorage } from '../redux/AppStorage';
+import { Unsubscribe } from 'redux';
+import ScenesApi from '../api/ScenesApi';
 
-export default class ScreenRoutines extends Component<any, any> {
+interface ScreenRoutinesState {
+    scenes?: Array<Scene>;
+    isFocused: boolean,
+}
+export default class ScreenRoutines extends Component<any, ScreenRoutinesState> {
+    unsubscribe: Unsubscribe;
+    state: ScreenRoutinesState = {
+        scenes: [],
+        isFocused: false
+    }
+
     componentDidMount() {
+        this.unsubscribe = AppStorage.subscribe((state) => {
+            switch (state.event) {
+                case "SET_FOCUSED_SCREEN":
+                    let focusedRoute = AppStorage.getState().focusedRoute;
+                    if (focusedRoute == "ScreenRoutines") {
+                        this.props.screenProps.setParams({ screen: "ScreenRoutines" })
+                    }
+
+                    if (this.state.isFocused == false && AppStorage.getState().focusedRoute == "AutomationStack") {
+                        this.setState({ isFocused: true });
+                        console.log("rerendered");
+
+                        if (AppStorage.getState().userInfo != null) {
+                            UsersApi.getUserScenes((scenes: Array<Scene>) => {
+                                this.setState({ scenes: scenes });
+                            })
+                        }
+                        else {
+
+                        }
+                    }
+                    break;
+            }
+        })
+
     }
     data: Array<Routine> = [
         {
@@ -77,33 +117,45 @@ export default class ScreenRoutines extends Component<any, any> {
     ];
     render() {
         return (
+            // <View style={[globalStyles.container, styles.container]}>
+            //     <FlatList data={this.data}
+            //         numColumns={2}
+            //         renderItem={({ item }) => <RoutineItem data={item} press={this.itemPress} pressSetting={this.itemPressSetting} />}
+            //         keyExtractor={(item: any) => item.id}>
+            //     </FlatList>
+            // </View>
             <View style={[globalStyles.container, styles.container]}>
-                <FlatList data={this.data}
-                    numColumns={2}
-                    renderItem={({ item }) => <RoutineItem data={item} press={this.itemPress} pressSetting={this.itemPressSetting} />}
-                    keyExtractor={(item: any) => item.id}>
-                </FlatList>
+                {this.state.isFocused &&
+                    <FlatList data={this.state.scenes}
+                        numColumns={2}
+                        renderItem={({ item }) => <RoutineItem data={item} press={this.itemPress} pressSetting={this.itemPressSetting} />}
+                        keyExtractor={(item: any) => item.id}>
+                    </FlatList>
+                }
             </View>
         );
     }
 
     itemPress = (id: string) => {
-        let self = this;
-        var selectedRoutine = this.data.find((item) => item.id == id)
-        if (selectedRoutine !== undefined) {
-            selectedRoutine.tasks.forEach((item, index, tasks) => {
-                switch (item.type) {
-                    case "SWITCH_ON": {
-                        self.switchOnDevices(item.dids)
-                    }
-                        break;
-                    case "SWITCH_OFF": {
-                        self.switchOffDevices(item.dids)
-                    }
-                        break;
-                }
-            });
-        }
+        ScenesApi.activeScene(id, () => {
+            
+        })
+        // let self = this;
+        // var selectedRoutine = this.data.find((item) => item.id == id)
+        // if (selectedRoutine !== undefined) {
+        //     selectedRoutine.tasks.forEach((item, index, tasks) => {
+        //         switch (item.type) {
+        //             case "SWITCH_ON": {
+        //                 self.switchOnDevices(item.dids)
+        //             }
+        //                 break;
+        //             case "SWITCH_OFF": {
+        //                 self.switchOffDevices(item.dids)
+        //             }
+        //                 break;
+        //         }
+        //     });
+        // }
     }
 
     itemPressSetting = (id: string) => {
@@ -134,7 +186,8 @@ class RoutineItem extends Component<RoutineItemProps, any> {
 
     render() {
         let { height, width } = Dimensions.get('window');
-        let data: Routine = this.props.data;
+        // let data: Routine = this.props.data;
+        let data: Scene = this.props.data;
         let icon;
         switch (data.icon) {
             case "icon-light-on":

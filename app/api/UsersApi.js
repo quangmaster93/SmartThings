@@ -3,8 +3,13 @@ import { User } from "../models/User";
 import { AppStorage } from "../redux/AppStorage";
 import { Device } from "../models/Device";
 import { DeviceStatus } from "../models/DeviceStatus";
+import { Scene } from "../models/Scene";
 
 export default class UsersApi {
+    /**
+     * Get a user’s profile
+     * @param {*} callBack 
+     */
     static getUserProfile(callBack?: Function) {
         return Network.get('/users/self', (responseJson) => {
             console.log('/users/self');
@@ -17,6 +22,10 @@ export default class UsersApi {
         })
     }
 
+    /**
+     * Get a user’s Devices
+     * @param {*} callBack 
+     */
     static getUserDevices(callBack?: Function){
         let userId = AppStorage.getState().userInfo.id;
         let patch = `/users/${userId}/devices`;
@@ -29,6 +38,25 @@ export default class UsersApi {
 
             if(callBack){
                 callBack(devices);
+            }
+        })
+    }
+
+    /**
+     * Get a user’s Scenes
+     * @param {*} callBack 
+     */
+    static getUserScenes(callBack?: Function){
+        let state = AppStorage.getState();
+        let userId = AppStorage.getState().userInfo.id;
+        let patch = `/users/${userId}/scenes`;
+
+        Network.get(patch, (responseJson) => {
+            debugger;
+            let scenes: Array<Scene> = JSON.parse(responseJson._bodyInit).data.scenes;
+            console.log(scenes);
+            if(callBack){
+                callBack(scenes);
             }
         })
     }
