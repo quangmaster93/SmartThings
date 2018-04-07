@@ -16,6 +16,7 @@ import { AppState } from '../redux/AppState';
 import { NavigationActions } from 'react-navigation'
 import { globalStyles } from '../config/globalStyles';
 import { Device } from '../models/Device';
+import { CheckBox } from 'react-native-elements'
 
 export default class ScreenListDevicesToChoose extends Component<any, any> {
     static navigationOptions = ({ navigation }: any) => {
@@ -35,7 +36,7 @@ export default class ScreenListDevicesToChoose extends Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
-            roomName: ''
+            checked:false
         };
         this.userDevices = AppStorage.getState().userDevices;
     }
@@ -43,36 +44,44 @@ export default class ScreenListDevicesToChoose extends Component<any, any> {
 
     }
     componentWillUnmount() {
-        this.unsubscribe();
+        // this.unsubscribe();
     }
     render() {
         return <View style={[globalStyles.container, styles.container]}>
             <FlatList data={this.userDevices}
-                renderItem={({item}) => <Text style={styles.deviceNameText}>{item.name}</Text>}>
+                renderItem={({ item }) => <Text style={styles.deviceNameText}>{item.name}</Text>}>
 
             </FlatList>
+            <CheckBox
+                title='Click Here to Remove This Item'
+                iconRight
+                checkedIcon={<Image source={require('../image/menu.png')} />}
+                uncheckedIcon={<Image source={require('../image/logo.png')} />}
+                checked={this.state.checked}
+                onPress={() => this.setState({ checked: !this.state.checked })}
+                    />
         </View>
     };
 }
 const stackBackgroundColor = '#00be82'
 const styles = StyleSheet.create({
-    container: {
+                container: {
 
-    },
+            },
     headerTitle: {
-        color: "#ffffff",
+                color: "#ffffff",
         fontSize: 20,
         marginLeft: 12,
         marginTop: 6
     },
     doneButton: {
-        color: "#ffffff",
+                color: "#ffffff",
         fontSize: 20,
         marginRight: 12,
         marginTop: 6
     },
     deviceNameText:{
 
-    }
-}
+            }
+            }
 )
