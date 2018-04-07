@@ -1,3 +1,5 @@
+import { RoutineTask } from "./RoutineTask";
+
 // @flow
 export class Routine {
 
@@ -6,4 +8,6 @@ export class Routine {
     name: string;
 
     icon: string;
+
+    tasks: Array<RoutineTask>
 }
