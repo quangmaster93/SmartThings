@@ -45,7 +45,7 @@ export default class ScreenAddRoom extends Component<any, ScreenAddRoomState> {
 
     }
     componentWillUnmount() {
-        this.unsubscribe();
+        // this.unsubscribe();
     }
     render() {
         return <View style={[globalStyles.container, styles.container]}>
