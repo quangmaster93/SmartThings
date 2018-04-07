@@ -27,6 +27,10 @@ export class AppStorage {
                 return {
                     ...state, deviceStt: action.payload
                 }
+            case "SAVE_USER_DEVICES":
+                return{
+                    ...state, userDevices: action.payload
+                }    
         }
 
         return { ...state };

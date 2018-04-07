@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     StyleSheet,
     Image,
-    TextInput
+    TextInput,
+    FlatList
 } from 'react-native';
 import { Unsubscribe } from 'redux';
 import { AppStorage } from '../redux/AppStorage';
@@ -14,6 +15,7 @@ import type { AppEvent } from '../redux/AppEvent';
 import { AppState } from '../redux/AppState';
 import { NavigationActions } from 'react-navigation'
 import { globalStyles } from '../config/globalStyles';
+import {Device} from '../models/Device';
 interface ScreenAddRoomState{
     roomName:string
 }
@@ -31,11 +33,13 @@ export default class ScreenAddRoom extends Component<any, ScreenAddRoomState> {
         }       
       };
     unsubscribe: Unsubscribe;
+    userDevices: Array<Device>
     constructor(props: any) {
         super(props);
         this.state = {
             roomName:''
         };
+        this.userDevices=AppStorage.getState().userDevices;
     }
     componentDidMount() {
 
@@ -50,6 +54,17 @@ export default class ScreenAddRoom extends Component<any, ScreenAddRoomState> {
                 <TextInput placeholder="e.g. Living room" value={this.state.roomName} 
                 onChangeText={(roomName) => this.setState({roomName})}></TextInput>
             </View>
+            <TouchableOpacity onPress={() => { this.props.navigation.navigate('ScreenListDevicesToChoose') }}>
+               <View style={styles.chooseDevicesContainer}>
+                   <Text style={styles.chooseDevicesText}>Choose devices</Text>
+                    <View style={styles.listDevices}>
+                        {/* <FlatList data={this.userDevices}
+                        renderItem={({device}:any) => <Text style={styles.deviceNameText}>{device}</Text>}>
+
+                        </FlatList> */}
+                    </View>
+               </View>
+            </TouchableOpacity>
         </View>
     };
 }
@@ -71,6 +86,18 @@ const styles = StyleSheet.create({
         marginTop: 6
     },
     name:{
+
+    },
+    chooseDevicesContainer:{
+
+    },
+    chooseDevicesText:{
+
+    },
+    listDevices:{
+
+    },
+    deviceNameText:{
 
     }
 }

@@ -32,6 +32,7 @@ export default class App extends Component<{}, any> {
         case "SAVE_TOKEN":
           UsersApi.getUserProfile(data => {
             UsersApi.getUserDevices((data: Array<Device>) => {
+              AppStorage.postEvent("SAVE_USER_DEVICES", data);
               let devices = data.map((device) => {
                 return device.id;
               });
