@@ -29,11 +29,15 @@ export default class ScreenListDevicesToChoose extends Component<any, any> {
             headerStyle: {
                 backgroundColor: stackBackgroundColor,
             },
-            headerRight: <TouchableOpacity onPress={() => { navigation.goBack() }}>
+            headerRight: <TouchableOpacity onPress={() => {  ScreenListDevicesToChoose.Done(navigation) }}>
                 <Text style={styles.doneButton}>Done</Text>
             </TouchableOpacity>
         }
     };
+    static Done=(navigation:any)=>{
+        navigation.state.params.onDone(navigation.state.params.savedDevices)
+        navigation.goBack();
+    }
     unsubscribe: Unsubscribe;
     userDevices: Array<Device>;
     devicesChecker:Array<DeviceChecker>;
@@ -52,7 +56,7 @@ export default class ScreenListDevicesToChoose extends Component<any, any> {
         })
     }
     componentDidMount() {
-
+        
     }
     componentWillUnmount() {
         // this.unsubscribe();
@@ -60,6 +64,10 @@ export default class ScreenListDevicesToChoose extends Component<any, any> {
     toggle=(device:DeviceChecker)=>{
         let deviceIndex =this.devicesChecker.indexOf(device);
         this.devicesChecker[deviceIndex].isCheck=!this.devicesChecker[deviceIndex].isCheck;
+        let savedDevices=this.devicesChecker.filter(d=>d.isCheck==true);
+        this.props.navigation.setParams({
+            savedDevices: savedDevices,
+          });
         this.setState({
             toggleRerenderFlatList: !this.state.toggleRerenderFlatList
         })

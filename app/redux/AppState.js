@@ -1,8 +1,9 @@
-import { AppEvent } from "./AppEvent";
-import { User } from "../models/User";
-// import { Device } from "../models/Device";
 
-// @flow
+
+import type { AppEvent } from "./AppEvent";
+import { User } from "../models/User";
+import { Device } from "../models/Device";
+import { DeviceChecker } from "../models/DeviceChecker";
 
 export class AppState {
     event: AppEvent;
@@ -12,6 +13,7 @@ export class AppState {
     userInfo: User;
     deviceStt: any;
     userDevices: Array<Device>
+    // savedDevices:Array<DeviceChecker>
 }
 
 let defaultState: AppState = {
@@ -22,6 +24,7 @@ let defaultState: AppState = {
     userInfo: null,
     deviceStt: null, 
     userDevices:null,
+    // savedDevices:null
 }
 
 export {
