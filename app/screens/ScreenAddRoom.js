@@ -58,10 +58,12 @@ export default class ScreenAddRoom extends Component<any, ScreenAddRoomState> {
         let roomName=navigation.state.params.roomName;
         if(roomName!=''){
             let savedDevices=navigation.state.params.savedDevices;
+            let devices=savedDevices.map(d=>d.id);
+            let stringDevices=devices.join(",");
             let userId=AppStorage.getState().userInfo.id;
             let database=FirebaseApp.database();
             let userRef=database.ref("UserRoom");
-            let userIdRef=userRef.child(userId);
+            userRef.child(userId).push().set({name:roomName,devices:stringDevices});
         }
     }
     EditName=(roomName:string)=>{
