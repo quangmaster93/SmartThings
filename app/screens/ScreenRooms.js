@@ -37,9 +37,10 @@ export default class ScreenRooms extends Component<any, ScreenThingsState> {
                 case "SET_FOCUSED_SCREEN":
                     if (AppStorage.getState().focusedRoute == "ScreenRooms") {
                         this.props.screenProps.setParams({ screen: "ScreenRooms" })
-
+                        
                         if (this.state.isFocused == false) {
-                            this.setState({ isFocused: true });
+                            this.getRoom();
+                            // this.setState({ isFocused: true });
                             console.log("rerendered");
                         }
                     }
@@ -47,7 +48,24 @@ export default class ScreenRooms extends Component<any, ScreenThingsState> {
         })
     }
     getRoom=()=>{
-        
+        let userId=AppStorage.getState().userInfo.id;
+        let database=FirebaseApp.database();
+        let userRef=database.ref("UserRoom");
+        userRef.child(userId).on('value',(snapshot)=>{
+            this.rooms=[];
+            snapshot.forEach((data)=>{
+                let room:Room={
+                    id:data.key,
+                    name:data.val().name,
+                    devices:data.val().devices
+                }
+                this.rooms.push(room);
+            })
+            this.setState({
+                toggleRerenderFlatList: !this.state.toggleRerenderFlatList,
+                isFocused:true
+            });
+        });
     }
     componentWillUnmount() {
         this.unsubscribe();
@@ -58,7 +76,7 @@ export default class ScreenRooms extends Component<any, ScreenThingsState> {
                 <View>
                     <View style={styles.listRoom}>
                         <FlatList data={this.rooms}
-                            renderItem={({ item }) => <Text>{item.name}</Text>}
+                            renderItem={({ item }) => <Text style={styles.name}>{item.name}</Text>}
                             extraData={this.state.toggleRerenderFlatList}>
                         </FlatList>
                     </View>
@@ -81,7 +99,7 @@ const styles = StyleSheet.create({
     },
     addthing: {
         marginTop: 10,
-        flex: 1,
+        // flex: 1,
         flexDirection: 'row',
         marginLeft: 10,
     },
@@ -93,7 +111,12 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     listRoom: {
-
+        // flex: 1,
+    },
+    name:{
+        borderBottomWidth: 1,
+        borderBottomColor: '#d6d7da',
+        padding:20
     }
 
 }

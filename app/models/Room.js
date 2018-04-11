@@ -1,6 +1,6 @@
 // @flow
 export class Room {
-    id: string;
-    name: string;
-    devices:boolean;
+    id: any;
+    name: any;
+    devices:any;
 }
