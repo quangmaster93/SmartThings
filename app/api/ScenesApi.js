@@ -5,7 +5,7 @@ export default class ScenesApi {
     static activeScene(sceneID: string, callBack?: Function) {
         let patch = `/scenes/${sceneID}`
         console.log(patch);
-        return Network.post(patch, {}, (responseJson) => {
+        return Network.post(patch, "{}", (responseJson) => {
             console.log(responseJson);
             if(callBack){
                 callBack();

@@ -25,6 +25,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import { AppStorage } from '../redux/AppStorage';
+import { ScreenRoutineDetail } from '../screens/ScreenRoutineDetail';
 //DashboardStack
 export const DashboardStack = StackNavigator({
     ScreenDashboardHome: {
@@ -401,6 +402,9 @@ export const RootStack = StackNavigator({
             </TouchableOpacity>
         })
     },
+    RoutineDetail: {
+        screen: ScreenRoutineDetail
+    }
 
 },
     {

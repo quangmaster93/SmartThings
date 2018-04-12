@@ -158,8 +158,8 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
         // }
     }
 
-    itemPressSetting = (id: string) => {
-
+    itemPressSetting = (data: Scene) => {
+        this.props.screenProps.navigate('ScreenRoutineDetail', data);
     }
 
     switchOnDevices = (dids: Array<string>) => {
@@ -207,7 +207,7 @@ class RoutineItem extends Component<RoutineItemProps, any> {
                     <Text>{data.name}</Text>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.props.pressSetting(data.id)} style={[{ position: "absolute", top: 5, right: 5 }]}>
+            <TouchableOpacity onPress={() => this.props.pressSetting(data)} style={[{ position: "absolute", top: 5, right: 5 }]}>
                 <Image style={[{ width: 20, height: 20 }]} source={require('../image/setting-o.png')} />
             </TouchableOpacity>
         </View>
