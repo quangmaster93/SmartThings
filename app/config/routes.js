@@ -139,6 +139,48 @@ const ActionDetailTab = TabNavigator(
     }
 );
 
+//RoomDetailTab
+const RoomDetailTab = TabNavigator(
+    {
+        ScreenRightNow: {
+            screen: ScreenThings,
+            navigationOptions: {
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Right Now</Text>
+            }
+        },
+        ScreenRecently: {
+            screen: ScreenRecently,
+            navigationOptions: {
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Recently</Text>
+            }
+        }
+    },
+    {
+        tabBarPosition: 'top',
+        scrollEnabled: true,
+        swipeEnabled: true,
+        initialRouteName: 'ScreenRightNow',
+        lazyLoad: true,
+        tabBarOptions: {
+            labelStyle: {
+            },
+            style: {
+                backgroundColor: '#f5f8ff',
+                height: 43,
+
+            },
+            showIcon: false,
+            tabStyle: {
+            },
+            indicatorStyle: {
+                backgroundColor: '#00be82'
+            }
+        }
+    }
+);
+
+
+
 //MyhomeStack
 export const MyhomeStack = StackNavigator({
     MyhomeTab: {
@@ -397,6 +439,23 @@ export const RootStack = StackNavigator({
             headerRight: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
                 <Image
                     source={navigation.state.params ? (navigation.state.params.screen == "ScreenThings" ? require('../image/add.png') : require('../image/setting.png')) : require('../image/add.png')}
+                    style={[styles.headerRightIcon]}
+                />
+            </TouchableOpacity>
+        })
+    },
+    RoomDetailTab:{
+        screen: ({ navigation }) => <RoomDetailTab screenProps={navigation} onNavigationStateChange={(prevState: any, currentState: any, action: any) => {
+            AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
+        }} />,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: <Text style={styles.headerTitle}>{navigation.state.params.name}</Text>,
+            headerStyle: {
+                backgroundColor: stackBackgroundColor,
+            },
+            headerRight: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
+                <Image
+                    source={require('../image/setting.png')}
                     style={[styles.headerRightIcon]}
                 />
             </TouchableOpacity>

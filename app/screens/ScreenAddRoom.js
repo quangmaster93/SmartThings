@@ -17,6 +17,7 @@ import { NavigationActions } from 'react-navigation'
 import { globalStyles } from '../config/globalStyles';
 import { Device } from '../models/Device';
 import { DeviceChecker } from '../models/DeviceChecker';
+import {FirebaseApp} from '../config/firebaseConfig'
 interface ScreenAddRoomState {
     roomName: string,
     toggleRerenderFlatList:boolean
@@ -29,28 +30,52 @@ export default class ScreenAddRoom extends Component<any, ScreenAddRoomState> {
             headerStyle: {
                 backgroundColor: stackBackgroundColor,
             },
-            headerRight: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
+            headerRight: <TouchableOpacity onPress={() => { ScreenAddRoom.SaveRoom(navigation) }}>
                 <Text style={styles.saveButton}>Save</Text>
             </TouchableOpacity>
         }
     };
     unsubscribe: Unsubscribe;
-    // userDevices: Array<Device>
-    savedDevices: Array<DeviceChecker>
+    savedDevices: Array<DeviceChecker>;
     constructor(props: any) {
         super(props);
         this.state = {
             roomName: '',
             toggleRerenderFlatList: false
         };
-        // this.userDevices = AppStorage.getState().userDevices;
-        this.devicesChecker=null;
+        this.savedDevices=[];
     }
     onDone = (devices: Array<DeviceChecker>) => {
         this.savedDevices=devices;
+        this.props.navigation.setParams({
+            savedDevices:devices
+        });
         this.setState({
             toggleRerenderFlatList: !this.state.toggleRerenderFlatList
         })
+    }
+    static SaveRoom=(navigation:any)=>{
+        let roomName=navigation.state.params.roomName;
+        if(roomName!=''){
+            let savedDevices=navigation.state.params.savedDevices;
+            let stringDevices='';
+            if(savedDevices){
+                let devices=savedDevices.map(d=>d.id);
+                stringDevices=devices.join(",");               
+            }
+            let userId=AppStorage.getState().userInfo.id;
+            let database=FirebaseApp.database();
+            let userRef=database.ref("UserRoom");
+            userRef.child(userId).push().set({name:roomName,devices:stringDevices});
+            navigation.goBack();
+            
+        }
+    }
+    EditName=(roomName:string)=>{
+        this.props.navigation.setParams({
+            roomName
+        });
+        this.setState({ roomName })
     }
     componentDidMount() {
     }
@@ -62,7 +87,7 @@ export default class ScreenAddRoom extends Component<any, ScreenAddRoomState> {
             <View style={styles.name}>
                 <Text>Room Name</Text>
                 <TextInput placeholder="e.g. Living room" value={this.state.roomName}
-                    onChangeText={(roomName) => this.setState({ roomName })}></TextInput>
+                    onChangeText={(roomName) =>this.EditName(roomName)}></TextInput>
             </View>
             <TouchableOpacity onPress={() => {
                 this.props.navigation.navigate('ScreenListDevicesToChoose',
