@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     StyleSheet,
     Image,
-    FlatList
+    FlatList,
+    Alert
 } from 'react-native';
 import { Unsubscribe } from 'redux';
 import { AppStorage } from '../redux/AppStorage';
@@ -70,13 +71,34 @@ export default class ScreenRooms extends Component<any, ScreenThingsState> {
     componentWillUnmount() {
         this.unsubscribe();
     }
+    alertDeleteRoom=(item:Room)=>{
+        Alert.alert(
+            `Xác nhận`,
+            `Bạn có muốn xóa ${item.name} không?`,
+            [
+              {text: 'Hủy', style: 'cancel'},
+              {text: 'Xóa', onPress: () => this.deleteRoom(item.id)},
+            ],
+            { cancelable: true }
+          )
+    }
+
+    deleteRoom=(id:string)=>{
+        let userId = AppStorage.getState().userInfo.id;
+        let database = FirebaseApp.database();
+        let userRef = database.ref("UserRoom");
+        userRef.child(userId).child(id).remove();
+    }
+
     renderName = (item: Room) => {
         return(
-        <TouchableOpacity style={styles.name} onPress={() => { this.props.screenProps.navigate('RoomDetailTab', item) }}>
-            <Text>{item.name}</Text>
+        <TouchableOpacity  onPress={() => { this.props.screenProps.navigate('RoomDetailTab', item)}}
+        onLongPress={()=>{this.alertDeleteRoom(item)}}>
+            <Text style={styles.name}>{item.name}</Text>
         </TouchableOpacity>
         )
     }
+
     render() {
         return <View style={[globalStyles.container, styles.container]}>
             {this.state.isFocused &&
@@ -123,7 +145,8 @@ const styles = StyleSheet.create({
     name: {
         borderBottomWidth: 1,
         borderBottomColor: '#d6d7da',
-        padding: 20
+        padding: 20,
+        fontSize: 16
     }
 
 }
