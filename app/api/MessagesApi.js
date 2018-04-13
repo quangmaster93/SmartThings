@@ -3,11 +3,11 @@ import { NormalizedMessages } from "../models/NormalizedMessages";
 
 export default class MessagesApi {
 
-    static sendAction(ddid: string, actionName: string, data: any, type: string = "action",callBack?: Function) {
+    static sendAction(ddid: string, actionName: string, parameters: any = {}, type: string = "action",callBack?: Function) {
         let actionData = {
             actions: [{
                 name: actionName,
-                parameters: data
+                parameters: parameters
             }]
         };
 
