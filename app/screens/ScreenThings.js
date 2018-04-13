@@ -13,7 +13,7 @@ import { Device } from '../models/Device';
 import Network from '../api/Network';
 import MessagesApi from '../api/MessagesApi';
 import { globalStyles } from '../config/globalStyles';
-import ThingsComponent  from '../Components/ThingsComponents'
+import ThingsComponent from '../Components/ThingsComponents'
 
 interface ScreenThingsState {
     isFocused: boolean;
@@ -26,10 +26,10 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
     ws: any;
     constructor(props: any) {
         super(props);
+        let dvs = props.screenProps.state.params != null ? props.screenProps.state.params.devices : "";
         this.state = {
             isFocused: false,
-            devicesString: ""
-
+            devicesString: dvs
         };
     }
 
@@ -43,11 +43,13 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
                     }
 
                     if (this.state.isFocused == false && AppStorage.getState().focusedRoute == "MyhomeStack") {
-                        let devices = AppStorage.getState().userDevices.map((device) => {
-                            return device.id;
-                        });
-                        let devicesId: string = devices.join(",");
-                        this.setState({ devicesString: devicesId, isFocused: true });
+                        if (!this.props.screenProps.state.params || !this.props.screenProps.state.params.devices) {
+                            let devices = AppStorage.getState().userDevices.map((device) => {
+                                return device.id;
+                            });
+                            let devicesId: string = devices.join(",");
+                            this.setState({ devicesString: devicesId, isFocused: true });
+                        }
                     }
             }
         })
