@@ -25,7 +25,7 @@ export default class ScreenListDevicesToChoose extends Component<any, any> {
     static navigationOptions = ({ navigation }: any) => {
         return {
             title: 'Add a Room',
-            headerTitle: <Text style={styles.headerTitle}>Choose Device To Your Room</Text>,
+            headerTitle: <Text style={styles.headerTitle}>Choose Device</Text>,
             headerStyle: {
                 backgroundColor: stackBackgroundColor,
             },
@@ -38,6 +38,10 @@ export default class ScreenListDevicesToChoose extends Component<any, any> {
         navigation.state.params.onDone(navigation.state.params.savedDevices)
         navigation.goBack();
     }
+    static Cancel=(navigation:any)=>{
+        navigation.state.params.onDone([])
+        navigation.goBack();
+    }
     unsubscribe: Unsubscribe;
     userDevices: Array<Device>;
     devicesChecker:Array<DeviceChecker>;
@@ -47,7 +51,7 @@ export default class ScreenListDevicesToChoose extends Component<any, any> {
             toggleRerenderFlatList: false
         };
         this.userDevices = AppStorage.getState().userDevices;
-        this.devicesChecker=this.userDevices.map((device)=>{
+        this.devicesChecker=this.props.navigation.state.params.devicesChecker.length!=0?this.props.navigation.state.params.devicesChecker:this.userDevices.map((device)=>{
             return {
                 id:device.id,
                 name: Common.ReplaceDeviceName(device.name),
@@ -64,9 +68,8 @@ export default class ScreenListDevicesToChoose extends Component<any, any> {
     toggle=(device:DeviceChecker)=>{
         let deviceIndex =this.devicesChecker.indexOf(device);
         this.devicesChecker[deviceIndex].isCheck=!this.devicesChecker[deviceIndex].isCheck;
-        let savedDevices=this.devicesChecker.filter(d=>d.isCheck==true);
         this.props.navigation.setParams({
-            savedDevices: savedDevices,
+            savedDevices: this.devicesChecker,
           });
         this.setState({
             toggleRerenderFlatList: !this.state.toggleRerenderFlatList
@@ -77,7 +80,7 @@ export default class ScreenListDevicesToChoose extends Component<any, any> {
         containerStyle={styles.checkboxContainer}
         textStyle={styles.checkboxText}
         title={item.name}   
-        iconRight
+        // iconRight
         checkedIcon={<Image source={require('../image/check.png')} />}
         uncheckedIcon={<Image source={require('../image/uncheck.png')} />}
         checked={item.isCheck}
@@ -122,13 +125,15 @@ const styles = StyleSheet.create({
         borderTopWidth:0,
         borderLeftWidth:0,
         borderRightWidth:0,
-        // flex: 1, 
-        // flexDirection: 'row',
+        flex: 1, 
+        flexDirection: 'row',
         justifyContent:'space-between',
+
     },
     checkboxText:{
         // backgroundColor:'red',
         // flex: 0.9
+        marginLeft:20
     }
 }
 )

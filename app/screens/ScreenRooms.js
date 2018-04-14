@@ -114,7 +114,7 @@ export default class ScreenRooms extends Component<any, ScreenThingsState> {
                             source={require('../image/add-icon.png')}
                             style={styles.addIcon}
                         />
-                        <Text style={styles.addText}>Add a Thing</Text>
+                        <Text style={styles.addText}>Add a Room</Text>
                     </TouchableOpacity>
                 </View>
 
