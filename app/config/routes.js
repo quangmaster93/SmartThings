@@ -148,12 +148,12 @@ const RoomDetailTab = TabNavigator(
                 tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Right Now</Text>
             }
         },
-        ScreenRecently: {
-            screen: ScreenRecently,
-            navigationOptions: {
-                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Recently</Text>
-            }
-        }
+        // ScreenRecently: {
+        //     screen: ScreenRecently,
+        //     navigationOptions: {
+        //         tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Recently</Text>
+        //     }
+        // }
     },
     {
         tabBarPosition: 'top',
@@ -214,7 +214,7 @@ export const MyhomeStack = StackNavigator({
 export const AutomationTab = TabNavigator(
     {
         ScreenRoutines: {
-            screen: ScreenRoutines,
+            screen: ({ navigation }) => <ScreenRoutines screenProps={navigation} />,
             navigationOptions: {
                 tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Routines</Text>
             }
@@ -421,10 +421,10 @@ export const RootStack = StackNavigator({
             header: null
         })
     },
-    ScreenAddRoom:{
+    ScreenAddRoom: {
         screen: ScreenAddRoom
     },
-    ScreenListDevicesToChoose:{
+    ScreenListDevicesToChoose: {
         screen: ScreenListDevicesToChoose
     },
     ActionDetailTab: {
@@ -444,7 +444,7 @@ export const RootStack = StackNavigator({
             </TouchableOpacity>
         })
     },
-    RoomDetailTab:{
+    RoomDetailTab: {
         screen: ({ navigation }) => <RoomDetailTab screenProps={navigation} onNavigationStateChange={(prevState: any, currentState: any, action: any) => {
             AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
         }} />,
@@ -462,7 +462,7 @@ export const RootStack = StackNavigator({
         })
     },
     RoutineDetail: {
-        screen: ScreenRoutineDetail
+        screen: ({navigation}) => <ScreenRoutineDetail screenProps={navigation}/>,
     }
 
 },

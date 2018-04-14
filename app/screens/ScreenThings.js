@@ -28,7 +28,7 @@ export default class ScreenThings extends Component<any, ScreenThingsState> {
         super(props);
         let dvs = props.screenProps.state.params != null ? props.screenProps.state.params.devices : "";
         this.state = {
-            isFocused: false,
+            isFocused: !!dvs,
             devicesString: dvs
         };
     }

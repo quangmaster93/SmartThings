@@ -52,7 +52,6 @@ export default class UsersApi {
         let patch = `/users/${userId}/scenes`;
 
         Network.get(patch, (responseJson) => {
-            debugger;
             let scenes: Array<Scene> = JSON.parse(responseJson._bodyInit).data.scenes;
             console.log(scenes);
             if(callBack){

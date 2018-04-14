@@ -138,7 +138,7 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
 
     itemPress = (id: string) => {
         ScenesApi.activeScene(id, () => {
-            
+
         })
         // let self = this;
         // var selectedRoutine = this.data.find((item) => item.id == id)
@@ -159,7 +159,7 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
     }
 
     itemPressSetting = (data: Scene) => {
-        this.props.screenProps.navigate('ScreenRoutineDetail', data);
+        this.props.screenProps.navigate('RoutineDetail', { info: data });
     }
 
     switchOnDevices = (dids: Array<string>) => {
