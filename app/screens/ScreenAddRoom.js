@@ -37,6 +37,7 @@ export default class ScreenAddRoom extends Component<any, ScreenAddRoomState> {
     };
     unsubscribe: Unsubscribe;
     savedDevices: Array<DeviceChecker>;
+    devicesChecker:Array<DeviceChecker>
     constructor(props: any) {
         super(props);
         this.state = {
@@ -44,11 +45,13 @@ export default class ScreenAddRoom extends Component<any, ScreenAddRoomState> {
             toggleRerenderFlatList: false
         };
         this.savedDevices=[];
+        this.devicesChecker=[];
     }
     onDone = (devices: Array<DeviceChecker>) => {
-        this.savedDevices=devices;
+        this.savedDevices=devices.filter(d=>d.isCheck==true);
+        this.devicesChecker=devices;
         this.props.navigation.setParams({
-            savedDevices:devices
+            savedDevices:this.savedDevices
         });
         this.setState({
             toggleRerenderFlatList: !this.state.toggleRerenderFlatList
@@ -82,24 +85,29 @@ export default class ScreenAddRoom extends Component<any, ScreenAddRoomState> {
     componentWillUnmount() {
         // this.unsubscribe();
     }
+    navigateToScreenChooseDevices=()=>{
+        let temp= JSON.parse(JSON.stringify(this.devicesChecker));
+        this.props.navigation.navigate('ScreenListDevicesToChoose',
+        {
+            onDone: (devices) => this.onDone(devices),
+            devicesChecker:temp
+        })
+    }
     render() {
         return <View style={[globalStyles.container, styles.container]}>
             <View style={styles.name}>
                 <Text>Room Name</Text>
-                <TextInput placeholder="e.g. Living room" value={this.state.roomName}
+                <TextInput style={styles.inputName} placeholder="e.g. Living room" value={this.state.roomName}
                     onChangeText={(roomName) =>this.EditName(roomName)}></TextInput>
             </View>
             <TouchableOpacity onPress={() => {
-                this.props.navigation.navigate('ScreenListDevicesToChoose',
-                    {
-                        onDone: (devices) => this.onDone(devices)
-                    })
+                this.navigateToScreenChooseDevices()
             }}>
                 <View style={styles.chooseDevicesContainer}>
                     <Text style={styles.chooseDevicesText}>Choose devices</Text>
                     <View style={styles.listDevices}>
                         <FlatList data={this.savedDevices}
-                            renderItem={({ item }) => <Text>{item.name}</Text>}
+                            renderItem={({ item }) => <Text style={styles.deviceName}>{item.name}</Text>}
                             extraData={this.state.toggleRerenderFlatList}>
                         </FlatList>
                     </View>
@@ -111,7 +119,7 @@ export default class ScreenAddRoom extends Component<any, ScreenAddRoomState> {
 const stackBackgroundColor = '#00be82'
 const styles = StyleSheet.create({
     container: {
-
+        padding:15,
     },
     headerTitle: {
         color: "#ffffff",
@@ -123,7 +131,7 @@ const styles = StyleSheet.create({
         color: "#ffffff",
         fontSize: 20,
         marginRight: 12,
-        marginTop: 6
+        // marginTop: 6
     },
     name: {
 
@@ -135,10 +143,16 @@ const styles = StyleSheet.create({
 
     },
     listDevices: {
-
+        marginLeft:5
     },
     deviceNameText: {
 
+    },
+    inputName:{
+        color:'red'
+    },
+    deviceName:{
+        color:'green'
     }
 }
 )
