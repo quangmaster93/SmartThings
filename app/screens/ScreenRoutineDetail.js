@@ -54,7 +54,6 @@ export class ScreenRoutineDetail extends Component<any, any> {
     }
 
     static Save(navigation: any) {
-        debugger
         let routine:Scene = navigation.state.params.savedRoutine;
         if(routine.id) {
             ScenesApi.updateScene(routine,  () =>{

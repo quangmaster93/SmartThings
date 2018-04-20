@@ -26,7 +26,6 @@ export default class ScenesApi {
     }
 
     static createScene(scene: Scene, callBack?: Function) {
-        debugger;
         let patch = `/scenes`
 
         if(!scene.description){

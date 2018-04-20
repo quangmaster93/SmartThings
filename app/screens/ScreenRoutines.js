@@ -201,7 +201,6 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
     }
 
     onDone = () => {
-        debugger
         this.refresh();
     }
 
