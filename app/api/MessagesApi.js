@@ -27,7 +27,7 @@ export default class MessagesApi {
     static getNormalizedMessagesByDevice(deviceId: string, startDate: number, endDate: number, order: string ="asc", count: number,  callBack?: Function) {
         let patch = `/messages?sdid=${deviceId}&startDate=${startDate}&endDate=${endDate}&order=${order}&count=${count}`;
 
-        Network.get(patch, (responseJson) => {
+        return Network.get(patch, (responseJson) => {
             let normalizedMessages: NormalizedMessages = JSON.parse(responseJson._bodyInit);
             if(callBack){
                 callBack(normalizedMessages);

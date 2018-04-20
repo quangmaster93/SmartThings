@@ -23,7 +23,7 @@ export default class Network {
     }
 
     static post(path, data, callBack) {
-        fetch(Network.dkm().endpoint + path, {
+        return fetch(Network.dkm().endpoint + path, {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
@@ -38,7 +38,7 @@ export default class Network {
     }
 
     static put(path, data, callBack) {
-        fetch(Network.dkm().endpoint + path, {
+        return fetch(Network.dkm().endpoint + path, {
             method: "put",
             headers: {
                 "Content-Type": "application/json",

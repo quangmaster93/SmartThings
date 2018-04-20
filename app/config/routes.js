@@ -26,6 +26,7 @@ import {
 } from 'react-native';
 import { AppStorage } from '../redux/AppStorage';
 import { ScreenRoutineDetail } from '../screens/ScreenRoutineDetail';
+import ScreenRecentlyAll from '../screens/ScreenRecentlyAll';
 //DashboardStack
 export const DashboardStack = StackNavigator({
     ScreenDashboardHome: {
@@ -148,12 +149,12 @@ const RoomDetailTab = TabNavigator(
                 tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Right Now</Text>
             }
         },
-        // ScreenRecently: {
-        //     screen: ScreenRecently,
-        //     navigationOptions: {
-        //         tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Recently</Text>
-        //     }
-        // }
+        ScreenRecently: {
+            screen: ScreenRecentlyAll,
+            navigationOptions: {
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Recently</Text>
+            }
+        }
     },
     {
         tabBarPosition: 'top',

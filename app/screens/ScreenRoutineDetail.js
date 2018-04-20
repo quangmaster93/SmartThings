@@ -31,7 +31,7 @@ export class ScreenRoutineDetail extends Component<any, any> {
             headerStyle: {
                 backgroundColor: stackBackgroundColor,
             },
-            headerRight: <TouchableOpacity onPress={() => { ScreenRoutineDetail.Done(navigation) }}>
+            headerRight: <TouchableOpacity onPress={() => { ScreenRoutineDetail.Save(navigation) }}>
                 <Text style={styles.doneButton}>Save</Text>
             </TouchableOpacity>
         }
@@ -48,13 +48,27 @@ export class ScreenRoutineDetail extends Component<any, any> {
             this.state = { info: new Scene() };
         }
         this.devices = AppStorage.getState().userDevices;
+        this.props.navigation.setParams({
+            savedRoutine: info,
+        });
     }
 
-    static Done(navigation: any) {
-        let routine = navigation.state.params.savedRoutine;
-        ScenesApi.updateScene(routine,  () =>{
-            navigation.goBack();
-        })
+    static Save(navigation: any) {
+        debugger
+        let routine:Scene = navigation.state.params.savedRoutine;
+        if(routine.id) {
+            ScenesApi.updateScene(routine,  () =>{
+                navigation.state.params.onDone()
+                navigation.goBack();
+            })
+        }
+        else if(routine.name) {
+            ScenesApi.createScene(routine,  () =>{
+                navigation.state.params.onDone()
+                navigation.goBack();
+            })
+        }
+        
     }
 
     changeName = (text: string) => {
@@ -171,7 +185,7 @@ export class ScreenRoutineDetail extends Component<any, any> {
         let switchOnCheck: Array<DeviceChecker> = this.getListCheck("on", "off");
         let switchOffCheck: Array<DeviceChecker> = this.getListCheck("off", "on");
         return <View>
-            <TextInput onChangeText={(text) => this.changeName(text)} value={this.state.info.name}></TextInput>
+            <TextInput placeholder="Routine name" onChangeText={(text) => this.changeName(text)} value={this.state.info.name}></TextInput>
             <ScrollView>
                 <View style={styles.group}>
                     <TouchableOpacity onPress={() => {

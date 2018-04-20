@@ -61,7 +61,6 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
 
                     if (this.state.isFocused == false && AppStorage.getState().focusedRoute == "AutomationStack") {
                         this.setState({ isFocused: true });
-                        console.log("rerendered");
 
                         if (AppStorage.getState().userInfo != null) {
                             UsersApi.getUserScenes((scenes: Array<Scene>) => {
@@ -76,6 +75,14 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
             }
         })
 
+    }
+
+    refresh = () => {
+        if (AppStorage.getState().userInfo != null) {
+            UsersApi.getUserScenes((scenes: Array<Scene>) => {
+                this.setState({ scenes: scenes });
+            })
+        }
     }
     data: Array<Routine> = [
         {
@@ -137,11 +144,12 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
         }
     ];
 
-    onPressLearnMore = () => {
-        debugger
+    onPressAdd = () => {
         let emptyScene: Scene = new Scene();
         emptyScene.actions = [];
-        this.props.screenProps.navigate('RoutineDetail', { info: emptyScene });
+        emptyScene.description = "";
+        emptyScene.uid = AppStorage.getState().userInfo.id;
+        this.props.screenProps.navigate('RoutineDetail', { info: emptyScene,  onDone:  this.onDone });
     }
 
     render() {
@@ -162,9 +170,8 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
                     </FlatList>
                 }
                 <Button
-                    onPress={this.onPressLearnMore}
-                    title="Learn More"
-                    color="#841584"
+                    onPress={this.onPressAdd}
+                    title="Add routine"
                     accessibilityLabel="Learn more about this purple button"
                 />
             </View>
@@ -193,8 +200,13 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
         // }
     }
 
+    onDone = () => {
+        debugger
+        this.refresh();
+    }
+
     itemPressSetting = (data: Scene) => {
-        this.props.screenProps.navigate('RoutineDetail', { info: data });
+        this.props.screenProps.navigate('RoutineDetail', { info: data, onDone:  this.onDone});
     }
 
     switchOnDevices = (dids: Array<string>) => {

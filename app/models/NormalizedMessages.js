@@ -21,5 +21,5 @@ export class NormalizedMessages {
 
     next: string;
     
-    data: Array<Messagege>
+    data: Array<Message>
 }
