@@ -26,7 +26,11 @@ interface ScreenRoutineDetailState {
 export class ScreenRoutineDetail extends Component<any, any> {
     static navigationOptions = ({ navigation }: any) => {
         return {
-            title: 'Add a Room',
+            title: 'Routine detail',
+            headerTitle: <Text style={styles.headerTitle}>Choose Device</Text>,
+            headerStyle: {
+                backgroundColor: stackBackgroundColor,
+            },
             headerRight: <TouchableOpacity onPress={() => { ScreenRoutineDetail.Done(navigation) }}>
                 <Text style={styles.doneButton}>Save</Text>
             </TouchableOpacity>
@@ -36,7 +40,7 @@ export class ScreenRoutineDetail extends Component<any, any> {
     devices: Array<Device> = [];
     constructor(props: any) {
         super(props);
-        let info = props.screenProps.state.params.info;
+        let info = props.navigation.state.params.info;
         if (info) {
             this.state = { info: JSON.parse(JSON.stringify(info)) };
         }
@@ -48,12 +52,20 @@ export class ScreenRoutineDetail extends Component<any, any> {
 
     static Done(navigation: any) {
         let routine = navigation.state.params.savedRoutine;
+        ScenesApi.updateScene(routine,  () =>{
+            navigation.goBack();
+        })
     }
 
     changeName = (text: string) => {
+        let self = this;
         let info: Scene = this.state.info;
         info.name = text;
-        this.setState({ info });
+        this.setState({ info }, () =>{
+            self.props.navigation.setParams({
+                savedRoutine: self.state.info,
+            });
+        });
     }
 
     getDevicename = (ddid: string) => {
@@ -121,7 +133,7 @@ export class ScreenRoutineDetail extends Component<any, any> {
         }
         let info = this.state.info;
         info.actions = currentActions;
-        this.props.screenProps.setParams({
+        this.props.navigation.setParams({
             savedRoutine: info,
         });
         this.setState({ info });
@@ -163,7 +175,7 @@ export class ScreenRoutineDetail extends Component<any, any> {
             <ScrollView>
                 <View style={styles.group}>
                     <TouchableOpacity onPress={() => {
-                        this.props.screenProps.navigate('ScreenListDevicesToChoose',
+                        this.props.navigation.navigate('ScreenListDevicesToChoose',
                             { onDone: (devices) => this.onDone("on", devices), devicesChecker: switchOnCheck || [] })
                     }}>
                         <Text style={styles.group_head}>Switch on devices</Text>
@@ -177,7 +189,7 @@ export class ScreenRoutineDetail extends Component<any, any> {
                 </View>
                 <View style={styles.group}>
                     <TouchableOpacity onPress={() => {
-                        this.props.screenProps.navigate('ScreenListDevicesToChoose',
+                        this.props.navigation.navigate('ScreenListDevicesToChoose',
                             { onDone: (devices) => this.onDone("off", devices), devicesChecker: switchOffCheck || [] })
                     }}>
                         <Text style={styles.group_head}>Switch off devices</Text>
@@ -209,4 +221,11 @@ const styles = StyleSheet.create({
         marginRight: 12,
         marginTop: 6
     },
+    headerTitle: {
+        color: "#ffffff",
+        fontSize: 20,
+        marginLeft: 12,
+        marginTop: 6
+    },
 });
+const stackBackgroundColor = '#00be82'

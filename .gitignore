@@ -51,3 +51,6 @@ buck-out/
 */fastlane/report.xml
 */fastlane/Preview.html
 */fastlane/screenshots
+.vs/SmartThings2/v15/.suo
+.vs/slnx.sqlite
+.vs/VSWorkspaceState.json

@@ -7,7 +7,8 @@ import {
     FlatList,
     Dimensions,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    Button
 } from 'react-native';
 import { globalStyles } from '../config/globalStyles';
 import { Routine } from '../models/Routine';
@@ -23,6 +24,26 @@ interface ScreenRoutinesState {
     isFocused: boolean,
 }
 export default class ScreenRoutines extends Component<any, ScreenRoutinesState> {
+
+    static navigationOptions = ({ navigation }: any) => {
+        return {
+            title: 'Routine detail',
+            headerTitle: <Text style={styles.headerTitle}>Routines</Text>,
+            headerStyle: {
+                backgroundColor: stackBackgroundColor,
+            },
+            headerRight: <TouchableOpacity onPress={() => { ScreenRoutines.Done(navigation) }}>
+                <Text style={styles.doneButton}>Add</Text>
+            </TouchableOpacity>,
+        }
+    };
+
+    static Done(navigation: any) {
+        let emptyScene: Scene = new Scene();
+        emptyScene.actions = [];
+        navigation.navigate('RoutineDetail', { info: emptyScene });
+    }
+
     unsubscribe: Unsubscribe;
     state: ScreenRoutinesState = {
         scenes: [],
@@ -115,6 +136,14 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
             tasks: []
         }
     ];
+
+    onPressLearnMore = () => {
+        debugger
+        let emptyScene: Scene = new Scene();
+        emptyScene.actions = [];
+        this.props.screenProps.navigate('RoutineDetail', { info: emptyScene });
+    }
+
     render() {
         return (
             // <View style={[globalStyles.container, styles.container]}>
@@ -132,6 +161,12 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
                         keyExtractor={(item: any) => item.id}>
                     </FlatList>
                 }
+                <Button
+                    onPress={this.onPressLearnMore}
+                    title="Learn More"
+                    color="#841584"
+                    accessibilityLabel="Learn more about this purple button"
+                />
             </View>
         );
     }
@@ -216,6 +251,21 @@ class RoutineItem extends Component<RoutineItemProps, any> {
 
 const styles = StyleSheet.create({
     container: {
+        justifyContent: "flex-start"
     },
+    headerTitle: {
+        color: "#ffffff",
+        fontSize: 20,
+        marginLeft: 12,
+        marginTop: 6
+    },
+    doneButton: {
+        color: "#ffffff",
+        fontSize: 20,
+        marginRight: 12,
+        marginTop: 6
+    }
 });
+
+const stackBackgroundColor = '#00be82'
 

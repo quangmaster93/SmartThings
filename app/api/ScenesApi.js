@@ -1,11 +1,22 @@
 // @flow
 import Network from "./Network";
+import { Scene } from "../models/Scene";
 
 export default class ScenesApi {
     static activeScene(sceneID: string, callBack?: Function) {
         let patch = `/scenes/${sceneID}`
         console.log(patch);
         return Network.post(patch, "{}", (responseJson) => {
+            console.log(responseJson);
+            if(callBack){
+                callBack();
+            }
+        })
+    }
+
+    static updateScene(scene: Scene, callBack?: Function) {
+        let patch = `/scenes/${scene.id}`
+        return Network.put(patch, JSON.stringify(scene), (responseJson) => {
             console.log(responseJson);
             if(callBack){
                 callBack();

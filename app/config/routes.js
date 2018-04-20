@@ -462,7 +462,7 @@ export const RootStack = StackNavigator({
         })
     },
     RoutineDetail: {
-        screen: ({navigation}) => <ScreenRoutineDetail screenProps={navigation}/>,
+        screen: ScreenRoutineDetail,
     }
 
 },

@@ -37,6 +37,21 @@ export default class Network {
         });
     }
 
+    static put(path, data, callBack) {
+        fetch(Network.dkm().endpoint + path, {
+            method: "put",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${Network.token}`
+            },
+            body: data
+        }).then(responseJson => {
+            callBack(responseJson)
+        }).catch(error => {
+            console.error(error);
+        });
+    }
+
     static handleError(responseJson, callBack) {
         let bodyInit = JSON.parse(responseJson._bodyInit);
         console.error(`[Network] ${bodyInit.error.message}`);
