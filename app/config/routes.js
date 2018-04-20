@@ -15,6 +15,7 @@ import ScreenVoice from '../screens/ScreenVoice';
 import ScreenRecently from '../screens/ScreenRecently';
 import ScreenRightNow from '../screens/ScreenRightNow';
 import ScreenAddRoom from '../screens/ScreenAddRoom';
+import ScreenEditRoom from '../screens/ScreenEditRoom';
 import ScreenListDevicesToChoose from '../screens/ScreenListDevicesToChoose';
 
 import {
@@ -453,7 +454,7 @@ export const RootStack = StackNavigator({
             headerStyle: {
                 backgroundColor: stackBackgroundColor,
             },
-            headerRight: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
+            headerRight: <TouchableOpacity onPress={() => { navigation.navigate('ScreenEditRoom',{...navigation.state.params,goBackToScreenRoom:()=>navigation.goBack()}) }}>
                 <Image
                     source={require('../image/setting.png')}
                     style={[styles.headerRightIcon]}
@@ -463,6 +464,9 @@ export const RootStack = StackNavigator({
     },
     RoutineDetail: {
         screen: ({navigation}) => <ScreenRoutineDetail screenProps={navigation}/>,
+    },
+    ScreenEditRoom: {
+        screen: ScreenEditRoom,
     }
 
 },
