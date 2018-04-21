@@ -9,7 +9,8 @@ import {
     StyleSheet,
     ImageBackground,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    StatusBar
 } from 'react-native';
 import Network from '../api/Network';
 import { AppStorage } from '../redux/AppStorage';
@@ -72,6 +73,7 @@ export default class ScreenLogin extends Component<any, any> {
     render() {
         return (
             <View style={styles.container}>
+            <StatusBar translucent backgroundColor="rgba(255, 255, 255, 0)"></StatusBar>
                 <ImageBackground style={styles.bg} source={require('../image/bg1.png')}>
                     <View style={styles.logoContainer}>
                         <Image style={styles.logo} source={require('../image/logo.png')}>
@@ -106,7 +108,7 @@ const styles = StyleSheet.create({
     logoContainer: {
         flex: 0.13,
         flexDirection: 'column',
-        paddingTop: 12
+        paddingTop: 25
     },
     logo: {
         flex: 1,
@@ -119,7 +121,7 @@ const styles = StyleSheet.create({
         // backgroundColor: 'red',
         justifyContent: "center",
         alignItems: "center",
-        paddingTop:30
+        paddingTop: 30
     },
     loginButton: {
         flex: 0.75,
@@ -127,10 +129,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#a939b2',
         justifyContent: "center",
         alignItems: "center",
-        borderRadius:25
+        borderRadius: 25
     },
-    loginText:{
-        color:"#ffffff",
-        fontSize:17
+    loginText: {
+        color: "#ffffff",
+        fontSize: 17
     }
 })

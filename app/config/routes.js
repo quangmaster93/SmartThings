@@ -1,6 +1,6 @@
 //@flow
 import React from 'react';
-import { StackNavigator, DrawerNavigator, TabNavigator } from 'react-navigation';
+import { StackNavigator, DrawerNavigator, TabNavigator  } from 'react-navigation';
 import ScreenSlideMenu from '../screens/ScreenSlideMenu';
 import ScreenMyAccount from '../screens/ScreenMyAccount';
 import ScreenLogin from '../screens/ScreenLogin';
@@ -23,11 +23,23 @@ import {
     StyleSheet,
     Text,
     Button,
-    TouchableOpacity
+    TouchableOpacity,
+    View,
+    Dimensions
 } from 'react-native';
 import { AppStorage } from '../redux/AppStorage';
 import { ScreenRoutineDetail } from '../screens/ScreenRoutineDetail';
 import ScreenRecentlyAll from '../screens/ScreenRecentlyAll';
+
+
+const ImageHeader = props => (
+      <Image 
+        resizeMode="contain"
+        style={styles.headerBg}
+        source={require('../image/header-bg.png')}
+      />
+  );
+
 //DashboardStack
 export const DashboardStack = StackNavigator({
     ScreenDashboardHome: {
@@ -37,7 +49,10 @@ export const DashboardStack = StackNavigator({
             headerTitle: <Text style={styles.headerTitle}>TCQ</Text>,
             headerStyle: {
                 backgroundColor: stackBackgroundColor,
+                height:75,
+                flexDirection: 'row',
             },
+            headerBackground: <ImageHeader/>,
             headerLeft: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
                 <Image
                     source={require('../image/menu.png')}
@@ -522,6 +537,7 @@ var screenActionDetail = {
         },
     })
 }
+
 var stackBackgroundColor = '#00be82';
 var focusedUnderTabColor = '#00be82';
 const styles = StyleSheet.create({
@@ -556,5 +572,9 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         marginRight: 30
+    },  
+    headerBg:{
+        flex:1,
+        resizeMode:"contain"
     }
 });
