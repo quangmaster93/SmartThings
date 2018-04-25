@@ -19,6 +19,8 @@ import { Device } from '../models/Device';
 import { AppStorage } from '../redux/AppStorage';
 import { DeviceChecker } from '../models/DeviceChecker';
 import ScenesApi from '../api/ScenesApi';
+import {ImageHeader} from '../Components/ImageHeader';
+import { globalStyles } from '../config/globalStyles';
 
 interface ScreenRoutineDetailState {
     info: Scene;
@@ -27,10 +29,9 @@ export class ScreenRoutineDetail extends Component<any, any> {
     static navigationOptions = ({ navigation }: any) => {
         return {
             title: 'Routine detail',
-            headerTitle: <Text style={styles.headerTitle}>Choose Device</Text>,
-            headerStyle: {
-                backgroundColor: stackBackgroundColor,
-            },
+            headerTitle: <Text style={globalStyles.headerTitle}>Choose Device</Text>,
+            headerStyle: globalStyles.headerStyle,
+            headerBackground: <ImageHeader/>,
             headerRight: <TouchableOpacity onPress={() => { ScreenRoutineDetail.Save(navigation) }}>
                 <Text style={styles.doneButton}>Save</Text>
             </TouchableOpacity>
@@ -233,12 +234,5 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginRight: 12,
         marginTop: 6
-    },
-    headerTitle: {
-        color: "#ffffff",
-        fontSize: 20,
-        marginLeft: 12,
-        marginTop: 6
-    },
+    }
 });
-const stackBackgroundColor = '#00be82'

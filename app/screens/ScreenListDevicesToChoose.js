@@ -19,16 +19,17 @@ import { Device } from '../models/Device';
 import { DeviceChecker } from '../models/DeviceChecker';
 import { CheckBox } from 'react-native-elements';
 import { Common } from '../config/common';
+import {ImageHeader} from '../Components/ImageHeader';
+
 
 
 export default class ScreenListDevicesToChoose extends Component<any, any> {
     static navigationOptions = ({ navigation }: any) => {
         return {
             title: 'Add a Room',
-            headerTitle: <Text style={styles.headerTitle}>Choose Device</Text>,
-            headerStyle: {
-                backgroundColor: stackBackgroundColor,
-            },
+            headerTitle: <Text style={globalStyles.headerTitle}>Choose Device</Text>,
+            headerStyle: globalStyles.headerStyle,
+            headerBackground: <ImageHeader/>,
             headerRight: <TouchableOpacity onPress={() => {  ScreenListDevicesToChoose.Done(navigation) }}>
                 <Text style={styles.doneButton}>Done</Text>
             </TouchableOpacity>
@@ -78,7 +79,7 @@ export default class ScreenListDevicesToChoose extends Component<any, any> {
     renderCheckbox=(item:DeviceChecker)=>
         <CheckBox
         containerStyle={styles.checkboxContainer}
-        textStyle={styles.checkboxText}
+        textStyle={[globalStyles.commonText,styles.checkboxText]}
         title={item.name}   
         // iconRight
         checkedIcon={<Image source={require('../image/check.png')} />}
@@ -97,16 +98,9 @@ export default class ScreenListDevicesToChoose extends Component<any, any> {
         </View>
     };
 }
-const stackBackgroundColor = '#00be82'
 const styles = StyleSheet.create({
     container: {    
         paddingTop:5
-    },
-    headerTitle: {
-        color: "#ffffff",
-        fontSize: 20,
-        marginLeft: 12,
-        marginTop: 6
     },
     doneButton: {
         color: "#ffffff",
@@ -133,7 +127,8 @@ const styles = StyleSheet.create({
     checkboxText:{
         // backgroundColor:'red',
         // flex: 0.9
-        marginLeft:20
+        marginLeft:20,
+        fontWeight:"normal"
     }
 }
 )

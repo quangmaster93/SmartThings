@@ -20,6 +20,7 @@ import { Device } from '../models/Device';
 import { DeviceChecker } from '../models/DeviceChecker';
 import { FirebaseApp } from '../config/firebaseConfig';
 import { Common } from '../config/common';
+import {ImageHeader} from '../Components/ImageHeader';
 
 interface ScreenEditRoomState {
     roomName: string,
@@ -32,10 +33,9 @@ export default class ScreenEditRoom extends Component<any, ScreenEditRoomState> 
     static navigationOptions = ({ navigation }: any) => {
         return {
             title: 'Edit Room',
-            headerTitle: <Text style={styles.headerTitle}>Edit Room</Text>,
-            headerStyle: {
-                backgroundColor: stackBackgroundColor,
-            },
+            headerTitle: <Text style={globalStyles.headerTitle}>Edit Room</Text>,
+            headerStyle: globalStyles.headerStyle,
+            headerBackground: <ImageHeader/>,
             headerRight: <TouchableOpacity onPress={() => { ScreenEditRoom.Done(navigation) }}>
                 <Text style={styles.saveButton}>Done</Text>
             </TouchableOpacity>
@@ -113,9 +113,9 @@ export default class ScreenEditRoom extends Component<any, ScreenEditRoomState> 
     renderDevice = (device: Device) => {
         return (
             <View style={styles.deviceBlock}>
-                <Text style={styles.deviceName}>{Common.ReplaceDeviceName(device.name)}</Text>
+                <Text style={[globalStyles.commonText,styles.deviceName]}>{Common.ReplaceDeviceName(device.name)}</Text>
                 <TouchableOpacity onPress={() => { this.DeleteDevice(device.id) }}>
-                    <Text style={styles.del}>Del</Text>
+                    <Text style={styles.del}>Xóa</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -173,12 +173,12 @@ export default class ScreenEditRoom extends Component<any, ScreenEditRoomState> 
     render() {
         return <View style={[globalStyles.container, styles.container]}>
             <View style={styles.name}>
-                <Text>Room Name</Text>
-                <TextInput style={styles.inputName} value={this.state.roomName}
+                <Text style={globalStyles.commonText}>Room Name</Text>
+                <TextInput style={[globalStyles.commonText,styles.inputName]} value={this.state.roomName}
                     onChangeText={(roomName) => this.EditName(roomName)}></TextInput>
             </View>
             <View>
-                <Text>Devices in this room</Text>
+                <Text style={globalStyles.commonText}>Devices in this room</Text>
                 <FlatList style={styles.listDevices} data={this.state.roomDevices}
                     renderItem={({ item }) => this.renderDevice(item)}
                     extraData={this.state.toggleRerenderFlatList}>
@@ -186,29 +186,22 @@ export default class ScreenEditRoom extends Component<any, ScreenEditRoomState> 
             </View>
 
             <TouchableOpacity onPress={() => { this.navigateToScreenChooseDevices() }}>
-                <Text style={styles.addDevices}>Add devices to room</Text>
+                <Text style={[globalStyles.commonText,styles.addDevices]}>Add devices to room</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => { this.alertDeleteRoom() }}>
-                <Text style={styles.removeRoom}>Remove this room</Text>
+                <Text style={[globalStyles.commonText,styles.removeRoom]}>Remove this room</Text>
             </TouchableOpacity>
         </View>
     };
 }
-const stackBackgroundColor = '#00be82'
 const styles = StyleSheet.create({
     container: {
         padding: 15,
     },
-    headerTitle: {
-        color: "#ffffff",
-        fontSize: 20,
-        marginLeft: 12,
-        marginTop: 6
-    },
     saveButton: {
         color: "#ffffff",
-        fontSize: 20,
+        fontSize: 19,
         marginRight: 12,
         // marginTop: 6
     },
@@ -220,7 +213,7 @@ const styles = StyleSheet.create({
     },
     listDevices: {
         // flex: 1,
-        padding: 10
+        padding: 5
     },
     deviceBlock: {
         flex: 1,
@@ -228,16 +221,24 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     deviceName: {
-
+        color:'#369bc1'
     },
     del: {
         color: "red"
     },
     addDevices: {
-
+        backgroundColor:"#369bc1",
+        padding:7,
+        textAlign:"center",
+        color: "#ffffff",
+        marginTop:15
     },
     removeRoom: {
-
+        marginTop:15,       
+        backgroundColor:"red",
+        padding:7,
+        textAlign:"center",
+        color: "#ffffff",
     }
 }
 )

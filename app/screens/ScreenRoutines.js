@@ -18,6 +18,8 @@ import UsersApi from '../api/UsersApi';
 import { AppStorage } from '../redux/AppStorage';
 import { Unsubscribe } from 'redux';
 import ScenesApi from '../api/ScenesApi';
+import {ImageHeader} from '../Components/ImageHeader';
+import { commonStyle } from '../config/globalStyles';
 
 interface ScreenRoutinesState {
     scenes?: Array<Scene>;
@@ -28,10 +30,9 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
     static navigationOptions = ({ navigation }: any) => {
         return {
             title: 'Routine detail',
-            headerTitle: <Text style={styles.headerTitle}>Routines</Text>,
-            headerStyle: {
-                backgroundColor: stackBackgroundColor,
-            },
+            headerTitle: <Text style={globalStyles.headerTitle}>Routines</Text>,
+            headerStyle: globalStyles.headerStyle,
+            headerBackground: <ImageHeader/>,
             headerRight: <TouchableOpacity onPress={() => { ScreenRoutines.Done(navigation) }}>
                 <Text style={styles.doneButton}>Add</Text>
             </TouchableOpacity>,
@@ -264,12 +265,6 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: "flex-start"
     },
-    headerTitle: {
-        color: "#ffffff",
-        fontSize: 20,
-        marginLeft: 12,
-        marginTop: 6
-    },
     doneButton: {
         color: "#ffffff",
         fontSize: 20,
@@ -278,5 +273,4 @@ const styles = StyleSheet.create({
     }
 });
 
-const stackBackgroundColor = '#00be82'
 

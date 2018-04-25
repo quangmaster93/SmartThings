@@ -17,6 +17,8 @@ import ScreenRightNow from '../screens/ScreenRightNow';
 import ScreenAddRoom from '../screens/ScreenAddRoom';
 import ScreenEditRoom from '../screens/ScreenEditRoom';
 import ScreenListDevicesToChoose from '../screens/ScreenListDevicesToChoose';
+import { globalStyles } from '../config/globalStyles';
+
 
 import {
     Image,
@@ -30,15 +32,8 @@ import {
 import { AppStorage } from '../redux/AppStorage';
 import { ScreenRoutineDetail } from '../screens/ScreenRoutineDetail';
 import ScreenRecentlyAll from '../screens/ScreenRecentlyAll';
+import {ImageHeader} from '../Components/ImageHeader';
 
-
-const ImageHeader = props => (
-      <Image 
-        resizeMode="contain"
-        style={styles.headerBg}
-        source={require('../image/header-bg.png')}
-      />
-  );
 
 //DashboardStack
 export const DashboardStack = StackNavigator({
@@ -46,23 +41,19 @@ export const DashboardStack = StackNavigator({
         screen: ScreenDashboardHome,
         navigationOptions: ({ navigation }) => ({
             title: 'TCQ',
-            headerTitle: <Text style={styles.headerTitle}>TCQ</Text>,
-            headerStyle: {
-                backgroundColor: stackBackgroundColor,
-                height:75,
-                flexDirection: 'row',
-            },
+            headerTitle: <Text style={globalStyles.headerTitle}>TCQ</Text>,
+            headerStyle: globalStyles.headerStyle,
             headerBackground: <ImageHeader/>,
             headerLeft: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
                 <Image
                     source={require('../image/menu.png')}
-                    style={[styles.menuIcon]}
+                    style={[globalStyles.menuIcon]}
                 />
             </TouchableOpacity>,
             headerRight: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
                 <Image
                     source={require('../image/3dot-ve.png')}
-                    style={[styles.headerRightIcon]}
+                    style={[globalStyles.headerRightIcon]}
                 />
             </TouchableOpacity>
 
@@ -83,13 +74,13 @@ export const MyhomeTab = TabNavigator(
         ScreenThings: {
             screen: ScreenThings,
             navigationOptions: {
-                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Things</Text>
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : unfocusedUnderTabColor }, styles.labelTop]}>Things</Text>
             }
         },
         ScreenRooms: {
             screen: ScreenRooms,
             navigationOptions: {
-                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Rooms</Text>
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : unfocusedUnderTabColor }, styles.labelTop]}>Rooms</Text>
             }
         }
     },
@@ -109,9 +100,7 @@ export const MyhomeTab = TabNavigator(
             showIcon: false,
             tabStyle: {
             },
-            indicatorStyle: {
-                backgroundColor: '#00be82'
-            }
+            indicatorStyle: globalStyles.underLineTabStyle
         }
     }
 );
@@ -122,13 +111,13 @@ const ActionDetailTab = TabNavigator(
         ScreenRightNow: {
             screen: ScreenRightNow,
             navigationOptions: {
-                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Right Now</Text>
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : unfocusedUnderTabColor }, styles.labelTop]}>Right Now</Text>
             }
         },
         ScreenRecently: {
             screen: ScreenRecently,
             navigationOptions: {
-                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Recently</Text>
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : unfocusedUnderTabColor }, styles.labelTop]}>Recently</Text>
             }
         }
     },
@@ -149,9 +138,7 @@ const ActionDetailTab = TabNavigator(
             showIcon: false,
             tabStyle: {
             },
-            indicatorStyle: {
-                backgroundColor: '#00be82'
-            }
+            indicatorStyle: globalStyles.underLineTabStyle
         }
     }
 );
@@ -162,13 +149,13 @@ const RoomDetailTab = TabNavigator(
         ScreenRightNow: {
             screen: ScreenThings,
             navigationOptions: {
-                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Right Now</Text>
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : unfocusedUnderTabColor }, styles.labelTop]}>Right Now</Text>
             }
         },
         ScreenRecently: {
             screen: ScreenRecentlyAll,
             navigationOptions: {
-                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Recently</Text>
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : unfocusedUnderTabColor }, styles.labelTop]}>Recently</Text>
             }
         }
     },
@@ -189,9 +176,7 @@ const RoomDetailTab = TabNavigator(
             showIcon: false,
             tabStyle: {
             },
-            indicatorStyle: {
-                backgroundColor: '#00be82'
-            }
+            indicatorStyle: globalStyles.underLineTabStyle
         }
     }
 );
@@ -205,22 +190,23 @@ export const MyhomeStack = StackNavigator({
             AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
         }} />,
         navigationOptions: ({ navigation }) => ({
-            headerTitle: <Text style={styles.headerTitle}>My home</Text>,
-            headerStyle: {
-                backgroundColor: stackBackgroundColor,
-            },
+            headerTitle: <Text style={globalStyles.headerTitle}>My home</Text>,
+            headerStyle: globalStyles.headerStyle,
+            headerBackground: <ImageHeader/>,
             headerLeft: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
                 <Image
                     source={require('../image/menu.png')}
-                    style={[styles.menuIcon]}
+                    style={[globalStyles.menuIcon]}
                 />
             </TouchableOpacity>,
-            headerRight: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
+            headerRight: navigation.state.params?(navigation.state.params.screen == "ScreenRooms" ?  
+            <TouchableOpacity onPress={() => { navigation.navigate('ScreenAddRoom') }}>
                 <Image
-                    source={navigation.state.params ? (navigation.state.params.screen == "ScreenThings" ? require('../image/add.png') : require('../image/setting.png')) : require('../image/add.png')}
-                    style={[styles.headerRightIcon]}
+                    source={require('../image/add.png')}
+                    style={[globalStyles.addIcon]}
                 />
             </TouchableOpacity>
+            :null):null
         })
     }
 
@@ -233,13 +219,13 @@ export const AutomationTab = TabNavigator(
         ScreenRoutines: {
             screen: ({ navigation }) => <ScreenRoutines screenProps={navigation} />,
             navigationOptions: {
-                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>Routines</Text>
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : unfocusedUnderTabColor }, styles.labelTop]}>Routines</Text>
             }
         },
         ScreenSmartApps: {
             screen: ScreenSmartApps,
             navigationOptions: {
-                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#655f61' }, styles.labelTop]}>SmartApps</Text>
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : unfocusedUnderTabColor }, styles.labelTop]}>SmartApps</Text>
             }
         }
     },
@@ -260,9 +246,7 @@ export const AutomationTab = TabNavigator(
             showIcon: false,
             tabStyle: {
             },
-            indicatorStyle: {
-                backgroundColor: '#00be82'
-            }
+            indicatorStyle: globalStyles.underLineTabStyle
         }
     }
 );
@@ -272,14 +256,13 @@ export const AutomationStack = StackNavigator({
     AutomationTab: {
         screen: AutomationTab,
         navigationOptions: ({ navigation }) => ({
-            headerTitle: <Text style={styles.headerTitle}>Automation</Text>,
-            headerStyle: {
-                backgroundColor: stackBackgroundColor,
-            },
+            headerTitle: <Text style={globalStyles.headerTitle}>Automation</Text>,
+            headerStyle: globalStyles.headerStyle,
+            headerBackground: <ImageHeader/>,
             headerLeft: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
                 <Image
                     source={require('../image/menu.png')}
-                    style={[styles.menuIcon]}
+                    style={[globalStyles.menuIcon]}
                 />
             </TouchableOpacity>
         })
@@ -291,14 +274,13 @@ export const VoiceStack = StackNavigator({
     ScreenVoice: {
         screen: ScreenVoice,
         navigationOptions: ({ navigation }) => ({
-            headerTitle: <Text style={styles.headerTitle}>Speech</Text>,
-            headerStyle: {
-                backgroundColor: stackBackgroundColor,
-            },
+            headerTitle: <Text style={globalStyles.headerTitle}>Speech</Text>,
+            headerStyle: globalStyles.headerStyle,
+            headerBackground: <ImageHeader/>,
             headerLeft: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
                 <Image
                     source={require('../image/menu.png')}
-                    style={[styles.menuIcon]}
+                    style={[globalStyles.menuIcon]}
                 />
             </TouchableOpacity>
         })
@@ -311,7 +293,7 @@ export const RootTab = TabNavigator(
         DashboardStack: {
             screen: DashboardStack,
             navigationOptions: {
-                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#7a7b7c' }, styles.label]}>Dashboard</Text>,
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : unfocusedUnderTabColor }, styles.label]}>Dashboard</Text>,
                 tabBarIcon: ({ focused, tintColor }) => (
                     focused ? <Image
                         source={require('../image/db.png')}
@@ -328,7 +310,7 @@ export const RootTab = TabNavigator(
         MyhomeStack: {
             screen: MyhomeStack,
             navigationOptions: {
-                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#7a7b7c' }, styles.label]}>My home</Text>,
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : unfocusedUnderTabColor }, styles.label]}>My home</Text>,
                 tabBarIcon: ({ focused, tintColor }) => (
                     focused ? <Image
                         source={require('../image/myhome.png')}
@@ -345,7 +327,7 @@ export const RootTab = TabNavigator(
         AutomationStack: {
             screen: AutomationStack,
             navigationOptions: {
-                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#7a7b7c' }, styles.label]}>Automation</Text>,
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : unfocusedUnderTabColor }, styles.label]}>Automation</Text>,
                 tabBarIcon: ({ focused, tintColor }) => (
                     focused ? <Image
                         source={require('../image/automation.png')}
@@ -362,7 +344,7 @@ export const RootTab = TabNavigator(
         VoiceStack: {
             screen: VoiceStack,
             navigationOptions: {
-                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : '#7a7b7c' }, styles.label]}>Speech</Text>,
+                tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : unfocusedUnderTabColor }, styles.label]}>Speech</Text>,
                 tabBarIcon: ({ focused, tintColor }) => (
                     focused ? <Image
                         source={require('../image/speech.png')}
@@ -412,10 +394,9 @@ export const MyAccountStack = StackNavigator({
     ScreenMyAccount: {
         screen: ScreenMyAccount,
         navigationOptions: ({ navigation }) => ({
-            headerTitle: <Text style={styles.headerTitle}>My Account</Text>,
-            headerStyle: {
-                backgroundColor: stackBackgroundColor,
-            },
+            headerTitle: <Text style={globalStyles.headerTitle}>My Account</Text>,
+            headerStyle: globalStyles.headerStyle,
+            headerBackground: <ImageHeader/>,
         })
     }
 });
@@ -425,7 +406,7 @@ export const SupportStack = StackNavigator({
     ScreenSupport: {
         screen: ScreenSupport,
         navigationOptions: ({ navigation }) => ({
-            headerTitle: <Text style={styles.headerTitle}>Support</Text>
+            headerTitle: <Text style={globalStyles.headerTitle}>Support</Text>
         })
     }
 });
@@ -449,14 +430,13 @@ export const RootStack = StackNavigator({
             AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
         }} />,
         navigationOptions: ({ navigation }) => ({
-            headerTitle: <Text style={styles.headerTitle}>{navigation.state.params.info.name}</Text>,
-            headerStyle: {
-                backgroundColor: stackBackgroundColor,
-            },
+            headerTitle: <Text style={globalStyles.headerTitle}>{navigation.state.params.info.name}</Text>,
+            headerStyle: globalStyles.headerStyle,
+            headerBackground: <ImageHeader/>,
             headerRight: <TouchableOpacity onPress={() => { navigation.navigate('DrawerToggle') }}>
                 <Image
                     source={navigation.state.params ? (navigation.state.params.screen == "ScreenThings" ? require('../image/add.png') : require('../image/setting.png')) : require('../image/add.png')}
-                    style={[styles.headerRightIcon]}
+                    style={[globalStyles.headerRightIcon]}
                 />
             </TouchableOpacity>
         })
@@ -466,14 +446,13 @@ export const RootStack = StackNavigator({
             AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
         }} />,
         navigationOptions: ({ navigation }) => ({
-            headerTitle: <Text style={styles.headerTitle}>{navigation.state.params.name}</Text>,
-            headerStyle: {
-                backgroundColor: stackBackgroundColor,
-            },
+            headerTitle: <Text style={globalStyles.headerTitle}>{navigation.state.params.name}</Text>,
+            headerStyle: globalStyles.headerStyle,
+            headerBackground: <ImageHeader/>,
             headerRight: <TouchableOpacity onPress={() => { navigation.navigate('ScreenEditRoom',{...navigation.state.params,goBackToScreenRoom:()=>navigation.goBack()}) }}>
                 <Image
                     source={require('../image/setting.png')}
-                    style={[styles.headerRightIcon]}
+                    style={[globalStyles.headerRightIcon]}
                 />
             </TouchableOpacity>
         })
@@ -527,19 +506,9 @@ export const AuthenticationStack = (isLogged: any) => {
         }
     );
 }
-var screenActionDetail = {
-    screen: ScreenActionDetail,
-    navigationOptions: ({ navigation }) => ({
-        title: 'Action',
-        headerTitle: <Text style={styles.headerTitle}>Action</Text>,
-        headerStyle: {
-            backgroundColor: '#1153a5',
-        },
-    })
-}
 
-var stackBackgroundColor = '#00be82';
-var focusedUnderTabColor = '#00be82';
+var focusedUnderTabColor = '#005891';
+var unfocusedUnderTabColor = '#655f61';
 const styles = StyleSheet.create({
     icon: {
         width: 23,
@@ -556,25 +525,5 @@ const styles = StyleSheet.create({
     labelTop: {
         marginTop: 3,
         fontSize: 16
-    },
-    headerTitle: {
-        color: "#ffffff",
-        fontSize: 20,
-        marginLeft: 12,
-        marginTop: 6
-    },
-    menuIcon: {
-        width: 32,
-        height: 22,
-        marginLeft: 10
-    },
-    headerRightIcon: {
-        width: 30,
-        height: 30,
-        marginRight: 30
-    },  
-    headerBg:{
-        flex:1,
-        resizeMode:"contain"
-    }
+    },   
 });

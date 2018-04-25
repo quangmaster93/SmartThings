@@ -7,7 +7,8 @@ import {
     StyleSheet,
     Image,
     TextInput,
-    FlatList
+    FlatList,
+    Alert
 } from 'react-native';
 import { Unsubscribe } from 'redux';
 import { AppStorage } from '../redux/AppStorage';
@@ -17,7 +18,8 @@ import { NavigationActions } from 'react-navigation'
 import { globalStyles } from '../config/globalStyles';
 import { Device } from '../models/Device';
 import { DeviceChecker } from '../models/DeviceChecker';
-import {FirebaseApp} from '../config/firebaseConfig'
+import {FirebaseApp} from '../config/firebaseConfig';
+import {ImageHeader} from '../Components/ImageHeader';
 interface ScreenAddRoomState {
     roomName: string,
     toggleRerenderFlatList:boolean
@@ -26,10 +28,9 @@ export default class ScreenAddRoom extends Component<any, ScreenAddRoomState> {
     static navigationOptions = ({ navigation }: any) => {
         return {
             title: 'Add a Room',
-            headerTitle: <Text style={styles.headerTitle}>Add a Room</Text>,
-            headerStyle: {
-                backgroundColor: stackBackgroundColor,
-            },
+            headerTitle: <Text style={globalStyles.headerTitle}>Add a Room</Text>,
+            headerStyle: globalStyles.headerStyle,
+            headerBackground: <ImageHeader/>,
             headerRight: <TouchableOpacity onPress={() => { ScreenAddRoom.SaveRoom(navigation) }}>
                 <Text style={styles.saveButton}>Save</Text>
             </TouchableOpacity>
@@ -58,7 +59,10 @@ export default class ScreenAddRoom extends Component<any, ScreenAddRoomState> {
         })
     }
     static SaveRoom=(navigation:any)=>{
-        let roomName=navigation.state.params.roomName;
+        let roomName='';
+        if(navigation.state.params&&navigation.state.params.roomName){
+            roomName=navigation.state.params.roomName;
+        }
         if(roomName!=''){
             let savedDevices=navigation.state.params.savedDevices;
             let stringDevices='';
@@ -70,9 +74,22 @@ export default class ScreenAddRoom extends Component<any, ScreenAddRoomState> {
             let database=FirebaseApp.database();
             let userRef=database.ref("UserRoom");
             userRef.child(userId).push().set({name:roomName,devices:stringDevices});
-            navigation.goBack();
-            
+            navigation.goBack();           
         }
+        else{
+            ScreenAddRoom.alertFillOut()
+        }
+    }
+
+    static alertFillOut=()=>{
+        Alert.alert(
+            `Thông báo`,
+            `Hãy nhập tên của phòng`,
+            [
+              {text: 'Ok', style: 'cancel'},
+            ],
+            { cancelable: true }
+          )
     }
     EditName=(roomName:string)=>{
         this.props.navigation.setParams({
@@ -96,18 +113,18 @@ export default class ScreenAddRoom extends Component<any, ScreenAddRoomState> {
     render() {
         return <View style={[globalStyles.container, styles.container]}>
             <View style={styles.name}>
-                <Text>Room Name</Text>
-                <TextInput style={styles.inputName} placeholder="e.g. Living room" value={this.state.roomName}
+                <Text style={[globalStyles.commonText,styles.labelInput]}>Room Name</Text>
+                <TextInput style={[globalStyles.commonText,styles.inputName]} placeholder="e.g. Living room" value={this.state.roomName}
                     onChangeText={(roomName) =>this.EditName(roomName)}></TextInput>
             </View>
             <TouchableOpacity onPress={() => {
                 this.navigateToScreenChooseDevices()
             }}>
                 <View style={styles.chooseDevicesContainer}>
-                    <Text style={styles.chooseDevicesText}>Choose devices</Text>
+                    <Text style={[globalStyles.commonText,styles.chooseDevicesText]}>Choose devices</Text>
                     <View style={styles.listDevices}>
                         <FlatList data={this.savedDevices}
-                            renderItem={({ item }) => <Text style={styles.deviceName}>{item.name}</Text>}
+                            renderItem={({ item }) => <Text style={[globalStyles.commonText,styles.deviceName]}>{item.name}</Text>}
                             extraData={this.state.toggleRerenderFlatList}>
                         </FlatList>
                     </View>
@@ -116,20 +133,13 @@ export default class ScreenAddRoom extends Component<any, ScreenAddRoomState> {
         </View>
     };
 }
-const stackBackgroundColor = '#00be82'
 const styles = StyleSheet.create({
     container: {
         padding:15,
     },
-    headerTitle: {
-        color: "#ffffff",
-        fontSize: 20,
-        marginLeft: 12,
-        marginTop: 6
-    },
     saveButton: {
         color: "#ffffff",
-        fontSize: 20,
+        fontSize: 19,
         marginRight: 12,
         // marginTop: 6
     },
@@ -146,6 +156,9 @@ const styles = StyleSheet.create({
         marginLeft:5
     },
     deviceNameText: {
+
+    },
+    labelInput:{
 
     },
     inputName:{

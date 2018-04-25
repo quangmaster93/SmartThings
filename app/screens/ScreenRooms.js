@@ -94,7 +94,11 @@ export default class ScreenRooms extends Component<any, ScreenThingsState> {
         return(
         <TouchableOpacity  onPress={() => { this.props.screenProps.navigate('RoomDetailTab', item)}}
         onLongPress={()=>{this.alertDeleteRoom(item)}}>
-            <Text style={styles.name}>{item.name}</Text>
+            <View style={styles.roomBlock}>
+                <Image style={styles.roomImage} source={require('../image/room.png')} />
+                <Text style={styles.name}>{item.name}</Text>
+            </View>
+            
         </TouchableOpacity>
         )
     }
@@ -109,13 +113,13 @@ export default class ScreenRooms extends Component<any, ScreenThingsState> {
                             extraData={this.state.toggleRerenderFlatList}>
                         </FlatList>
                     </View>
-                    <TouchableOpacity style={styles.addthing} onPress={() => { this.props.screenProps.navigate('ScreenAddRoom') }}>
+                    {/* <TouchableOpacity style={styles.addthing} onPress={() => { this.props.screenProps.navigate('ScreenAddRoom') }}>
                         <Image
                             source={require('../image/add-icon.png')}
                             style={styles.addIcon}
                         />
                         <Text style={styles.addText}>Add a Room</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
 
             }
@@ -124,29 +128,46 @@ export default class ScreenRooms extends Component<any, ScreenThingsState> {
 }
 const styles = StyleSheet.create({
     container: {
-
+        backgroundColor:"#f2f2f2",
+        paddingTop:10,
+        paddingBottom:10,
+        paddingRight:20,
+        paddingLeft:20,
     },
-    addthing: {
-        marginTop: 10,
-        // flex: 1,
-        flexDirection: 'row',
-        marginLeft: 10,
-    },
-    addIcon: {
-        width: 20,
-        height: 20
-    },
+    // addthing: {
+    //     marginTop: 10,
+    //     // flex: 1,
+    //     flexDirection: 'row',
+    //     marginLeft: 10,
+    // },
+    // addIcon: {
+    //     width: 20,
+    //     height: 20
+    // },
     addText: {
         marginLeft: 10
     },
     listRoom: {
         // flex: 1,
     },
+    roomBlock:{
+        backgroundColor:"#ffffff",
+        marginTop:5,
+        flex:1,
+        flexDirection:"row",
+        alignItems:"center",
+        paddingLeft:20
+    },
+    roomImage:{
+        width:43,
+        height:43
+    },
     name: {
-        borderBottomWidth: 1,
-        borderBottomColor: '#d6d7da',
+        // borderBottomWidth: 1,
+        // borderBottomColor: '#d6d7da',
         padding: 20,
-        fontSize: 16
+        fontSize: 16,
+        marginLeft:10
     }
 
 }
