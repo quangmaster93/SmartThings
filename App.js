@@ -15,18 +15,20 @@ import UsersApi from './app/api/UsersApi';
 import Socket from './app/api/Socket';
 import { Device } from './app/models/Device';
 import { Unsubscribe } from 'redux';
+import ScreenSplash from './app/screens/ScreenSplash'
 export default class App extends Component<{}, any> {
   unsubscribe: Unsubscribe;
   constructor(props: any) {
     super(props);
     this.state = {
-      isLogged: false
+      isLogged: false,
+      isStarted:false,
     };
   };
 
   componentDidMount() {
     this.GetToken();
-
+    setTimeout(() => {this.setState({isStarted: true})}, 2000);
     this.unsubscribe = AppStorage.subscribe((state) => {
       switch (state.event) {
         case "SAVE_TOKEN":
@@ -68,7 +70,9 @@ export default class App extends Component<{}, any> {
   };
   render() {
     const Layout = AuthenticationStack(this.state.isLogged);
-    return <Layout onNavigationStateChange={(prevState, currentState, action) => { this.onNavigationStateChange(prevState, currentState, action) }} />;
+    return this.state.isStarted
+    ?<Layout onNavigationStateChange={(prevState, currentState, action) => { this.onNavigationStateChange(prevState, currentState, action) }} />
+    :<ScreenSplash/>;
   }
 
   componentWillUnmount() {
