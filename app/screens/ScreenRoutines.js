@@ -27,17 +27,17 @@ interface ScreenRoutinesState {
 }
 export default class ScreenRoutines extends Component<any, ScreenRoutinesState> {
 
-    static navigationOptions = ({ navigation }: any) => {
-        return {
-            title: 'Routine detail',
-            headerTitle: <Text style={globalStyles.headerTitle}>Routines</Text>,
-            headerStyle: globalStyles.headerStyle,
-            headerBackground: <ImageHeader/>,
-            headerRight: <TouchableOpacity onPress={() => { ScreenRoutines.Done(navigation) }}>
-                <Text style={styles.doneButton}>Add</Text>
-            </TouchableOpacity>,
-        }
-    };
+    // static navigationOptions = ({ navigation }: any) => {
+    //     return {
+    //         title: 'Routine detail',
+    //         headerTitle: <Text style={globalStyles.headerTitle}>Routines</Text>,
+    //         headerStyle: globalStyles.headerStyle,
+    //         headerBackground: <ImageHeader/>,
+    //         headerRight: <TouchableOpacity onPress={() => { ScreenRoutines.Done(navigation) }}>
+    //             <Text style={styles.doneButton}>Add</Text>
+    //         </TouchableOpacity>,
+    //     }
+    // };
 
     static Done(navigation: any) {
         let emptyScene: Scene = new Scene();
@@ -56,8 +56,11 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
             switch (state.event) {
                 case "SET_FOCUSED_SCREEN":
                     let focusedRoute = AppStorage.getState().focusedRoute;
-                    if (focusedRoute == "ScreenRoutines") {
+                    if (focusedRoute == "ScreenRoutines" || focusedRoute == "AutomationStack") {
                         this.props.screenProps.setParams({ screen: "ScreenRoutines" })
+                    }
+                    else{
+                        this.props.screenProps.setParams({ screen: "ScreenSmartApps" })
                     }
 
                     if (this.state.isFocused == false && AppStorage.getState().focusedRoute == "AutomationStack") {
@@ -72,6 +75,9 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
 
                         }
                     }
+                    break;
+                case "ADD_NEW_ROUTINE": 
+                    this.onPressAdd();
                     break;
             }
         })
@@ -162,19 +168,16 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
             //         keyExtractor={(item: any) => item.id}>
             //     </FlatList>
             // </View>
-            <View style={[globalStyles.container, styles.container]}>
+            <View style={[globalStyles.container, styles.container, {backgroundColor: "#f2f2f2"}]}>
                 {this.state.isFocused &&
                     <FlatList data={this.state.scenes}
-                        numColumns={2}
+                        numColumns={3}
                         renderItem={({ item }) => <RoutineItem data={item} press={this.itemPress} pressSetting={this.itemPressSetting} />}
-                        keyExtractor={(item: any) => item.id}>
+                        keyExtractor={(item: any) => item.id}
+                        style={{margin: 20}}
+                        columnWrapperStyle={{justifyContent: "space-between", marginBottom: 10}}>
                     </FlatList>
                 }
-                <Button
-                    onPress={this.onPressAdd}
-                    title="Add routine"
-                    accessibilityLabel="Learn more about this purple button"
-                />
             </View>
         );
     }
@@ -183,22 +186,6 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
         ScenesApi.activeScene(id, () => {
 
         })
-        // let self = this;
-        // var selectedRoutine = this.data.find((item) => item.id == id)
-        // if (selectedRoutine !== undefined) {
-        //     selectedRoutine.tasks.forEach((item, index, tasks) => {
-        //         switch (item.type) {
-        //             case "SWITCH_ON": {
-        //                 self.switchOnDevices(item.dids)
-        //             }
-        //                 break;
-        //             case "SWITCH_OFF": {
-        //                 self.switchOffDevices(item.dids)
-        //             }
-        //                 break;
-        //         }
-        //     });
-        // }
     }
 
     onDone = () => {
@@ -221,11 +208,13 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
         })
     }
 }
+
 interface RoutineItemProps {
     data: Routine;
     press: Function;
     pressSetting: Function;
 }
+
 class RoutineItem extends Component<RoutineItemProps, any> {
     constructor(props: RoutineItemProps) {
         super(props)
@@ -247,15 +236,15 @@ class RoutineItem extends Component<RoutineItemProps, any> {
                 icon = require("../image/3dot-ve.png");
                 break;
         }
-        return <View style={{ flex: 1, height: width / 2, borderWidth: 0.5, borderColor: '#d6d7da', position: "relative", justifyContent: "center", alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.props.press(data.id)}>
-                <Image style={[{ width: width / 4, height: width / 4 }]} source={icon} />
-                <View style={{ paddingTop: 20, alignItems: "center" }}>
-                    <Text>{data.name}</Text>
+        return <View style={{  width: "32%", height: width / 4, borderWidth: 0.5, borderColor: '#d6d7da', position: "relative", justifyContent: "center", alignItems: "center", backgroundColor: "#ffffff"}}>
+            <TouchableOpacity onPress={() => this.props.press(data.id)} style={{justifyContent: "center", alignItems: "center", width: "100%", height: "100%"}}>
+                <Image style={[{ width: width / 8, height: width / 8, justifyContent: "center", alignItems: "center", marginBottom: 25 }]} source={icon} />
+                <View style={{ paddingTop: 20, alignItems: "center", position: "absolute", bottom: 10 }}>
+                    <Text style={{textAlign: "center", fontSize: 12}}>{data.name}</Text>
                 </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.props.pressSetting(data)} style={[{ position: "absolute", top: 5, right: 5 }]}>
-                <Image style={[{ width: 20, height: 20 }]} source={require('../image/setting-o.png')} />
+                <Image style={[{ width: 15, height: 15 }]} source={require('../image/setting-o.png')} />
             </TouchableOpacity>
         </View>
     }

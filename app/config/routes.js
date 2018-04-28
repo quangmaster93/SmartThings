@@ -33,6 +33,7 @@ import { AppStorage } from '../redux/AppStorage';
 import { ScreenRoutineDetail } from '../screens/ScreenRoutineDetail';
 import ScreenRecentlyAll from '../screens/ScreenRecentlyAll';
 import {ImageHeader} from '../Components/ImageHeader';
+import { AppState } from '../redux/AppState';
 
 
 //DashboardStack
@@ -199,7 +200,7 @@ export const MyhomeStack = StackNavigator({
                     style={[globalStyles.menuIcon]}
                 />
             </TouchableOpacity>,
-            headerRight: navigation.state.params?(navigation.state.params.screen == "ScreenRooms" ?  
+            headerRight: navigation.state.params?((navigation.state.params.screen == "ScreenRooms") ?  
             <TouchableOpacity onPress={() => { navigation.navigate('ScreenAddRoom') }}>
                 <Image
                     source={require('../image/add.png')}
@@ -217,7 +218,7 @@ export const MyhomeStack = StackNavigator({
 export const AutomationTab = TabNavigator(
     {
         ScreenRoutines: {
-            screen: ({ navigation }) => <ScreenRoutines screenProps={navigation} />,
+            screen: ScreenRoutines,
             navigationOptions: {
                 tabBarLabel: ({ focused, tintColor }) => <Text style={[{ color: focused ? focusedUnderTabColor : unfocusedUnderTabColor }, styles.labelTop]}>Routines</Text>
             }
@@ -254,7 +255,9 @@ export const AutomationTab = TabNavigator(
 //AutomationStack
 export const AutomationStack = StackNavigator({
     AutomationTab: {
-        screen: AutomationTab,
+        screen: ({ navigation }) => <AutomationTab screenProps={navigation} onNavigationStateChange={(prevState: any, currentState: any, action: any) => {
+            AppStorage.postEvent("SET_FOCUSED_SCREEN", action.routeName);
+        }} />,
         navigationOptions: ({ navigation }) => ({
             headerTitle: <Text style={globalStyles.headerTitle}>Automation</Text>,
             headerStyle: globalStyles.headerStyle,
@@ -263,6 +266,13 @@ export const AutomationStack = StackNavigator({
                 <Image
                     source={require('../image/menu.png')}
                     style={[globalStyles.menuIcon]}
+                />
+            </TouchableOpacity>,
+            headerRight: navigation.state.params && navigation.state.params.screen != "ScreenRoutines" ?  null :
+            <TouchableOpacity onPress={() => { AppStorage.postEvent("ADD_NEW_ROUTINE", null) }}>
+                <Image
+                    source={require('../image/add.png')}
+                    style={[globalStyles.addIcon]}
                 />
             </TouchableOpacity>
         })
