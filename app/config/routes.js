@@ -18,6 +18,7 @@ import ScreenAddRoom from '../screens/ScreenAddRoom';
 import ScreenEditRoom from '../screens/ScreenEditRoom';
 import ScreenListDevicesToChoose from '../screens/ScreenListDevicesToChoose';
 import ScreenAddFavorite from '../screens/ScreenAddFavorite';
+import ScreenLoading from '../screens/ScreenLoading';
 
 import { globalStyles } from '../config/globalStyles';
 
@@ -476,7 +477,7 @@ export const RootApp = DrawerNavigator(
 
 
 //AuthenticationStack
-export const AuthenticationStack = (isLogged: any) => {
+export const AuthenticationStack = (select: any) => {
     return StackNavigator(
         {
             ScreenLogin: {
@@ -484,11 +485,14 @@ export const AuthenticationStack = (isLogged: any) => {
             },
             RootApp: {
                 screen: RootApp,
+            },
+            ScreenLoading:{
+                screen:ScreenLoading
             }
         },
         {
             headerMode: "none",
-            initialRouteName: isLogged ? "RootApp" : "ScreenLogin"
+            initialRouteName: select=="loaded" ? "RootApp" : (select=="logged"?"ScreenLoading":"ScreenLogin")
         }
     );
 }

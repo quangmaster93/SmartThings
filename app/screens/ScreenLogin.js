@@ -52,7 +52,7 @@ export default class ScreenLogin extends Component<any, any> {
                     console.log(access_token);
                     Network.token = access_token;
                     AppStorage.postEvent("SAVE_TOKEN", access_token);
-                    that.props.navigation.navigate('RootApp')
+                    // that.props.navigation.navigate('RootApp')
                 })
                 .catch(error => {
                     console.error("Loi: " + error);

@@ -21,7 +21,7 @@ export default class App extends Component<{}, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      isLogged: false,
+      select: "unlogged",
       isStarted:false,
     };
   };
@@ -30,6 +30,7 @@ export default class App extends Component<{}, any> {
     this.GetToken();
     setTimeout(() => {this.setState({isStarted: true})}, 2000);
     this.unsubscribe = AppStorage.subscribe((state) => {
+      let that=this;
       switch (state.event) {
         case "SAVE_TOKEN":
           UsersApi.getUserProfile(data => {
@@ -41,6 +42,7 @@ export default class App extends Component<{}, any> {
 
               let devicesId: string = devices.join(",");
               Socket.OpenCommonWS(devicesId);
+              this.setState({ select: "loaded" });
             })
           });
       }
@@ -54,7 +56,7 @@ export default class App extends Component<{}, any> {
           console.log("token got: " + access_token);
           Network.token = access_token;
           AppStorage.postEvent("SAVE_TOKEN", access_token);
-          this.setState({ isLogged: true });
+          this.setState({ select: "logged" });
         } else {
 
         }
@@ -69,7 +71,7 @@ export default class App extends Component<{}, any> {
     }
   };
   render() {
-    const Layout = AuthenticationStack(this.state.isLogged);
+    const Layout = AuthenticationStack(this.state.select);
     return this.state.isStarted
     ?<Layout onNavigationStateChange={(prevState, currentState, action) => { this.onNavigationStateChange(prevState, currentState, action) }} />
     :<ScreenSplash/>;

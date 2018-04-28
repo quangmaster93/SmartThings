@@ -20,7 +20,7 @@ import { DeviceChecker } from '../models/DeviceChecker';
 import { CheckBox } from 'react-native-elements';
 import { Common } from '../config/common';
 import { ImageHeader } from '../Components/ImageHeader';
-
+import {FirebaseApp} from '../config/firebaseConfig';
 
 
 export default class ScreenAddFavorite extends Component<any, any> {
@@ -36,27 +36,35 @@ export default class ScreenAddFavorite extends Component<any, any> {
         }
     };
     static Done = (navigation: any) => {
-        navigation.state.params.onDone(navigation.state.params.savedDevices)
-        navigation.goBack();
-    }
-    static Cancel = (navigation: any) => {
-        navigation.state.params.onDone([])
-        navigation.goBack();
+        let savedDevices=navigation.state.params.savedDevices;
+        let stringDevices='';
+        if(savedDevices){
+            let devices=savedDevices.map(d=>d.id);
+            stringDevices=devices.join(",");               
+        }
+        let userId=AppStorage.getState().userInfo.id;
+        let database=FirebaseApp.database();
+        let userRef=database.ref("UserFavorite");
+        userRef.child(userId).update({things:stringDevices});
+        navigation.goBack();       
     }
     unsubscribe: Unsubscribe;
     userDevices: Array<Device>;
     devicesChecker: Array<DeviceChecker>;
+    favoriteThings:string
     constructor(props: any) {
         super(props);
         this.state = {
             toggleRerenderFlatList: false
         };
+        debugger;
+        this.favoriteThings=(this.props.navigation.state.params && this.props.navigation.state.params.favoriteThings) ?this.props.navigation.state.params.favoriteThings:""
         this.userDevices = AppStorage.getState().userDevices;
-        this.devicesChecker = (this.props.navigation.state.params && this.props.navigation.state.params.devicesChecker.length != 0) ? this.props.navigation.state.params.devicesChecker : this.userDevices.map((device) => {
+        this.devicesChecker = this.userDevices.map((device) => {
             return {
                 id: device.id,
                 name: Common.ReplaceDeviceName(device.name),
-                isCheck: false
+                isCheck: this.favoriteThings.includes(device.id)?true:false
             }
         })
     }
