@@ -52,6 +52,20 @@ export default class Network {
         });
     }
 
+    static delete(path, callBack) {
+        return fetch(Network.dkm().endpoint + path, {
+            method: "delete",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${Network.token}`
+            }
+        }).then(responseJson => {
+            callBack(responseJson)
+        }).catch(error => {
+            console.error(error);
+        });
+    }
+
     static handleError(responseJson, callBack) {
         let bodyInit = JSON.parse(responseJson._bodyInit);
         console.error(`[Network] ${bodyInit.error.message}`);

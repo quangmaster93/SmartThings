@@ -34,6 +34,7 @@ import { ScreenRoutineDetail } from '../screens/ScreenRoutineDetail';
 import ScreenRecentlyAll from '../screens/ScreenRecentlyAll';
 import {ImageHeader} from '../Components/ImageHeader';
 import { AppState } from '../redux/AppState';
+import ScreenChoseIcon from '../screens/ScreenChoseIcon';
 
 
 //DashboardStack
@@ -434,6 +435,9 @@ export const RootStack = StackNavigator({
     },
     ScreenListDevicesToChoose: {
         screen: ScreenListDevicesToChoose
+    },
+    ScreenChoseIcon: {
+        screen: ScreenChoseIcon
     },
     ActionDetailTab: {
         screen: ({ navigation }) => <ActionDetailTab screenProps={navigation} onNavigationStateChange={(prevState: any, currentState: any, action: any) => {

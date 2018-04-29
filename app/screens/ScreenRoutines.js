@@ -20,6 +20,7 @@ import { Unsubscribe } from 'redux';
 import ScenesApi from '../api/ScenesApi';
 import {ImageHeader} from '../Components/ImageHeader';
 import { commonStyle } from '../config/globalStyles';
+import { ImageSource } from '../config/ImageSource';
 
 interface ScreenRoutinesState {
     scenes?: Array<Scene>;
@@ -161,13 +162,6 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
 
     render() {
         return (
-            // <View style={[globalStyles.container, styles.container]}>
-            //     <FlatList data={this.data}
-            //         numColumns={2}
-            //         renderItem={({ item }) => <RoutineItem data={item} press={this.itemPress} pressSetting={this.itemPressSetting} />}
-            //         keyExtractor={(item: any) => item.id}>
-            //     </FlatList>
-            // </View>
             <View style={[globalStyles.container, styles.container, {backgroundColor: "#f2f2f2"}]}>
                 {this.state.isFocused &&
                     <FlatList data={this.state.scenes}
@@ -175,7 +169,7 @@ export default class ScreenRoutines extends Component<any, ScreenRoutinesState> 
                         renderItem={({ item }) => <RoutineItem data={item} press={this.itemPress} pressSetting={this.itemPressSetting} />}
                         keyExtractor={(item: any) => item.id}
                         style={{margin: 20}}
-                        columnWrapperStyle={{justifyContent: "space-between", marginBottom: 10}}>
+                        columnWrapperStyle={{marginBottom: 10}}>
                     </FlatList>
                 }
             </View>
@@ -236,9 +230,13 @@ class RoutineItem extends Component<RoutineItemProps, any> {
                 icon = require("../image/3dot-ve.png");
                 break;
         }
-        return <View style={{  width: "32%", height: width / 4, borderWidth: 0.5, borderColor: '#d6d7da', position: "relative", justifyContent: "center", alignItems: "center", backgroundColor: "#ffffff"}}>
+        let image = ImageSource[data.description];
+        if(image == null) {
+            image = ImageSource.default_routine;
+        }
+        return <View style={{  width: "32%", marginLeft: "0.65%", marginRight: "0.6%", height: width / 4, borderWidth: 0.5, borderColor: '#d6d7da', position: "relative", justifyContent: "center", alignItems: "center", backgroundColor: "#ffffff"}}>
             <TouchableOpacity onPress={() => this.props.press(data.id)} style={{justifyContent: "center", alignItems: "center", width: "100%", height: "100%"}}>
-                <Image style={[{ width: width / 8, height: width / 8, justifyContent: "center", alignItems: "center", marginBottom: 25 }]} source={icon} />
+                <Image style={[{ width: width / 8, height: width / 8, justifyContent: "center", alignItems: "center", marginBottom: 25 }]} source={image} />
                 <View style={{ paddingTop: 20, alignItems: "center", position: "absolute", bottom: 10 }}>
                     <Text style={{textAlign: "center", fontSize: 12}}>{data.name}</Text>
                 </View>

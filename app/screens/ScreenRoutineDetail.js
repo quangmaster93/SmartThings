@@ -11,7 +11,8 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     TextInput,
-    ScrollView
+    ScrollView,
+    Alert
 } from 'react-native';
 import { Scene } from '../models/Scene';
 import { Action } from '../models/Action';
@@ -19,7 +20,7 @@ import { Device } from '../models/Device';
 import { AppStorage } from '../redux/AppStorage';
 import { DeviceChecker } from '../models/DeviceChecker';
 import ScenesApi from '../api/ScenesApi';
-import {ImageHeader} from '../Components/ImageHeader';
+import { ImageHeader } from '../Components/ImageHeader';
 import { globalStyles } from '../config/globalStyles';
 
 interface ScreenRoutineDetailState {
@@ -31,7 +32,7 @@ export class ScreenRoutineDetail extends Component<any, any> {
             title: 'Routine detail',
             headerTitle: <Text style={globalStyles.headerTitle}>Choose Device</Text>,
             headerStyle: globalStyles.headerStyle,
-            headerBackground: <ImageHeader/>,
+            headerBackground: <ImageHeader />,
             headerRight: <TouchableOpacity onPress={() => { ScreenRoutineDetail.Save(navigation) }}>
                 <Text style={styles.doneButton}>Save</Text>
             </TouchableOpacity>
@@ -55,27 +56,27 @@ export class ScreenRoutineDetail extends Component<any, any> {
     }
 
     static Save(navigation: any) {
-        let routine:Scene = navigation.state.params.savedRoutine;
-        if(routine.id) {
-            ScenesApi.updateScene(routine,  () =>{
+        let routine: Scene = navigation.state.params.savedRoutine;
+        if (routine.id) {
+            ScenesApi.updateScene(routine, () => {
                 navigation.state.params.onDone()
                 navigation.goBack();
             })
         }
-        else if(routine.name) {
-            ScenesApi.createScene(routine,  () =>{
+        else if (routine.name) {
+            ScenesApi.createScene(routine, () => {
                 navigation.state.params.onDone()
                 navigation.goBack();
             })
         }
-        
+
     }
 
     changeName = (text: string) => {
         let self = this;
         let info: Scene = this.state.info;
         info.name = text;
-        this.setState({ info }, () =>{
+        this.setState({ info }, () => {
             self.props.navigation.setParams({
                 savedRoutine: self.state.info,
             });
@@ -175,6 +176,39 @@ export class ScreenRoutineDetail extends Component<any, any> {
 
         return switchOffCheck;
     }
+
+    choseIconDone = (image: string) => {
+        let self = this;
+        let info: Scene = this.state.info;
+        info.description = image;
+        this.setState({ info }, () => {
+            self.props.navigation.setParams({
+                savedRoutine: self.state.info,
+            });
+        });
+    }
+
+    alertDeleteRoutine = (routine: Scene) => {
+        let self = this;
+        Alert.alert(
+            'Delete routine',
+            'Are you sure you want to delete this routine?',
+            [
+              {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+              {text: 'OK', onPress: () => self.deleteRoutine(routine)},
+            ],
+            { cancelable: true }
+          )
+    }
+
+    deleteRoutine = (routine: Scene) => {
+        let self = this;
+        ScenesApi.deleteScene(routine, () => {
+            self.props.navigation.state.params.onDone();
+            self.props.navigation.goBack();
+        })
+    }
+
     render() {
         let switchOn = this.state.info.actions.filter((ac: Action) => {
             return ac.action == "on";
@@ -184,8 +218,12 @@ export class ScreenRoutineDetail extends Component<any, any> {
         })
         let switchOnCheck: Array<DeviceChecker> = this.getListCheck("on", "off");
         let switchOffCheck: Array<DeviceChecker> = this.getListCheck("off", "on");
-        return <View>
+        return <View style={{paddingLeft: 10, paddingRight: 10}}>
             <TextInput placeholder="Routine name" onChangeText={(text) => this.changeName(text)} value={this.state.info.name}></TextInput>
+            <TouchableOpacity onPress={() => {this.props.navigation.navigate('ScreenChoseIcon', 
+            {onDone: this.choseIconDone, icons: "default_routine,back,good_bye,good_morning,good_night", selected: this.state.info.description})}}>
+                <Text>Chose Icon</Text>
+            </TouchableOpacity>
             <ScrollView>
                 <View style={styles.group}>
                     <TouchableOpacity onPress={() => {
@@ -193,12 +231,16 @@ export class ScreenRoutineDetail extends Component<any, any> {
                             { onDone: (devices) => this.onDone("on", devices), devicesChecker: switchOnCheck || [] })
                     }}>
                         <Text style={styles.group_head}>Switch on devices</Text>
-                        <View>
-                            <FlatList data={switchOn}
-                                renderItem={({ item }) => <Text>{this.getDevicename(item.ddid)}</Text>}
-                                keyExtractor={(item) => item.ddid}>
-                            </FlatList>
-                        </View>
+                        {switchOn.length ?
+                            <View>
+                                <FlatList data={switchOn}
+                                    renderItem={({ item }) => <Text>{this.getDevicename(item.ddid)}</Text>}
+                                    keyExtractor={(item) => item.ddid}>
+                                </FlatList>
+                            </View>
+                            :
+                            <Text style={null}>Touch to add devices</Text>
+                        }
                     </TouchableOpacity>
                 </View>
                 <View style={styles.group}>
@@ -216,7 +258,9 @@ export class ScreenRoutineDetail extends Component<any, any> {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
-
+            <TouchableOpacity onPress={() => this.alertDeleteRoutine(this.state.info)}>
+                <Text style={{color: "red"}}>Remove this routine</Text>
+            </TouchableOpacity>
         </View>
     }
 }
