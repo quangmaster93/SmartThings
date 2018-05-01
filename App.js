@@ -27,8 +27,6 @@ export default class App extends Component<{}, any> {
   };
 
   componentDidMount() {
-    this.GetToken();
-    setTimeout(() => {this.setState({isStarted: true})}, 2000);
     this.unsubscribe = AppStorage.subscribe((state) => {
       let that=this;
       switch (state.event) {
@@ -47,6 +45,8 @@ export default class App extends Component<{}, any> {
           });
       }
     });
+    this.GetToken();
+    setTimeout(() => {this.setState({isStarted: true})}, 2000);
   }
   
   GetToken() {

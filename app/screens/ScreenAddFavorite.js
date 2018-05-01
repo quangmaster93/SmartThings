@@ -39,7 +39,8 @@ export default class ScreenAddFavorite extends Component<any, any> {
         let savedDevices=navigation.state.params.savedDevices;
         let stringDevices='';
         if(savedDevices){
-            let devices=savedDevices.map(d=>d.id);
+
+            let devices=savedDevices.filter(d=>d.isCheck==true).map(d=>d.id);
             stringDevices=devices.join(",");               
         }
         let userId=AppStorage.getState().userInfo.id;
@@ -57,7 +58,6 @@ export default class ScreenAddFavorite extends Component<any, any> {
         this.state = {
             toggleRerenderFlatList: false
         };
-        debugger;
         this.favoriteThings=(this.props.navigation.state.params && this.props.navigation.state.params.favoriteThings) ?this.props.navigation.state.params.favoriteThings:""
         this.userDevices = AppStorage.getState().userDevices;
         this.devicesChecker = this.userDevices.map((device) => {

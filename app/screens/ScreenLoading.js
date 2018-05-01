@@ -7,6 +7,9 @@ import {
 } from 'react-native';
 import { globalStyles } from '../config/globalStyles';
 export default class ScreenLoading extends Component<any,any> {
+    componentWillUnmount() {
+        console.log("ScreenLoading unmount");
+    }
     render() {
         return (
             <View style={[globalStyles.container, styles.container]}>
