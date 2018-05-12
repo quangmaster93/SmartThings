@@ -79,9 +79,14 @@ export default class ScreenListDevicesToChoose extends Component<any, any> {
     renderCheckbox=(item:DeviceChecker)=>
         <CheckBox
         containerStyle={styles.checkboxContainer}
-        textStyle={[globalStyles.commonText,styles.checkboxText]}
-        title={item.name}   
-        // iconRight
+        /* textStyle={[globalStyles.commonText,styles.checkboxText]} */
+        /* title={item.name}    */
+        title={<View style={styles.titleContainer}>
+        <Image style={styles.thingIcon} source={require('../image/light.png')} />
+        <Text style={[globalStyles.commonText,styles.checkboxText]}>{item.name}</Text>
+        </View>}
+        iconRight
+        right
         checkedIcon={<Image source={require('../image/check.png')} />}
         uncheckedIcon={<Image source={require('../image/uncheck.png')} />}
         checked={item.isCheck}
@@ -100,7 +105,7 @@ export default class ScreenListDevicesToChoose extends Component<any, any> {
 }
 const styles = StyleSheet.create({
     container: {    
-        paddingTop:5
+        padding:5
     },
     doneButton: {
         color: "#ffffff",
@@ -112,23 +117,29 @@ const styles = StyleSheet.create({
 
     },
     checkboxContainer: {
-        paddingTop:4,
-        paddingBottom:4,
+        paddingTop:5,
+        paddingBottom:5,
         margin:0,
         backgroundColor:'transparent',
         borderTopWidth:0,
         borderLeftWidth:0,
         borderRightWidth:0,
-        flex: 1, 
-        flexDirection: 'row',
-        justifyContent:'space-between',
+        // flexDirection: 'row',
+        // justifyContent:'space-between',
 
     },
     checkboxText:{
-        // backgroundColor:'red',
-        // flex: 0.9
-        marginLeft:20,
-        fontWeight:"normal"
+        fontWeight:"normal",
+    },
+    titleContainer:{
+        width:'90%',
+        flexDirection: 'row',
+        alignItems:"center"
+    },
+    thingIcon:{
+        width: 30,
+        height: 30,
+        marginRight: 10
     }
 }
 )
