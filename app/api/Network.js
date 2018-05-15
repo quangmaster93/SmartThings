@@ -1,4 +1,7 @@
-
+import { AppStorage } from "../redux/AppStorage";
+import {
+    AsyncStorage,
+} from 'react-native';
 export default class Network {
     static get(path, callBack) {
         // console.log("Network.dkm()" + Network.token);
@@ -13,8 +16,13 @@ export default class Network {
             if (responseJson.status == 200) {
                 callBack(responseJson)
             }
-            else {
-                Network.handleError(responseJson, callBack)
+            else if (responseJson.status == 401)
+            {
+                AsyncStorage.removeItem('@token:key');
+                AppStorage.postEvent("REMOVE_TOKEN");            
+            }
+            else{
+                Network.handleError(responseJson, callBack);
             }
 
         }).catch(error => {

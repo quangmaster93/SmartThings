@@ -14,6 +14,7 @@ import { AppStorage } from './app/redux/AppStorage';
 import UsersApi from './app/api/UsersApi';
 import Socket from './app/api/Socket';
 import { Device } from './app/models/Device';
+import { Scene } from './app/models/Scene';
 import { Unsubscribe } from 'redux';
 import ScreenSplash from './app/screens/ScreenSplash'
 export default class App extends Component<{}, any> {
@@ -32,6 +33,7 @@ export default class App extends Component<{}, any> {
       switch (state.event) {
         case "SAVE_TOKEN":
           UsersApi.getUserProfile(data => {
+
             UsersApi.getUserDevices((data: Array<Device>) => {
               AppStorage.postEvent("SAVE_USER_DEVICES", data);
               let devices = data.map((device) => {
@@ -40,9 +42,16 @@ export default class App extends Component<{}, any> {
 
               let devicesId: string = devices.join(",");
               Socket.OpenCommonWS(devicesId);
-              this.setState({ select: "loaded" });
-            })
+              UsersApi.getUserScenes((data: Array<Scene>) => {
+                AppStorage.postEvent("SAVE_USER_SCENES", data);
+                this.setState({ select: "loaded" });
+              })
+            });            
           });
+          break;
+        case "REMOVE_TOKEN":
+          this.setState({ select: "unlogged" });
+          break;
       }
     });
     this.GetToken();

@@ -14,6 +14,7 @@ import UsersApi from '../api/UsersApi';
 import { globalStyles } from '../config/globalStyles';
 import { ImageHeader } from '../Components/ImageHeader';
 import { Device } from '../models/Device';
+import { Scene } from '../models/Scene';
 import { Common } from '../config/common';
 import { AppStorage } from '../redux/AppStorage';
 import {FirebaseApp} from '../config/firebaseConfig';
@@ -40,15 +41,22 @@ export default class ScreenDashboardHome extends Component<any, any>  {
         }
     };
     favoriteThings:string;
+    favoriteScenesString:string;
     userDevices: Array<Device>;
+    userScenes:Array<Scene>;
     favoriteDevices:Array<Device>;
+    favoriteScenes:Array<Scene>
     constructor(props: any) {
         super(props);
         this.userDevices = AppStorage.getState().userDevices;
+        this.userScenes = AppStorage.getState().userScenes;
         this.favoriteDevices=[];
+        this.favoriteScenes=[];
         this.favoriteThings="";
+        this.favoriteScenesString="";
         this.props.navigation.setParams({
-            favoriteThings:this.favoriteThings
+            favoriteThings:this.favoriteThings,
+            favoriteScenesString:this.favoriteScenesString,
         });
         this.state = {
             toggleRerenderFlatList: false
@@ -60,11 +68,14 @@ export default class ScreenDashboardHome extends Component<any, any>  {
         let userRef = database.ref("UserFavorite");
         userRef.child(userId).on('value', (snapshot) => {
             if(snapshot.val()){
-                this.favoriteThings=snapshot.val().things
+                this.favoriteThings=snapshot.val().things?snapshot.val().things:"";
+                this.favoriteScenesString=snapshot.val().scenes?snapshot.val().scenes:"";
                 this.props.navigation.setParams({
-                    favoriteThings:this.favoriteThings
+                    favoriteThings:this.favoriteThings,
+                    favoriteScenesString:this.favoriteScenesString,
                 });
-                this.favoriteDevices=this.userDevices.filter(device => this.favoriteThings.includes(device.id))
+                this.favoriteDevices=this.userDevices.filter(device => this.favoriteThings.includes(device.id));
+                this.favoriteScenes=this.userScenes.filter(scene => this.favoriteScenesString.includes(scene.id));
                 this.setState({
                     toggleRerenderFlatList: !this.state.toggleRerenderFlatList,
                 });
@@ -76,7 +87,7 @@ export default class ScreenDashboardHome extends Component<any, any>  {
     }
     renderFavorite=(item:Device)=>{
         return <View style={styles.favoriteBlock}>
-            <Image style={styles.favoriteIcon} source={require('../image/on.png')} />
+            <Image style={styles.favoriteIcon} source={require('../image/lamp.png')} />
             <Text style={[globalStyles.commonText,styles.favoriteName]}>{Common.ReplaceDeviceName(item.name)}</Text>
         </View>
     }
@@ -91,9 +102,7 @@ export default class ScreenDashboardHome extends Component<any, any>  {
                         extraData={this.state.toggleRerenderFlatList}
                         numColumns={3}
                         horizontal={false}
-                        >
-                        
-                    </FlatList>
+                        />                    
                 </View>
             </View>
         );

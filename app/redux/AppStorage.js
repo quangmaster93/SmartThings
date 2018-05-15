@@ -31,6 +31,10 @@ export class AppStorage {
                 return {
                     ...state, userDevices: action.payload
                 }
+            case "SAVE_USER_SCENES":
+                return {
+                    ...state, userScenes: action.payload
+                }
             // case "CHOOSE_LIST_DEVICES_TO_ADD_ROOM":
             //     return {
             //         ...state, savedDevices: action.payload
