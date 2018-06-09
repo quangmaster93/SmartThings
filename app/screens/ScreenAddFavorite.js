@@ -58,7 +58,7 @@ export default class ScreenAddFavorite extends Component<any, any> {
         let userId = AppStorage.getState().userInfo.id;
         let database = FirebaseApp.database();
         let userRef = database.ref("UserFavorite");
-        userRef.child(userId).update({ things: stringDevices,scenes: stringScenes });
+        userRef.child(userId).update({ things: stringDevices, scenes: stringScenes });
         navigation.goBack();
     }
     unsubscribe: Unsubscribe;
@@ -73,60 +73,93 @@ export default class ScreenAddFavorite extends Component<any, any> {
         this.state = {
             toggleRerenderFlatList: false
         };
-        this.favoriteThings = (this.props.navigation.state.params && this.props.navigation.state.params.favoriteThings) ? this.props.navigation.state.params.favoriteThings : ""
+        // this.favoriteThings = (this.props.navigation.state.params && this.props.navigation.state.params.favoriteThings) ? this.props.navigation.state.params.favoriteThings : ""
+        this.favoriteThings = "";
+        this.devicesChecker = [];
         this.userDevices = AppStorage.getState().userDevices;
-        this.devicesChecker = this.userDevices.map((device) => {
-            return {
-                id: device.id,
-                name: Common.ReplaceDeviceName(device.name),
-                isCheck: this.favoriteThings.includes(device.id) ? true : false
+        // this.devicesChecker = this.userDevices.map((device) => {
+        //     return {
+        //         id: device.id,
+        //         name: Common.ReplaceDeviceName(device.name),
+        //         isCheck: this.favoriteThings.includes(device.id) ? true : false
+        //     }
+        // });
+
+        this.favoriteScenesString = ""
+        this.userScenes = AppStorage.getState().userScenes;
+        this.scenesChecker=[]
+        // this.scenesChecker = this.userScenes.map((scene) => {
+        //     return {
+        //         id: scene.id,
+        //         name: scene.name,
+        //         isCheck: this.favoriteScenesString.includes(scene.id) ? true : false
+        //     }
+        // })
+
+    }
+    getFavorite = () => {
+        let userId = AppStorage.getState().userInfo.id;
+        let database = FirebaseApp.database();
+        let userRef = database.ref("UserFavorite");
+        userRef.child(userId).once('value', (snapshot) => {
+            if (snapshot.val()) {
+                this.favoriteThings = snapshot.val().things ? snapshot.val().things : "";
+                this.favoriteScenesString = snapshot.val().scenes ? snapshot.val().scenes : "";
+                this.devicesChecker = this.userDevices.map((device) => {
+                    return {
+                        id: device.id,
+                        name: Common.ReplaceDeviceName(device.name),
+                        isCheck: this.favoriteThings.includes(device.id) ? true : false
+                    }
+                });
+                this.scenesChecker = this.userScenes.map((scene) => {
+                    return {
+                        id: scene.id,
+                        name: scene.name,
+                        isCheck: this.favoriteScenesString.includes(scene.id) ? true : false
+                    }
+                })
+                this.setState({
+                    toggleRerenderFlatList: !this.state.toggleRerenderFlatList,
+                });
             }
         });
-
-        this.favoriteScenesString = (this.props.navigation.state.params && this.props.navigation.state.params.favoriteScenesString) ? this.props.navigation.state.params.favoriteScenesString : ""
-        this.userScenes = AppStorage.getState().userScenes;
-        this.scenesChecker = this.userScenes.map((scene) => {
-            return {
-                id: scene.id,
-                name: scene.name,
-                isCheck: this.favoriteScenesString.includes(scene.id) ? true : false
-            }
-        })
-        
     }
     componentDidMount() {
-
+        this.getFavorite();
     }
     componentWillUnmount() {
         // this.unsubscribe();
     }
-    toggle = (item:any,isThing:boolean) => {
-        if(isThing){
+    toggle = (item: any, isThing: boolean) => {
+        if (isThing) {
             let deviceIndex = this.devicesChecker.indexOf(item);
             this.devicesChecker[deviceIndex].isCheck = !this.devicesChecker[deviceIndex].isCheck;
             this.props.navigation.setParams({
                 savedDevices: this.devicesChecker,
+                savedScenes: this.scenesChecker,
             });
         }
-         else{
+        else {
             let sceneIndex = this.scenesChecker.indexOf(item);
             this.scenesChecker[sceneIndex].isCheck = !this.scenesChecker[sceneIndex].isCheck;
             this.props.navigation.setParams({
                 savedScenes: this.scenesChecker,
+                savedDevices: this.devicesChecker,
             });
         }
-        
+
         this.setState({
             toggleRerenderFlatList: !this.state.toggleRerenderFlatList
         })
     }
-    renderCheckboxThings = (item:any, isThing:boolean) =>
-        <CheckBox
+    renderCheckboxThings = (item: DeviceChecker) => {
+        return <CheckBox
             containerStyle={styles.checkboxContainer}
             /* textStyle={[globalStyles.commonText,styles.checkboxText]} */
             /* title={item.name}    */
             title={<View style={styles.titleContainer}>
-                <Image style={styles.thingIcon} source={isThing?require('../image/light.png'):require('../image/good_bye.png')} />
+                <Image style={styles.thingIcon} source={require('../image/light.png')} />
                 <Text style={[globalStyles.commonText, styles.checkboxText]}>{item.name}</Text>
             </View>}
             iconRight
@@ -134,8 +167,27 @@ export default class ScreenAddFavorite extends Component<any, any> {
             checkedIcon={<Image style={styles.starIcon} source={require('../image/star.png')} />}
             uncheckedIcon={<Image style={styles.starIcon} source={require('../image/no-star.png')} />}
             checked={item.isCheck}
-            onPress={() => this.toggle(item,isThing)}
+            onPress={() => this.toggle(item, true)}
         />
+    }
+
+    renderCheckboxScenes = (item: DeviceChecker) => {
+        return <CheckBox
+            containerStyle={styles.checkboxContainer}
+            /* textStyle={[globalStyles.commonText,styles.checkboxText]} */
+            /* title={item.name}    */
+            title={<View style={styles.titleContainer}>
+                <Image style={styles.thingIcon} source={require('../image/good_bye.png')} />
+                <Text style={[globalStyles.commonText, styles.checkboxText]}>{item.name}</Text>
+            </View>}
+            iconRight
+            right
+            checkedIcon={<Image style={styles.starIcon} source={require('../image/star.png')} />}
+            uncheckedIcon={<Image style={styles.starIcon} source={require('../image/no-star.png')} />}
+            checked={item.isCheck}
+            onPress={() => this.toggle(item, false)}
+        />
+    }
 
     render() {
         return <View style={[globalStyles.container, styles.container]}>
@@ -153,11 +205,11 @@ export default class ScreenAddFavorite extends Component<any, any> {
                     extraData={this.state.toggleRerenderFlatList}>
                 </FlatList> */}
                 <SectionList sections={[
-                    { title: 'Things', data: this.devicesChecker, renderItem:({item}) => this.renderCheckbox(item,true)},
-                    { title: 'Routines', data: this.scenesChecker, renderItem:({item}) => this.renderCheckbox(item,false)},
+                    { title: 'Things', data: this.devicesChecker, renderItem: ({ item }) => this.renderCheckboxThings(item) },
+                    { title: 'Routines', data: this.scenesChecker, renderItem: ({ item }) => this.renderCheckboxScenes(item) },
                 ]}
-                renderSectionHeader={({section:{title}}) => <Text style={[globalStyles.commonText,styles.label]}>{title}</Text>}
-                extraData={this.state.toggleRerenderFlatList}/>
+                    renderSectionHeader={({ section: { title } }) => <Text style={[globalStyles.commonText, styles.label]}>{title}</Text>}
+                    extraData={this.state.toggleRerenderFlatList} />
             </View>
         </View>
     };
